@@ -52,6 +52,40 @@ static int cmd_q(char *args) {
   return -1;
 }
 
+
+//talps writed the following funcs.
+
+static int cmd_si(char *args) {
+  if(args==NULL) {
+    cpu_exec(1);
+    printf("step 1 instruction\n");
+    return 0;
+  }
+  uint64_t num = atoi(args);
+  printf("step %lu instructions\n",num);
+  return 0;
+}
+
+static int cmd_info(char *args) {
+  return -1;
+}
+
+static int cmd_x(char *args) {
+  return -1;
+}
+
+static int cmd_p(char *args) {
+  return -1;
+}
+
+static int cmd_w(char *args) {
+  return -1;
+}
+
+static int cmd_d(char *args) {
+  return -1;
+}
+
 static int cmd_help(char *args);
 
 static struct {
@@ -64,6 +98,13 @@ static struct {
   { "q", "Exit NEMU", cmd_q },
 
   /* TODO: Add more commands */
+  {"si","step forward [n] instructions of the program,default n is 1",cmd_si},
+  {"info","print the info of a variable or register",cmd_info},
+  {"x","print the hex data from address to address + [n]",cmd_x},
+  {"p","print the value of a expression",cmd_p},
+  {"w","set a watchpoint to a variable or register",cmd_w},
+  {"d","delete a watchpoint",cmd_d},
+
 
 };
 
