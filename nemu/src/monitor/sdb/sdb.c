@@ -62,6 +62,7 @@ static int cmd_si(char *args) {
     return 0;
   }
   uint64_t num = atoi(args);
+  cpu_exec(num);
   printf("step %lu instructions\n",num);
   return 0;
 }
