@@ -25,19 +25,11 @@ const char *regs[] = {
 };
 
 void isa_reg_display() {
-  //bool is_reg;
-  /*
-  for(int i=0;i<(sizeof(regs)/sizeof(char*));i++){
-    printf("%s:%8x",regs[i],)
+  for(int i=0;i<REGLEN;i++){
+    printf("reg:%s ,value:%8x\n",regs[i],gpr(i));
   }
-  */
 }
 
 word_t isa_reg_str2val(const char *s, bool *success) {
-  for(int i=0;i<REGLEN;i++){
-    if(strcmp(regs[i],s)==0)
-      *success = true;
-  }
-  *success = false;
   return 0;
 }
