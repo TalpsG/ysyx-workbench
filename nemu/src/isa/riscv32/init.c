@@ -28,6 +28,7 @@ static const uint32_t img [] = {
 
 static void restart() {
   /* Set the initial program counter. */
+  //pc启动时置为固定值
   cpu.pc = RESET_VECTOR;
 
   /* The zero register is always 0. */
@@ -37,7 +38,14 @@ static void restart() {
 void init_isa() {
   /* Load built-in image. */
   memcpy(guest_to_host(RESET_VECTOR), img, sizeof(img));
+  /*
+  RESET_VECTOR是PMEM_LEFT+PC复位值，PC复位值为0,所以RESET_VECTOR就是PMEM_LEFT
+  PMEM_LEFT展开就是CONFIG_MBASE,而guest_to_host(addr)的返回值是 pmem + addr - CONFIG_MBASE 
+  所以最终memcpy(dest,src,size)中的dest就是pmem数组的起始地址
+
+  */ 
 
   /* Initialize this virtual computer system. */
+  //初始化寄存器
   restart();
 }

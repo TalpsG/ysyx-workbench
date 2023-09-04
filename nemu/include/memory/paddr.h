@@ -19,6 +19,7 @@
 #include <common.h>
 
 #define PMEM_LEFT  ((paddr_t)CONFIG_MBASE)
+// PMEM_LEFT就是地址的最低处的值
 #define PMEM_RIGHT ((paddr_t)CONFIG_MBASE + CONFIG_MSIZE - 1)
 #define RESET_VECTOR (PMEM_LEFT + CONFIG_PC_RESET_OFFSET)
 
