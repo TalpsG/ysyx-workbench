@@ -71,11 +71,13 @@ static int cmd_si(char *args) {
 
 static int cmd_info(char *args) {
   if(args==NULL) {
+    //print for debug
     printf("default display all info\n");
     return 0;
   }
 
   if(strcmp(args,"r")==0){
+    //print for debug
     isa_reg_display();
   }
   return 0;
