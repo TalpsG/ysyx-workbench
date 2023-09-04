@@ -58,17 +58,21 @@ static int cmd_q(char *args) {
 static int cmd_si(char *args) {
   if(args==NULL) {
     cpu_exec(1);
+    //debug print
     printf("step 1 instruction\n");
     return 0;
   }
   uint64_t num = atoi(args);
   cpu_exec(num);
+  //debug print
   printf("step %lu instructions\n",num);
   return 0;
 }
 
 static int cmd_info(char *args) {
-  return -1;
+  if(strcmp(args,"r")){
+  }
+  return 0;
 }
 
 static int cmd_x(char *args) {
@@ -100,7 +104,7 @@ static struct {
 
   /* TODO: Add more commands */
   {"si","step forward [n] instructions of the program,default n is 1",cmd_si},
-  {"info","print the info of a variable or register",cmd_info},
+  {"info","print the info of watchpoints or registers",cmd_info},
   {"x","print the hex data from address to address + [n]",cmd_x},
   {"p","print the value of a expression",cmd_p},
   {"w","set a watchpoint to a variable or register",cmd_w},
