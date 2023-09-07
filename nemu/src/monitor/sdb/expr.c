@@ -250,7 +250,55 @@ word_t eval(int p, int q)
   }
   else
   {
-    return 0;
+    word_t res = 0;
+    int node = -1;
+    bool mux = false;
+    for (int i = p; i <= q; i++)
+    {
+      switch (tokens[i].type)
+      {
+      case TK_BRACKET_L:
+        mux = true;
+        break;
+      case TK_BRACKET_R:
+        mux = false;
+        break;
+      case TK_DIV:
+      case TK_MINUS:
+      case TK_PLUS:
+      case TK_MUL:
+        if (mux == false)
+        {
+          if (node == -1)
+          {
+            node = i;
+          }
+          else
+          {
+            if (node < tokens[i].type)
+            {
+              node = tokens[i].type;
+            }
+          }
+        }
+      }
+    }
+    switch (tokens[node].type)
+    {
+    case TK_DIV:
+      res = eval(p, node - 1) / eval(node + 1, q);
+      break;
+    case TK_MUL:
+      res = eval(p, node - 1) * eval(node + 1, q);
+      break;
+    case TK_PLUS:
+      res = eval(p, node - 1) + eval(node + 1, q);
+      break;
+    case TK_MINUS:
+      res = eval(p, node - 1) - eval(node + 1, q);
+      break;
+    }
+    return res;
   }
 }
 
