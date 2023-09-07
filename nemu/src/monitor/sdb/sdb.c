@@ -164,9 +164,9 @@ static int cmd_x(char *args)
       sprintf(temp, "%2x", t);
       strcat(mem, temp);
     }
-    printf("mem : %s\n", mem);
-    printf("little endian\n");
   }
+  printf("mem : %s\n", mem);
+  printf("little endian\n");
 
   return 0;
 }
