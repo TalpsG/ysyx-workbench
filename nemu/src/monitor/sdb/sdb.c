@@ -173,8 +173,7 @@ static int cmd_x(char *args)
     }
     printf("\n");
   }
-  printf("mem : %s\n", mem);
-  printf("little endian\n");
+  printf("add:%x : %s\n", add, mem);
 
   return 0;
 }
