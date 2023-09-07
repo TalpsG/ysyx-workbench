@@ -105,6 +105,9 @@ static int cmd_x(char *args)
   }
   bool success;
   expr(args, &success);
+  return 0;
+  // just for debug
+
   char *n = strtok(args, " ");
   char *addp = strtok(NULL, " ");
   if (addp == NULL)
