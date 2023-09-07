@@ -143,6 +143,7 @@ static int cmd_x(char *args)
       size -= 4;
       add += 4;
       sprintf(temp, "%08x", t);
+      printf("%lu", mem_end - mem);
       memcpy(mem_end - 4, temp, 4);
       mem_end -= 4;
     }
@@ -152,6 +153,7 @@ static int cmd_x(char *args)
       size -= 2;
       add += 2;
       sprintf(temp, "%04x", t);
+      printf("%lu", mem_end - mem);
       memcpy(mem_end - 2, temp, 2);
       mem_end -= 4;
     }
@@ -161,6 +163,7 @@ static int cmd_x(char *args)
       size -= 1;
       add += 1;
       sprintf(temp, "%02x", t);
+      printf("%lu", mem_end - mem);
       memcpy(mem_end - 1, temp, 1);
       mem_end -= 1;
       break;
