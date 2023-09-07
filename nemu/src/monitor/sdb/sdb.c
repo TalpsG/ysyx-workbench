@@ -106,7 +106,7 @@ static int cmd_x(char *args)
   // just for debug
 
   char *n = strtok(args, " ");
-  char *addp = strtok(NULL, " ");
+  char *addp = n + strlen(n) + 1;
   if (addp == NULL)
   {
     printf("u need to give a memory address\n");
