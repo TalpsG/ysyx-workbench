@@ -125,7 +125,7 @@ static int cmd_x(char *args)
     }
     else
     {
-      printf("%x is not legal in hex\n", n[i]);
+      printf("order:%d , %x is not legal in hex\n", i, n[i]);
       return 0;
     }
     add = add << 4;
