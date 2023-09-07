@@ -119,6 +119,7 @@ static int cmd_x(char *args)
   bool success;
   int res = expr(addp, &success);
   printf("\nresult = %d\n", res);
+  return 0;
 
   // 内存地址起始位置
   paddr_t add = 0;
