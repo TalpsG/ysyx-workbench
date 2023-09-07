@@ -95,7 +95,7 @@ static int cmd_x(char *args)
 {
   if (args == NULL)
   {
-    printf("plz give a hex number (only lower case) and a memory address\n");
+    printf("plz give a number and a memory address (hex number with 0x beginning)\n");
     return 0;
   }
   char *n = strtok(args, " ");
@@ -130,7 +130,44 @@ static int cmd_x(char *args)
     }
   }
   printf("size:%d , add : %x\n", size, add);
-  paddr_read(add, size);
+  char mem[1024] = "";
+  char temp[1024];
+  uint32_t t = 0;
+  while (size != 0)
+  {
+    if (size > 1024)
+    {
+      printf("len is too big!\n");
+      return 0;
+    }
+    if (size >= 4)
+    {
+      t = paddr_read(add, 4);
+      size -= 4;
+      add += 4;
+      sprintf(temp, "%8x", t);
+      strcat(mem, temp);
+    }
+    else if (size >= 2)
+    {
+      t = paddr_read(add, 2);
+      size -= 2;
+      add += 2;
+      sprintf(temp, "%4x", t);
+      strcat(mem, temp);
+    }
+    else if (size >= 1)
+    {
+      t = paddr_read(add, 1);
+      size -= 1;
+      add += 1;
+      sprintf(temp, "%2x", t);
+      strcat(mem, temp);
+    }
+    printf("mem : %s\n", mem);
+    printf("little endian\n");
+  }
+
   return 0;
 }
 
