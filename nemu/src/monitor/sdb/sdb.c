@@ -87,6 +87,11 @@ static int cmd_info(char *args)
   {
     // print for debug
     isa_reg_display();
+    return 0;
+  }
+  else if (strcmp(args, "w") == 0)
+  {
+    printf("print watchpoinst info");
   }
   return 0;
 }
@@ -106,6 +111,8 @@ static int cmd_x(char *args)
     return 0;
   }
 
+  bool success;
+  expr(addp, &success);
   // 取出要查看的内存长度
   int size = atoi(n);
 

@@ -32,6 +32,8 @@ enum
   TK_PLUS,
   TK_BRACKET_L,
   TK_BRACKET_R,
+  TK_NUM_D, // decimal
+  TK_NUM_H, // hex
 
 };
 
@@ -57,6 +59,8 @@ static struct rule
     {"/", TK_DIV},
     {"\\(", TK_BRACKET_L},
     {"\\)", TK_BRACKET_R},
+    {"\\d+(?=\\s+)|(?<=\\s+)\\d+", TK_NUM_D},
+    {"0x[0-9a-f]+(?=\\s+)|(?<=\\s+)0x[0-9a-f]+", TK_NUM_H},
 
 };
 
@@ -120,13 +124,37 @@ static bool make_token(char *e)
          * to record the token in the array `tokens'. For certain types
          * of tokens, some extra actions should be performed.
          */
-
+        if (rules[i].token_type == TK_NOTYPE)
+          break;
+        tokens[nr_token].type = rules[i].token_type;
         switch (rules[i].token_type)
         {
-        default:
-          TODO();
+        case TK_PLUS:
+          strcpy(tokens[nr_token].str, "+");
+          break;
+        case TK_MUL:
+          strcpy(tokens[nr_token].str, "*");
+          break;
+        case TK_DIV:
+          strcpy(tokens[nr_token].str, "/");
+          break;
+        case TK_EQ:
+          strcpy(tokens[nr_token].str, "==");
+          break;
+        case TK_MINUS:
+          strcpy(tokens[nr_token].str, "-");
+          break;
+        case TK_BRACKET_L:
+          strcpy(tokens[nr_token].str, "(");
+          break;
+        case TK_BRACKET_R:
+          strcpy(tokens[nr_token].str, ")");
+          break;
+        case TK_NUM_D:
+          strncpy(tokens[nr_token].str, substr_start, substr_len);
+          tokens[nr_token].str[substr_len] = '\0';
+          break;
         }
-
         break;
       }
     }
@@ -150,7 +178,9 @@ word_t expr(char *e, bool *success)
   }
 
   /* TODO: Insert codes to evaluate the expression. */
-  TODO();
-
+  for (int i = 0; i < nr_token; i++)
+  {
+    printf("tokens %d : %s\n", i, tokens[i].str);
+  }
   return 0;
 }
