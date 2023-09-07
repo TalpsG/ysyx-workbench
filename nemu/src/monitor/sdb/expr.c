@@ -132,28 +132,28 @@ static bool make_token(char *e)
         switch (rules[i].token_type)
         {
         case TK_PLUS:
-          strcpy(tokens[nr_token].str, "+");
+          strcpy(tokens[nr_token++].str, "+");
           break;
         case TK_MUL:
-          strcpy(tokens[nr_token].str, "*");
+          strcpy(tokens[nr_token++].str, "*");
           break;
         case TK_DIV:
-          strcpy(tokens[nr_token].str, "/");
+          strcpy(tokens[nr_token++].str, "/");
           break;
         case TK_EQ:
-          strcpy(tokens[nr_token].str, "==");
+          strcpy(tokens[nr_token++].str, "==");
           break;
         case TK_MINUS:
-          strcpy(tokens[nr_token].str, "-");
+          strcpy(tokens[nr_token++].str, "-");
           break;
         case TK_BRACKET_L:
-          strcpy(tokens[nr_token].str, "(");
+          strcpy(tokens[nr_token++].str, "(");
           break;
         case TK_BRACKET_R:
-          strcpy(tokens[nr_token].str, ")");
+          strcpy(tokens[nr_token++].str, ")");
           break;
         case TK_NUM_D:
-          strncpy(tokens[nr_token].str, substr_start, substr_len);
+          strncpy(tokens[nr_token++].str, substr_start, substr_len);
           tokens[nr_token].str[substr_len] = '\0';
           break;
         }
