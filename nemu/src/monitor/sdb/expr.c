@@ -277,7 +277,7 @@ word_t eval(int p, int q)
           {
             if (node < tokens[i].type)
             {
-              node = tokens[i].type;
+              node = i;
             }
           }
         }
