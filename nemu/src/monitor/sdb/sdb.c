@@ -130,7 +130,7 @@ static int cmd_x(char *args)
     }
   }
   printf("size:%d , add : %x\n", size, add);
-  char *mem = (char *)calloc(size + 1, sizeof(char));
+  char *mem = (char *)calloc(2 * size + 1, sizeof(char));
   char *mem_end = mem + size;
   *mem_end = 0;
   char temp[1024];
@@ -145,8 +145,8 @@ static int cmd_x(char *args)
       sprintf(temp, "%08x", t);
       printf("%s ,", temp);
       printf("%lu", mem_end - mem);
-      memcpy(mem_end - 4, temp, 4);
-      mem_end -= 4;
+      memcpy(mem_end - 8, temp, 8);
+      mem_end -= 8;
     }
     else if (size >= 2)
     {
@@ -156,7 +156,7 @@ static int cmd_x(char *args)
       sprintf(temp, "%04x", t);
       printf("%s ,", temp);
       printf("%lu", mem_end - mem);
-      memcpy(mem_end - 2, temp, 2);
+      memcpy(mem_end - 4, temp, 4);
       mem_end -= 4;
     }
     else if (size >= 1)
@@ -167,8 +167,8 @@ static int cmd_x(char *args)
       sprintf(temp, "%02x", t);
       printf("%s ,", temp);
       printf("%lu", mem_end - mem);
-      memcpy(mem_end - 1, temp, 1);
-      mem_end -= 1;
+      memcpy(mem_end - 2, temp, 2);
+      mem_end -= 2;
       break;
     }
     printf("\n");
