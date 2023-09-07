@@ -111,6 +111,7 @@ static int cmd_x(char *args)
 
   // 内存地址起始位置
   uint64_t add;
+  printf("n: %s\n", n);
   int len = strlen(addp);
   printf("%d\n", len);
   for (int i = 2; i < len; i++)
