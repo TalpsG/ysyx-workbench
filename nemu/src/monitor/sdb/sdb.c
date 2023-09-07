@@ -107,24 +107,28 @@ static int cmd_x(char *args)
   }
 
   // 取出要查看的内存长度
-  int len = strlen(n);
-  uint64_t size = 0;
+  int size = atoi(n);
+
+  // 内存地址起始位置
+  uint64_t add;
+  int len = strlen(addp);
   for (int i = 0; i < len; i++)
   {
     if (isdigit(n[i]))
     {
-      size += n[i] - 0x30;
+      add += n[i] - 0x30;
     }
     else if (n[i] > 0x60 && n[i] < 0x67)
     {
-      size += n[i] - 0x51;
+      add += n[i] - 0x51;
+    }
+    else
+    {
+      printf("ur add is not legal\n");
+      return 0;
     }
   }
-
-  // 内存地址起始位置
-  uint64_t add;
-  sscanf(addp, "%lu", &add);
-  printf("size:%lu , add : %lu", size, add);
+  printf("size:%d , add : %lx", size, add);
 
   return 0;
 }
