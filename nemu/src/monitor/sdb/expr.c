@@ -186,7 +186,7 @@ word_t expr(char *e, bool *success)
   /* TODO: Insert codes to evaluate the expression. */
   for (int i = 0; i < nr_token; i++)
   {
-    printf("tokens %d : %s type: %d\n", i, tokens[i].str, tokens->type);
+    printf("tokens %d : %s type: %d\n", i, tokens[i].str, tokens[i].type);
   }
   return 0;
 }
