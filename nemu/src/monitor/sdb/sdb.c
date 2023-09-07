@@ -130,23 +130,21 @@ static int cmd_x(char *args)
     }
   }
   printf("size:%d , add : %x\n", size, add);
-  char mem[1024] = "";
+  char *mem = (char *)calloc(size + 1, sizeof(char));
+  char *mem_end = mem + size;
+  *mem_end = 0;
   char temp[1024];
   uint32_t t = 0;
   while (size != 0)
   {
-    if (size > 1024)
-    {
-      printf("len is too big!\n");
-      return 0;
-    }
     if (size >= 4)
     {
       t = paddr_read(add, 4);
       size -= 4;
       add += 4;
       sprintf(temp, "%08x", t);
-      strcat(mem, temp);
+      memcpy(mem_end - 4, temp, 4);
+      mem_end -= 4;
     }
     else if (size >= 2)
     {
@@ -154,7 +152,8 @@ static int cmd_x(char *args)
       size -= 2;
       add += 2;
       sprintf(temp, "%04x", t);
-      strcat(mem, temp);
+      memcpy(mem_end - 2, temp, 2);
+      mem_end -= 4;
     }
     else if (size >= 1)
     {
@@ -162,7 +161,9 @@ static int cmd_x(char *args)
       size -= 1;
       add += 1;
       sprintf(temp, "%02x", t);
-      strcat(mem, temp);
+      memcpy(mem_end - 1, temp, 1);
+      mem_end -= 1;
+      break;
     }
     strcat(mem, " ");
   }
