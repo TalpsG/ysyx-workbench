@@ -145,7 +145,7 @@ static int cmd_x(char *args)
       t = paddr_read(add, 4);
       size -= 4;
       add += 4;
-      sprintf(temp, "%8x", t);
+      sprintf(temp, "%08x", t);
       strcat(mem, temp);
     }
     else if (size >= 2)
@@ -153,7 +153,7 @@ static int cmd_x(char *args)
       t = paddr_read(add, 2);
       size -= 2;
       add += 2;
-      sprintf(temp, "%4x", t);
+      sprintf(temp, "%04x", t);
       strcat(mem, temp);
     }
     else if (size >= 1)
@@ -161,7 +161,7 @@ static int cmd_x(char *args)
       t = paddr_read(add, 1);
       size -= 1;
       add += 1;
-      sprintf(temp, "%2x", t);
+      sprintf(temp, "%02x", t);
       strcat(mem, temp);
     }
   }
