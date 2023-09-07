@@ -103,6 +103,8 @@ static int cmd_x(char *args)
     printf("plz give a number and a memory address (hex number with 0x beginning)\n");
     return 0;
   }
+  bool success;
+  expr(args, &success);
   char *n = strtok(args, " ");
   char *addp = strtok(NULL, " ");
   if (addp == NULL)
@@ -111,8 +113,6 @@ static int cmd_x(char *args)
     return 0;
   }
 
-  bool success;
-  expr(addp, &success);
   // 取出要查看的内存长度
   int size = atoi(n);
 
