@@ -114,6 +114,7 @@ static int cmd_x(char *args)
   int len = strlen(addp);
   for (int i = 2; i < len; i++)
   {
+    add = add << 4;
     if (isdigit(addp[i]))
     {
       add += addp[i] - 0x30;
@@ -127,7 +128,6 @@ static int cmd_x(char *args)
       printf("order:%d , %x is not legal in hex\n", i, n[i]);
       return 0;
     }
-    add = add << 4;
   }
   printf("size:%d , add : %x\n", size, add);
   paddr_read(add, size);
