@@ -130,45 +130,32 @@ static int cmd_x(char *args)
     }
   }
   printf("size:%d , add : %x\n", size, add);
-  char *mem = (char *)calloc(2 * size + 1, sizeof(char));
-  char *mem_end = mem + 2 * size;
-  *mem_end = 0;
-  char temp[1024];
   uint32_t t = 0;
-  printf("%x :", add);
   while (size != 0)
   {
     if (size >= 4)
     {
       t = paddr_read(add, 4);
       size -= 4;
+      printf("%x : %08x", add, t);
       add += 4;
-      sprintf(temp, "%08x", t);
-      memcpy(mem_end - 8, temp, 8);
-      mem_end -= 8;
     }
     else if (size >= 2)
     {
       t = paddr_read(add, 2);
       size -= 2;
+      printf("%x : %04x", add, t);
       add += 2;
-      sprintf(temp, "%04x", t);
-      memcpy(mem_end - 4, temp, 4);
-      mem_end -= 4;
     }
     else if (size >= 1)
     {
       t = paddr_read(add, 1);
       size -= 1;
+      printf("%x : %02x", add, t);
       add += 1;
-      sprintf(temp, "%02x", t);
-      memcpy(mem_end - 2, temp, 2);
-      mem_end -= 2;
       break;
     }
   }
-  printf(" %s\n", mem);
-
   return 0;
 }
 
