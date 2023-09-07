@@ -112,7 +112,7 @@ static int cmd_x(char *args)
   // 内存地址起始位置
   uint64_t add;
   int len = strlen(addp);
-  for (int i = 0; i < len; i++)
+  for (int i = 2; i < len; i++)
   {
     if (isdigit(n[i]))
     {
