@@ -124,7 +124,7 @@ static int cmd_x(char *args)
     }
     else
     {
-      printf("ur add is not legal\n");
+      printf("%c is not legal in hex\n", n[i]);
       return 0;
     }
   }
