@@ -135,6 +135,7 @@ static int cmd_x(char *args)
   *mem_end = 0;
   char temp[1024];
   uint32_t t = 0;
+  printf("%x :", add);
   while (size != 0)
   {
     if (size >= 4)
@@ -143,8 +144,6 @@ static int cmd_x(char *args)
       size -= 4;
       add += 4;
       sprintf(temp, "%08x", t);
-      printf("%s ,", temp);
-      printf("%lu", mem_end - mem);
       memcpy(mem_end - 8, temp, 8);
       mem_end -= 8;
     }
@@ -154,8 +153,6 @@ static int cmd_x(char *args)
       size -= 2;
       add += 2;
       sprintf(temp, "%04x", t);
-      printf("%s ,", temp);
-      printf("%lu", mem_end - mem);
       memcpy(mem_end - 4, temp, 4);
       mem_end -= 4;
     }
@@ -165,15 +162,12 @@ static int cmd_x(char *args)
       size -= 1;
       add += 1;
       sprintf(temp, "%02x", t);
-      printf("%s ,", temp);
-      printf("%lu", mem_end - mem);
       memcpy(mem_end - 2, temp, 2);
       mem_end -= 2;
       break;
     }
-    printf("\n");
   }
-  printf("add:%x : %s\n", add, mem);
+  printf(" %s\n", mem);
 
   return 0;
 }
