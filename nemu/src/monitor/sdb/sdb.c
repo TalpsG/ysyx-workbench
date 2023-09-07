@@ -95,11 +95,37 @@ static int cmd_x(char *args)
 {
   if (args == NULL)
   {
-    printf("plz give a hex number\n");
+    printf("plz give a hex number (only lower case) and a memory address\n");
     return 0;
   }
-  int n = atoi(args);
-  printf("%d\n", n);
+  char *n = strtok(args, " ");
+  char *addp = strtok(NULL, " ");
+  if (addp == NULL)
+  {
+    printf("u need to give a memory address\n");
+    return 0;
+  }
+
+  // 取出要查看的内存长度
+  int len = strlen(n);
+  uint64_t size = 0;
+  for (int i = 0; i < len; i++)
+  {
+    if (isdigit(n[i]))
+    {
+      size += n[i] - 0x30;
+    }
+    else if (n[i] > 0x60 && n[i] < 0x67)
+    {
+      size += n[i] - 0x51;
+    }
+  }
+
+  // 内存地址起始位置
+  uint64_t add;
+  sscanf(addp, "%lu", &add);
+  printf("size:%lu , add : %lu", size, add);
+
   return 0;
 }
 
