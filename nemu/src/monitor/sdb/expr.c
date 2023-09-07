@@ -59,7 +59,7 @@ static struct rule
     {"/", TK_DIV},
     {"\\(", TK_BRACKET_L},
     {"\\)", TK_BRACKET_R},
-    {"\\b[0-9]+\\s+|\\b[0-9]+\b", TK_NUM_D},
+    {"\\b[0-9]+\\s+|\\b[0-9]+\\b", TK_NUM_D},
     //{"\\b0x[0-9a-f]+(?=\\s+)|(?<=\\s+)0x[0-9a-f]+\\b", TK_NUM_H},
     //{"\\b\\d+(?=\\s+)|(?<=\\s+)\\d+\\b", TK_NUM_D},
     //{"\\b0x[0-9a-f]+(?=\\s+)|(?<=\\s+)0x[0-9a-f]+\\b", TK_NUM_H},
