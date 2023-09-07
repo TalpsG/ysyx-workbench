@@ -116,14 +116,14 @@ static int cmd_x(char *args)
   // 取出要查看的内存长度
   int size = atoi(n);
 
-  bool success;
-  int res = expr(addp, &success);
-  printf("\nresult = %d\n", res);
-  return 0;
-
   // 内存地址起始位置
-  paddr_t add = 0;
-  add = strtol(addp, NULL, 16);
+  bool success;
+  paddr_t add = expr(addp, &success);
+  if (!success)
+  {
+    printf("bad address expression\n");
+    return 0;
+  }
   printf("size:%d , add : %x\n", size, add);
   uint32_t t = 0;
   while (size != 0)
