@@ -125,7 +125,7 @@ static int cmd_x(char *args)
     }
     else
     {
-      printf("%c is not legal in hex\n", n[i]);
+      printf("%x is not legal in hex\n", n[i]);
       return 0;
     }
   }
