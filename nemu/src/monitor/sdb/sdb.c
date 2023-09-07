@@ -103,11 +103,6 @@ static int cmd_x(char *args)
     printf("plz give a number and a memory address (hex number with 0x beginning)\n");
     return 0;
   }
-  bool success;
-  int res = expr(args, &success);
-  printf("\nresult = %d\n", res);
-
-  return 0;
   // just for debug
 
   char *n = strtok(args, " ");
@@ -121,26 +116,13 @@ static int cmd_x(char *args)
   // 取出要查看的内存长度
   int size = atoi(n);
 
+  bool success;
+  int res = expr(addp, &success);
+  printf("\nresult = %d\n", res);
+
   // 内存地址起始位置
   paddr_t add = 0;
-  int len = strlen(addp);
-  for (int i = 2; i < len; i++)
-  {
-    add = add << 4;
-    if (isdigit(addp[i]))
-    {
-      add += addp[i] - 0x30;
-    }
-    else if (addp[i] > 0x60 && n[i] < 0x67)
-    {
-      add += addp[i] - 0x51;
-    }
-    else
-    {
-      printf("order:%d , %x is not legal in hex\n", i, n[i]);
-      return 0;
-    }
-  }
+  add = strtol(addp, NULL, 16);
   printf("size:%d , add : %x\n", size, add);
   uint32_t t = 0;
   while (size != 0)
