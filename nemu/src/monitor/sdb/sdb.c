@@ -128,6 +128,7 @@ static int cmd_x(char *args)
       printf("%x is not legal in hex\n", n[i]);
       return 0;
     }
+    add = add << 4;
   }
   printf("size:%d , add : %lx", size, add);
 
