@@ -79,7 +79,7 @@ static int cmd_info(char *args)
   if (args == NULL)
   {
     // print for debug
-    printf("what info u want? r for registers or w for watchpoints\n");
+    printf("u need to give a arg, r for registers or w for watchpoints\n");
     return 0;
   }
 
@@ -93,7 +93,14 @@ static int cmd_info(char *args)
 
 static int cmd_x(char *args)
 {
-  return -1;
+  if (args == NULL)
+  {
+    printf("plz give a hex number\n");
+    return 0;
+  }
+  int n = atoi(args);
+  printf("%d\n", n);
+  return 0;
 }
 
 static int cmd_p(char *args)
