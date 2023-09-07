@@ -110,7 +110,7 @@ static int cmd_x(char *args)
   int size = atoi(n);
 
   // 内存地址起始位置
-  uint64_t add;
+  uint64_t add = 0;
   int len = strlen(addp);
   for (int i = 2; i < len; i++)
   {
@@ -129,7 +129,7 @@ static int cmd_x(char *args)
     }
     add = add << 4;
   }
-  printf("size:%d , add : %lx", size, add);
+  printf("size:%d , add : %lx\n", size, add);
 
   return 0;
 }
