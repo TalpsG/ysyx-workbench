@@ -104,7 +104,9 @@ static int cmd_x(char *args)
     return 0;
   }
   bool success;
-  expr(args, &success);
+  int res = expr(args, &success);
+  printf("\nresult = %d\n", res);
+
   return 0;
   // just for debug
 
