@@ -17,8 +17,8 @@
 #include <cpu/cpu.h>
 #include <readline/readline.h>
 #include <readline/history.h>
+#include <memory/paddr.h>
 #include "sdb.h"
-
 static int is_batch_mode = false;
 
 void init_regex();
@@ -110,7 +110,7 @@ static int cmd_x(char *args)
   int size = atoi(n);
 
   // 内存地址起始位置
-  uint64_t add = 0;
+  paddr_t add = 0;
   int len = strlen(addp);
   for (int i = 2; i < len; i++)
   {
@@ -129,8 +129,8 @@ static int cmd_x(char *args)
     }
     add = add << 4;
   }
-  printf("size:%d , add : %lx\n", size, add);
-
+  printf("size:%d , add : %x\n", size, add);
+  paddr_read(add, size);
   return 0;
 }
 
