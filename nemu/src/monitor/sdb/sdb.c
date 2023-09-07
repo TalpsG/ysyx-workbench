@@ -131,7 +131,7 @@ static int cmd_x(char *args)
   }
   printf("size:%d , add : %x\n", size, add);
   char *mem = (char *)calloc(2 * size + 1, sizeof(char));
-  char *mem_end = mem + size;
+  char *mem_end = mem + 2 * size;
   *mem_end = 0;
   char temp[1024];
   uint32_t t = 0;
