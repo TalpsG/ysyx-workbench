@@ -174,6 +174,85 @@ static bool make_token(char *e)
 
   return true;
 }
+bool check_parentheses(int p, int q)
+{
+  if ((q - p) < 2)
+  {
+    Log("there must be 1 token in a bracket\n");
+    assert(0);
+  }
+  // 处理括号匹配的问题
+  if (tokens[p].type == TK_BRACKET_L && tokens[q].type == TK_BRACKET_R)
+  {
+    int stack = 0;
+    for (int i = p + 1; i <= q; i++)
+    {
+      if (i == q && tokens[i].type == TK_BRACKET_R && stack == 0)
+      {
+        return true;
+      }
+      if (i != q && tokens[i].type == TK_BRACKET_R && stack == 0)
+      {
+        return false;
+      }
+      if (tokens[i].type == TK_BRACKET_L)
+      {
+        stack++;
+      }
+      else if (tokens[i].type == TK_BRACKET_R)
+      {
+        stack--;
+      }
+      if (stack < 0)
+      {
+        Log("bad expression");
+        assert(0);
+      }
+    }
+    return true;
+  }
+
+  else
+    return false;
+}
+
+word_t eval(int p, int q)
+{
+  if (p > q)
+  {
+    printf("illegal expression\n");
+    assert(0);
+  }
+  word_t res = 0;
+  if (p == q)
+  {
+    if (tokens[p].type == TK_NUM_H)
+    {
+      res = (word_t)(strtol(tokens[p].str, NULL, 16));
+      printf("token [%d]:value [%x]", p, res);
+      return res;
+    }
+    else if (tokens[p].type == TK_NUM_D)
+    {
+      res = (word_t)atoi(tokens[p].str);
+      printf("token [%d]:value [%x]", p, res);
+      return res;
+    }
+    else
+    {
+      printf("illegal expression\n");
+      assert(0);
+    }
+  }
+  if (check_parentheses(p, q) == true)
+  {
+    return eval(p + 1, q - 1);
+  }
+  else
+  {
+    return 0;
+  }
+}
 
 word_t expr(char *e, bool *success)
 {
