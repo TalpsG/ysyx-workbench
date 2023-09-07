@@ -111,18 +111,16 @@ static int cmd_x(char *args)
 
   // 内存地址起始位置
   uint64_t add;
-  printf("n: %s\n", n);
   int len = strlen(addp);
-  printf("%d\n", len);
   for (int i = 2; i < len; i++)
   {
-    if (isdigit(n[i]))
+    if (isdigit(addp[i]))
     {
-      add += n[i] - 0x30;
+      add += addp[i] - 0x30;
     }
-    else if (n[i] > 0x60 && n[i] < 0x67)
+    else if (addp[i] > 0x60 && n[i] < 0x67)
     {
-      add += n[i] - 0x51;
+      add += addp[i] - 0x51;
     }
     else
     {
