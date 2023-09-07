@@ -137,21 +137,21 @@ static int cmd_x(char *args)
     {
       t = paddr_read(add, 4);
       size -= 4;
-      printf("%x : %08x", add, t);
+      printf("%x : %08x\n", add, t);
       add += 4;
     }
     else if (size >= 2)
     {
       t = paddr_read(add, 2);
       size -= 2;
-      printf("%x : %04x", add, t);
+      printf("%x : %04x\n", add, t);
       add += 2;
     }
     else if (size >= 1)
     {
       t = paddr_read(add, 1);
       size -= 1;
-      printf("%x : %02x", add, t);
+      printf("%x : %02x\n", add, t);
       add += 1;
       break;
     }
