@@ -154,10 +154,12 @@ static bool make_token(char *e)
           break;
         case TK_NUM_D:
           strncpy(tokens[nr_token++].str, substr_start, substr_len);
+          printf("start:%p  len:%d", substr_start, substr_len);
           tokens[nr_token].str[substr_len] = '\0';
           break;
         case TK_NUM_H:
           strncpy(tokens[nr_token++].str, substr_start, substr_len);
+          printf("start:%p  len:%d", substr_start, substr_len);
           tokens[nr_token].str[substr_len] = '\0';
           break;
         }
