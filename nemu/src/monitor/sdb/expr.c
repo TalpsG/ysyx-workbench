@@ -178,7 +178,7 @@ bool check_parentheses(int p, int q)
 {
   if ((q - p) < 2)
   {
-    Log("there must be 1 token in a bracket\n");
+    Log("q: %d , p: %d\n there must be 1 token in a bracket\n", p, q);
     assert(0);
   }
   // 处理括号匹配的问题
