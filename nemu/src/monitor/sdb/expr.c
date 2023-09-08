@@ -176,14 +176,14 @@ static bool make_token(char *e)
 }
 bool check_parentheses(int p, int q)
 {
-  if ((q - p) < 2)
-  {
-    Log("q: %d , p: %d\n there must be 1 token in a bracket\n", p, q);
-    assert(0);
-  }
   // 处理括号匹配的问题
   if (tokens[p].type == TK_BRACKET_L && tokens[q].type == TK_BRACKET_R)
   {
+    if ((q - p) < 2)
+    {
+      Log("q: %d , p: %d\n there must be 1 token in a bracket\n", p, q);
+      assert(0);
+    }
     int stack = 0;
     for (int i = p + 1; i <= q; i++)
     {
