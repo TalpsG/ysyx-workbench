@@ -299,9 +299,16 @@ word_t eval(int p, int q)
     return res;
   }
 }
-
+void tokens_clear()
+{
+}
 word_t expr(char *e, bool *success)
 {
+  tokens_clear();
+  for (int i = nr_token - 1; i >= 0; i--)
+  {
+    strcpy(tokens[i].str, "");
+  }
   if (!make_token(e))
   {
     *success = false;
