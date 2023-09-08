@@ -229,13 +229,11 @@ word_t eval(int p, int q)
     if (tokens[p].type == TK_NUM_H)
     {
       res = (word_t)(strtol(tokens[p].str, NULL, 16));
-      printf("token [%d]:value [%x]", p, res);
       return res;
     }
     else if (tokens[p].type == TK_NUM_D)
     {
       res = (word_t)atoi(tokens[p].str);
-      printf("token [%d]:value [%x]", p, res);
       return res;
     }
     else
