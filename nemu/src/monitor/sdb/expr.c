@@ -228,12 +228,12 @@ word_t eval(int p, int q)
   {
     if (tokens[p].type == TK_NUM_H)
     {
-      res = (word_t)(strtol(tokens[p].str, NULL, 16));
+      res = (word_t)(strtoul(tokens[p].str, NULL, 16));
       return res;
     }
     else if (tokens[p].type == TK_NUM_D)
     {
-      res = (word_t)atoi(tokens[p].str);
+      res = (word_t)strtoul(tokens[p].str, NULL, 10);
       return res;
     }
     else
