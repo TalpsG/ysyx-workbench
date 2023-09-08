@@ -46,7 +46,7 @@ int main(int argc, char *argv[])
     eval = expr(expression, &success);
     if (success)
     {
-      printf("expression: %s \n answer: %u , eval: %u", expression, ans, eval);
+      printf("expression: %s \n answer: %u , eval: %u\n", expression, ans, eval);
       if (eval == ans)
       {
         printf("correct \n");
