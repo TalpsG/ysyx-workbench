@@ -19,10 +19,9 @@
 #include <time.h>
 #include <assert.h>
 #include <string.h>
-#include <expr.h>
 
 // this should be enough
-static char buf[65536] = {};
+static char buf[65536] = "";
 static char code_buf[65536 + 128] = {}; // a little larger than `buf`
 static char *code_format =
     "#include <stdio.h>\n"
@@ -31,10 +30,90 @@ static char *code_format =
     "  printf(\"%%u\", result); "
     "  return 0; "
     "}";
-
-static void gen_rand_expr()
+static int buf_p = 0;
+void gen(char c)
 {
-  buf[0] = '\0';
+  buf[buf_p++] = c;
+  buf[buf_p] = '\0';
+}
+uint32_t gen_num()
+{
+  uint32_t temp = rand() & 0xffffffff;
+  char num[65536];
+  sprintf(num, "%u", temp);
+  memcpy(buf + buf_p, num, strlen(num));
+  buf_p += strlen(num);
+  return temp;
+}
+int gen_rand_op()
+{
+  int t = rand() & 3;
+  char op = '\0';
+  switch (t)
+  {
+  case 0:
+    op = '+';
+    break;
+  case 1:
+    op = '-';
+    break;
+  case 2:
+    op = '*';
+    break;
+  case 3:
+    op = '/';
+    break;
+  }
+  buf[buf_p++] = op;
+  buf[buf_p] = '\0';
+  return t;
+}
+int choose(int n)
+{
+  return rand() % (n);
+}
+static uint32_t gen_rand_expr()
+{
+  uint32_t res = 0;
+  switch (choose(3))
+  {
+  case 0:
+    res = gen_num();
+    return res;
+  case 1:
+    gen('(');
+    res = gen_rand_expr();
+    gen(')');
+    return res;
+  default:
+    uint32_t dividend = gen_rand_expr();
+    int op = gen_rand_op();
+    uint32_t divisor = gen_rand_expr();
+    if (op == 3)
+    {
+      if (divisor == 0)
+      {
+        printf("%u %d %u ,divisor can not be zero \n", dividend, op, divisor);
+        assert(0);
+      }
+    }
+    switch (op)
+    {
+    case 0:
+      res = dividend + divisor;
+      break;
+    case 1:
+      res = dividend - divisor;
+      break;
+    case 2:
+      res = dividend * divisor;
+      break;
+    case 3:
+      res = dividend / divisor;
+      break;
+    }
+    return res;
+  }
 }
 
 int main(int argc, char *argv[])
@@ -49,6 +128,7 @@ int main(int argc, char *argv[])
   int i;
   for (i = 0; i < loop; i++)
   {
+    buf_p = 0;
     gen_rand_expr();
 
     sprintf(code_buf, code_format, buf);
@@ -57,6 +137,7 @@ int main(int argc, char *argv[])
     assert(fp != NULL);
     fputs(code_buf, fp);
     fclose(fp);
+    // printf("%s\n", code_buf);
 
     int ret = system("gcc /tmp/.code.c -o /tmp/.expr");
     if (ret != 0)

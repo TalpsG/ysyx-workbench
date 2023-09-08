@@ -275,7 +275,7 @@ word_t eval(int p, int q)
           }
           else
           {
-            if (tokens[node].type < tokens[i].type)
+            if ((tokens[node].type == TK_MUL || tokens[node].type == TK_DIV) && (tokens[i].type == TK_MINUS || tokens[i].type == TK_PLUS))
             {
               node = i;
             }
