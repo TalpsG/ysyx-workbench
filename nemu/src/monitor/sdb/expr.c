@@ -189,7 +189,7 @@ bool check_parentheses(int p, int q)
     int stack = 0;
     for (int i = p + 1; i <= q; i++)
     {
-      if (tokens[i].type != TK_BRACKET_L || tokens[i].type != TK_BRACKET_R)
+      if (tokens[i].type != TK_BRACKET_L && tokens[i].type != TK_BRACKET_R)
       {
         continue;
       }
