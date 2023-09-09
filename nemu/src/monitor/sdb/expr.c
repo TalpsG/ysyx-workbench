@@ -351,7 +351,7 @@ void print_tokens()
 {
   for (int i = 0; i < nr_token; i++)
   {
-    // printf("tokens[%d]:%s\n", i, tokens[i].str);
+    printf("tokens[%d]:%s\n", i, tokens[i].str);
   }
 }
 word_t expr(char *e, bool *success)
@@ -365,8 +365,7 @@ word_t expr(char *e, bool *success)
 
   /* TODO: Insert codes to evaluate the expression. */
 
-  print_tokens();
-  printf("%s\n", e);
+  // print_tokens();
   *success = true;
   return eval(0, nr_token - 1);
 }
