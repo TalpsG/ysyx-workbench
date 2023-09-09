@@ -308,6 +308,13 @@ void tokens_clear()
     strcpy(tokens[i].str, "");
   }
 }
+void print_tokens()
+{
+  for (int i = 0; i < nr_token; i++)
+  {
+    printf("tokens[%d]:%s\n", i, tokens[i].str);
+  }
+}
 word_t expr(char *e, bool *success)
 {
   tokens_clear();
