@@ -43,8 +43,8 @@ int main(int argc, char *argv[])
   while (fgets(buf, 65536 + 128, fp) != NULL)
   {
     sscanf(buf, "%u %s", &ans, expression);
-    eval = expr(expression, &success);
     printf("expression: %s ", expression);
+    eval = expr(expression, &success);
     if (success)
     {
       printf("\n answer: %u , eval: %u\n", ans, eval);
