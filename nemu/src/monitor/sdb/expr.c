@@ -224,9 +224,9 @@ bool check_parentheses(int p, int q)
 
 word_t eval(int p, int q)
 {
+  printf("%d,%d\n", p, q);
   if (p > q)
   {
-    printf("%d,%d\n", p, q);
     printf("illegal expression\n");
     assert(0);
   }
