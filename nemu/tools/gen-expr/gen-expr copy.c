@@ -42,12 +42,12 @@ int choose(int n)
 {
   return rand() % (n);
 }
-void gen_num()
+uint32_t gen_num()
 {
   if ((65535 - buf_p) < 11)
   {
     is_too_long = 1;
-    return;
+    return 1;
   }
   uint32_t temp = rand() & 0xffffffff;
   char num[65536];
@@ -55,14 +55,15 @@ void gen_num()
   memcpy(buf + buf_p, num, strlen(num));
   buf_p += strlen(num);
   buf[buf_p] = '\0';
+  return temp;
 }
 
-void gen_rand_op()
+int gen_rand_op()
 {
   if ((65535 - buf_p) < 11)
   {
     is_too_long = 1;
-    return;
+    return 1;
   }
   int t = rand() & 3;
   char op = '\0';
@@ -83,6 +84,7 @@ void gen_rand_op()
   }
   buf[buf_p++] = op;
   buf[buf_p] = '\0';
+  return t;
 }
 static void gen_rand_expr()
 {
@@ -102,11 +104,77 @@ static void gen_rand_expr()
     break;
   default:
     gen_rand_expr();
-    gen_rand_op();
-    gen_rand_expr();
+    int op = gen_rand_op();
+    if (op == 3)
+    {
+      int now = buf_p;
+      uint32_t div = gen_rand_expr_with_ret();
+      while (div == 0)
+      {
+        buf_p = now;
+        div = gen_rand_expr_with_ret();
+      }
+    }
+    else
+    {
+      gen_rand_expr();
+    }
   }
 }
 
+uint32_t gen_rand_expr_with_ret()
+{
+  if ((65535 - buf_p) < 11)
+  {
+    is_too_long = 1;
+    return 1;
+  }
+  uint32_t res = 0;
+  switch (choose(3))
+  {
+  case 0:
+    res = gen_num();
+    return res;
+  case 1:
+    gen('(');
+    res = gen_rand_expr_with_ret();
+    gen(')');
+    return res;
+    break;
+  default:
+    uint32_t first = gen_rand_expr_with_ret(), second = 0;
+    int op = gen_rand_op();
+    if (op == 3)
+    {
+      int now = buf_p;
+      while (second == 0)
+      {
+        buf_p = now;
+        second = gen_rand_expr_with_ret();
+      }
+    }
+    else
+    {
+      second = gen_rand_expr_with_ret();
+    }
+    switch (op)
+    {
+    case 0:
+      res = first + second;
+      break;
+    case 1:
+      res = first - second;
+      break;
+    case 2:
+      res = first * second;
+      break;
+    case 3:
+      res = first / second;
+      break;
+    }
+  }
+  return res;
+}
 int main(int argc, char *argv[])
 {
   int seed = time(0);
@@ -147,12 +215,8 @@ int main(int argc, char *argv[])
 
     int result;
     ret = fscanf(fp, "%d", &result);
-    ret = pclose(fp);
-    if (ret != 0)
-    {
-      i--;
-      continue;
-    }
+    pclose(fp);
+
     printf("%u %s\n", result, buf);
   }
   return 0;
