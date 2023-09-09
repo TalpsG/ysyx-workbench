@@ -262,15 +262,24 @@ word_t eval(int p, int q)
     word_t res = 0;
     int node = -1;
     bool mux = false;
+    int stack = 0;
     for (int i = p; i <= q; i++)
     {
       switch (tokens[i].type)
       {
       case TK_BRACKET_L:
-        mux = true;
+        if (stack == 0)
+        {
+          mux = true;
+        }
+        stack++;
         break;
       case TK_BRACKET_R:
-        mux = false;
+        if (stack == 0)
+        {
+          mux = false;
+        }
+        stack--;
         break;
       case TK_DIV:
       case TK_MINUS:
