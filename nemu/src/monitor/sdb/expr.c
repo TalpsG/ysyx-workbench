@@ -327,6 +327,7 @@ word_t expr(char *e, bool *success)
   /* TODO: Insert codes to evaluate the expression. */
 
   print_tokens();
+  printf("%s\n", e);
   *success = true;
   return eval(0, nr_token - 1);
 }
