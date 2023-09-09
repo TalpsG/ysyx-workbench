@@ -203,9 +203,12 @@ int main(int argc, char *argv[])
     fclose(fp);
     // printf("%s\n", code_buf);
 
-    int ret = system("gcc /tmp/.code.c -o /tmp/.expr");
+    int ret = system("gcc -Werror /tmp/.code.c -o /tmp/.expr");
     if (ret != 0)
+    {
+      i--;
       continue;
+    }
 
     fp = popen("/tmp/.expr", "r");
     assert(fp != NULL);
