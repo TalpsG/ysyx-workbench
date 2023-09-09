@@ -226,6 +226,7 @@ word_t eval(int p, int q)
 {
   if (p > q)
   {
+    printf("%d,%d\n", p, q);
     printf("illegal expression\n");
     assert(0);
   }
