@@ -44,9 +44,10 @@ int main(int argc, char *argv[])
   {
     sscanf(buf, "%u %s", &ans, expression);
     eval = expr(expression, &success);
+    printf("expression: %s ", expression);
     if (success)
     {
-      printf("expression: %s \n answer: %u , eval: %u\n", expression, ans, eval);
+      printf("\n answer: %u , eval: %u\n", ans, eval);
       if (eval == ans)
       {
         printf("correct \n");
