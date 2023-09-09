@@ -204,11 +204,11 @@ bool check_parentheses(int p, int q)
       else if (tokens[i].type == TK_BRACKET_R)
       {
         stack--;
-      }
-      if (stack < 0)
-      {
-        Log("bad expression");
-        assert(0);
+        if (stack < 0)
+        {
+          Log("bad expression");
+          assert(0);
+        }
       }
     }
     return true;
