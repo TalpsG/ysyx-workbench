@@ -287,6 +287,7 @@ word_t eval(int p, int q)
             if ((tokens[node].type == TK_MUL || tokens[node].type == TK_DIV) &&
                 (tokens[i].type == TK_MINUS || tokens[i].type == TK_PLUS))
             {
+              printf("node before %d, after %d \n", node, i);
               node = i;
               // 优先级 */优先于+-
             }
@@ -297,6 +298,7 @@ word_t eval(int p, int q)
                  (tokens[i].type == TK_PLUS || tokens[i].type == TK_MINUS)))
             {
               // 同级的运算先算前面的再算后面的
+              printf("node before %d, after %d \n", node, i);
               node = i;
             }
           }
