@@ -235,13 +235,13 @@ word_t eval(int p, int q)
     if (tokens[p].type == TK_NUM_H)
     {
       res = (word_t)(strtoul(tokens[p].str, NULL, 16));
-      printf("tokens[%d]: %u", p, res);
+      printf("tokens[%d]: %u\n", p, res);
       return res;
     }
     else if (tokens[p].type == TK_NUM_D)
     {
       res = (word_t)strtoul(tokens[p].str, NULL, 10);
-      printf("tokens[%d]: %u", p, res);
+      printf("tokens[%d]: %u\n", p, res);
       return res;
     }
     else
@@ -253,7 +253,7 @@ word_t eval(int p, int q)
   if (check_parentheses(p, q) == true)
   {
     res = eval(p + 1, q - 1);
-    printf("tokens[%d-%d]: %u", p, q, res);
+    printf("tokens[%d-%d]: %u\n", p, q, res);
     return res;
   }
   else
@@ -306,7 +306,7 @@ word_t eval(int p, int q)
       res = eval(p, node - 1) - eval(node + 1, q);
       break;
     }
-    printf("tokens[%d-%d]: %u", p, q, res);
+    printf("tokens[%d-%d]: %u\n", p, q, res);
     return res;
   }
 }
