@@ -275,7 +275,7 @@ word_t eval(int p, int q)
         stack++;
         break;
       case TK_BRACKET_R:
-        if (stack == 0)
+        if (stack == 1)
         {
           mux = false;
         }
