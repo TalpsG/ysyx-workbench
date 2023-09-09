@@ -154,12 +154,12 @@ static bool make_token(char *e)
           break;
         case TK_NUM_D:
           strncpy(tokens[nr_token].str, substr_start, substr_len);
-          printf("start:%p  len:%d\n", substr_start, substr_len);
+          // printf("start:%p  len:%d\n", substr_start, substr_len);
           tokens[nr_token++].str[substr_len] = '\0';
           break;
         case TK_NUM_H:
           strncpy(tokens[nr_token].str, substr_start, substr_len);
-          printf("start:%p  len:%d", substr_start, substr_len);
+          // printf("start:%p  len:%d", substr_start, substr_len);
           tokens[nr_token++].str[substr_len] = '\0';
           break;
         }
@@ -224,10 +224,10 @@ bool check_parentheses(int p, int q)
 
 word_t eval(int p, int q)
 {
-  printf("%d,%d\n", p, q);
+  // printf("%d,%d\n", p, q);
   if (p > q)
   {
-    printf("illegal expression\n");
+    // printf("illegal expression\n");
     assert(0);
   }
   word_t res = 0;
@@ -236,13 +236,13 @@ word_t eval(int p, int q)
     if (tokens[p].type == TK_NUM_H)
     {
       res = (word_t)(strtoul(tokens[p].str, NULL, 16));
-      printf("tokens[%d]: %u\n", p, res);
+      // printf("tokens[%d]: %u\n", p, res);
       return res;
     }
     else if (tokens[p].type == TK_NUM_D)
     {
       res = (word_t)strtoul(tokens[p].str, NULL, 10);
-      printf("tokens[%d]: %u\n", p, res);
+      // printf("tokens[%d]: %u\n", p, res);
       return res;
     }
     else
@@ -254,7 +254,7 @@ word_t eval(int p, int q)
   if (check_parentheses(p, q) == true)
   {
     res = eval(p + 1, q - 1);
-    printf("tokens[%d-%d]: %u\n", p, q, res);
+    // printf("tokens[%d-%d]: %u\n", p, q, res);
     return res;
   }
   else
@@ -296,7 +296,7 @@ word_t eval(int p, int q)
             if ((tokens[node].type == TK_MUL || tokens[node].type == TK_DIV) &&
                 (tokens[i].type == TK_MINUS || tokens[i].type == TK_PLUS))
             {
-              printf("node before %d, after %d \n", node, i);
+              // printf("node before %d, after %d \n", node, i);
               node = i;
               // 优先级 */优先于+-
             }
@@ -307,7 +307,7 @@ word_t eval(int p, int q)
                  (tokens[i].type == TK_PLUS || tokens[i].type == TK_MINUS)))
             {
               // 同级的运算先算前面的再算后面的
-              printf("node before %d, after %d \n", node, i);
+              // printf("node before %d, after %d \n", node, i);
               node = i;
             }
           }

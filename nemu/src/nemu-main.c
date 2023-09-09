@@ -40,6 +40,7 @@ int main(int argc, char *argv[])
     printf("open test file failed\n");
     return 0;
   }
+  FILE *fault = fopen("/home/talps/gitrepo/ysyx-workbench/nemu/tools/gen-expr/fault.txt", "w");
   while (fgets(buf, 65536 + 128, fp) != NULL)
   {
     sscanf(buf, "%u %s", &ans, expression);
@@ -54,6 +55,7 @@ int main(int argc, char *argv[])
       }
       else
       {
+        fprintf(fault, "%s", buf);
         printf("incorrect \n");
       }
     }
