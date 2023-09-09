@@ -303,14 +303,14 @@ word_t eval(int p, int q)
 }
 void tokens_clear()
 {
-}
-word_t expr(char *e, bool *success)
-{
-  tokens_clear();
   for (int i = nr_token - 1; i >= 0; i--)
   {
     strcpy(tokens[i].str, "");
   }
+}
+word_t expr(char *e, bool *success)
+{
+  tokens_clear();
   if (!make_token(e))
   {
     *success = false;
