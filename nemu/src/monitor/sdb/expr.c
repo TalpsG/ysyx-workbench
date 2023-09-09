@@ -316,27 +316,27 @@ word_t eval(int p, int q)
       }
     }
     uint32_t first = eval(p, node - 1), second = eval(node + 1, q);
-    char op = 0;
+    // char op = 0;
     switch (tokens[node].type)
     {
     case TK_DIV:
       res = first / second;
-      op = '/';
+      // op = '/';
       break;
     case TK_MUL:
       res = first * second;
-      op = '*';
+      // op = '*';
       break;
     case TK_PLUS:
       res = first + second;
-      op = '+';
+      // op = '+';
       break;
     case TK_MINUS:
       res = first - second;
-      op = '-';
+      // op = '-';
       break;
     }
-    printf("tokens[%d-%d]: %u %c %u = %u\n", p, q, first, op, second, res);
+    // printf("tokens[%d-%d]: %u %c %u = %u\n", p, q, first, op, second, res);
     return res;
   }
 }
@@ -351,7 +351,7 @@ void print_tokens()
 {
   for (int i = 0; i < nr_token; i++)
   {
-    printf("tokens[%d]:%s\n", i, tokens[i].str);
+    // printf("tokens[%d]:%s\n", i, tokens[i].str);
   }
 }
 word_t expr(char *e, bool *success)
