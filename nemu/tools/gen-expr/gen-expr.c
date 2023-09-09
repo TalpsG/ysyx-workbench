@@ -51,7 +51,7 @@ uint32_t gen_num()
   }
   uint32_t temp = rand() & 0xffffffff;
   char num[65536];
-  sprintf(num, "%u", temp);
+  sprintf(num, "%uu", temp);
   memcpy(buf + buf_p, num, strlen(num));
   buf_p += strlen(num);
   buf[buf_p] = '\0';
