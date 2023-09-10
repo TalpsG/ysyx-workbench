@@ -114,9 +114,33 @@ WP *find_wp(int id)
   printf("id %d wp not found\n", id);
   return NULL;
 }
+void print_free_num()
+{
+  WP *p = free_;
+  int i = 0;
+  while (p != NULL)
+  {
+    i++;
+    p = p->next;
+  }
+  printf("free list has %d elements\n", i);
+}
+void print_wp_num()
+{
+  WP *p = head;
+  int i = 0;
+  while (p != NULL)
+  {
+    i++;
+    p = p->next;
+  }
+  printf("watchpoints list has %d elements\n", i);
+}
 void delete_wp(WP *target)
 {
   WP *temp = target->next;
   target->next = target->next->next;
   free_wp(temp);
+  print_free_num();
+  print_wp_num();
 }
