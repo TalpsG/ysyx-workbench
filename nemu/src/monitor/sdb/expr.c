@@ -304,6 +304,9 @@ word_t eval(int p, int q)
       case TK_MINUS:
       case TK_PLUS:
       case TK_MUL:
+      case TK_LOGIC_AND:
+      case TK_EQ:
+      case TK_NOT_EQ:
         if (mux == false)
         {
           if (node == -1)
