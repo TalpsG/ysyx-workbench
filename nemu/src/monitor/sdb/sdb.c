@@ -179,7 +179,7 @@ static int cmd_w(char *args)
     return 0;
   }
   bool success = false;
-  expr(args, &success);
+  uint32_t ans = expr(args, &success);
   if (success == false)
   {
     printf("illegal expression\n");
@@ -188,7 +188,7 @@ static int cmd_w(char *args)
   else
   {
     WP *new = new_wp();
-    add_wp(args, new);
+    add_wp(args, new, ans);
   }
 
   return 0;

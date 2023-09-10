@@ -50,11 +50,13 @@ WP *new_wp()
     assert(0);
   }
 }
-void add_wp(char *name, WP *wp)
+void add_wp(char *name, WP *wp, uint32_t ans)
 {
   strcpy(wp->str, name);
   wp->NO = id++;
   wp->next = head;
+  wp->old = ans;
+  wp->now = ans;
   head = wp;
 }
 void free_wp(WP *wp)
@@ -82,4 +84,14 @@ void free_wp(WP *wp)
     }
   }
   free_ = wp;
+}
+
+void print_wps()
+{
+  WP *p = head;
+  while (p != NULL)
+  {
+    printf("% 4d : %s : %u ", p->NO, p->str, p->now);
+    p = p->next;
+  }
 }
