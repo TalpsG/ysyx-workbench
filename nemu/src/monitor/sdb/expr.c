@@ -260,13 +260,16 @@ word_t eval(int p, int q)
 {
   // printf("%d,%d\n", p, q);
   word_t res = 0;
-
+  bool isparentheses = check_parentheses(p, q);
   printf("p:%d ,q:%d\n", p, q);
   if (tokens[p].type == TK_DEREF)
   {
-    res = eval(p + 1, q);
-    res = paddr_read(res, 4);
-    return res;
+    if (isparentheses)
+    {
+      res = eval(p + 1, q);
+      res = paddr_read(res, 4);
+      return res;
+    }
   }
   if (p > q)
   {
@@ -294,7 +297,7 @@ word_t eval(int p, int q)
       assert(0);
     }
   }
-  if (check_parentheses(p, q) == true)
+  if (isparentheses == true)
   {
     res = eval(p + 1, q - 1);
     // printf("tokens[%d-%d]: %u\n", p, q, res);
