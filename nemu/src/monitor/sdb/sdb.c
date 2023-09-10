@@ -207,6 +207,10 @@ static int cmd_d(char *args)
   }
   int id = atoi(args);
   WP *target = find_wp(id);
+  if (target == NULL)
+  {
+    return 0;
+  }
   delete_wp(target);
 
   return 0;

@@ -71,7 +71,7 @@ void free_wp(WP *wp)
       {
         head = now->next;
         now->next = free_;
-        now->NO = 0;
+        now->NO = -1;
         strcpy(now->str, "");
       }
       else
