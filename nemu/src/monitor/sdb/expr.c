@@ -30,10 +30,14 @@ enum
   TK_DIV,
   TK_MINUS,
   TK_PLUS,
+  TK_NOT_EQ,
+  TK_LOGIC_AND,
   TK_BRACKET_L,
   TK_BRACKET_R,
   TK_NUM_D, // decimal
   TK_NUM_H, // hex
+  TK_REG,
+  TK_DEREF,
 
 };
 
@@ -59,6 +63,9 @@ static struct rule
     {"/", TK_DIV},
     {"\\(", TK_BRACKET_L},
     {"\\)", TK_BRACKET_R},
+    {"\\$[0-9a-z]{2}", TK_REG},
+    {"!=", TK_NOT_EQ},
+    {"&&", TK_LOGIC_AND},
     {"\\b[0-9]+\\b", TK_NUM_D},
     {"\\b[0-9]+u\\b", TK_NUM_D},
     {"\\b0x[0-9a-f]+\\b", TK_NUM_H},
@@ -153,6 +160,17 @@ static bool make_token(char *e)
         case TK_BRACKET_R:
           strcpy(tokens[nr_token++].str, ")");
           break;
+        case TK_NOT_EQ:
+          strcpy(tokens[nr_token++].str, "!=");
+          break;
+        case TK_LOGIC_AND:
+          strcpy(tokens[nr_token++].str, "&&");
+          break;
+        case TK_REG:
+          strncpy(tokens[nr_token].str, substr_start, substr_len);
+          tokens[nr_token++].str[substr_len] = '\0';
+          break;
+
         case TK_NUM_D:
           strncpy(tokens[nr_token].str, substr_start, substr_len);
           // printf("start:%p  len:%d\n", substr_start, substr_len);
@@ -297,9 +315,18 @@ word_t eval(int p, int q)
             if ((tokens[node].type == TK_MUL || tokens[node].type == TK_DIV) &&
                 (tokens[i].type == TK_MINUS || tokens[i].type == TK_PLUS))
             {
-              // printf("node before %d, after %d \n", node, i);
-              node = i;
               // 优先级 */优先于+-
+              node = i;
+            }
+            else if ((tokens[i].type == TK_LOGIC_AND && tokens[node].type < tokens[i].type))
+            {
+              // && 落后于其他的所有运算符
+              node = i;
+            }
+            else if ((tokens[i].type == TK_NOT_EQ || tokens[i].type == TK_EQ) && tokens[node].type < tokens[i].type)
+            {
+              // == 和 != 落后 除&&的其他运算符
+              node = i;
             }
             else if (
                 ((tokens[node].type == TK_MUL || tokens[node].type == TK_DIV) &&
@@ -307,8 +334,17 @@ word_t eval(int p, int q)
                 ((tokens[node].type == TK_PLUS || tokens[node].type == TK_MINUS) &&
                  (tokens[i].type == TK_PLUS || tokens[i].type == TK_MINUS)))
             {
-              // 同级的运算先算前面的再算后面的
+              // 同级的运算先算前面的再算后面的(+- */)
               // printf("node before %d, after %d \n", node, i);
+              node = i;
+            }
+            else if ((tokens[node].type == TK_NOT_EQ || tokens[node].type == TK_EQ) &&
+                     (tokens[i].type == TK_EQ || tokens[i].type == TK_NOT_EQ))
+            {
+              node = i;
+            }
+            else if (tokens[node].type == TK_LOGIC_AND && tokens[i].type == TK_LOGIC_AND)
+            {
               node = i;
             }
           }
@@ -334,6 +370,14 @@ word_t eval(int p, int q)
     case TK_MINUS:
       res = first - second;
       // op = '-';
+    case TK_LOGIC_AND:
+      res = first && second;
+      break;
+    case TK_EQ:
+      res = first == second;
+      break;
+    case TK_NOT_EQ:
+      res = first != second;
       break;
     }
     // printf("tokens[%d-%d]: %u %c %u = %u\n", p, q, first, op, second, res);

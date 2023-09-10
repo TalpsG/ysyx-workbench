@@ -146,7 +146,9 @@ int main(int argc, char *argv[])
     assert(fp != NULL);
 
     int result;
+    // ret = fscanf只是为了接收fscanf的返回值，否则由于Werror编译选项会报错
     ret = fscanf(fp, "%d", &result);
+
     ret = pclose(fp);
     if (ret != 0)
     {
