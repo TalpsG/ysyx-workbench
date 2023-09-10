@@ -82,6 +82,7 @@ void free_wp(WP *wp)
         strcpy(now->str, "");
       }
     }
+    now = now->next;
   }
   free_ = wp;
 }
