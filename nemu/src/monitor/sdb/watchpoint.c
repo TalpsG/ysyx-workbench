@@ -17,18 +17,9 @@
 
 #define NR_WP 32
 
-typedef struct watchpoint
-{
-  int NO;
-  struct watchpoint *next;
-
-  /* TODO: Add more members if necessary */
-  char str[65536];
-
-} WP;
-
 static WP wp_pool[NR_WP] = {};
 static WP *head = NULL, *free_ = NULL;
+static int id = 0;
 
 void init_wp_pool()
 {
@@ -59,10 +50,36 @@ WP *new_wp()
     assert(0);
   }
 }
+void add_wp(char *name, WP *wp)
+{
+  strcpy(wp->str, name);
+  wp->NO = id++;
+  wp->next = head;
+  head = wp;
+}
 void free_wp(WP *wp)
 {
-  wp->next = free_;
-  wp->NO = 0;
-  strcpy(wp->str, "");
+  WP *now = head;
+  WP *prev = NULL;
+  while (now != NULL)
+  {
+    if (now == wp)
+    {
+      if (prev == NULL)
+      {
+        head = now->next;
+        now->next = free_;
+        now->NO = 0;
+        strcpy(now->str, "");
+      }
+      else
+      {
+        prev->next = wp->next;
+        now->next = free_;
+        now->NO = 0;
+        strcpy(now->str, "");
+      }
+    }
+  }
   free_ = wp;
 }

@@ -178,8 +178,20 @@ static int cmd_w(char *args)
     printf("need a expression to watch\n");
     return 0;
   }
+  bool success = false;
+  expr(args, &success);
+  if (success == false)
+  {
+    printf("illegal expression\n");
+    return 0;
+  }
+  else
+  {
+    WP *new = new_wp();
+    add_wp(args, new);
+  }
 
-  return -1;
+  return 0;
 }
 
 static int cmd_d(char *args)
