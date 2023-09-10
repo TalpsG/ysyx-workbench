@@ -261,7 +261,7 @@ word_t eval(int p, int q)
   // printf("%d,%d\n", p, q);
   word_t res = 0;
   bool isparentheses = check_parentheses(p, q);
-  printf("p:%d ,q:%d\n", p, q);
+  // printf("p:%d ,q:%d\n", p, q);
   if (tokens[p].type == TK_DEREF)
   {
     if (isparentheses)
@@ -274,7 +274,7 @@ word_t eval(int p, int q)
   if (p > q)
   {
     // printf("illegal expression\n");
-    printf("abort\np:%d ,q:%d\n", p, q);
+    // printf("abort\np:%d ,q:%d\n", p, q);
     assert(0);
   }
   if (p == q)
