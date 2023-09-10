@@ -265,6 +265,7 @@ word_t eval(int p, int q)
   if (tokens[p].type == TK_DEREF)
   {
     res = eval(p + 1, q);
+    res = paddr_read(res, 4);
     return res;
   }
   if (p > q)
