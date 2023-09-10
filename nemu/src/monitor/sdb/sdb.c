@@ -90,7 +90,11 @@ static int cmd_info(char *args)
   }
   else if (strcmp(args, "w") == 0)
   {
-    printf("print watchpoinst info\n");
+    print_WPs();
+  }
+  else
+  {
+    printf("info args only can be \'r\' or \'w\'\n");
   }
   return 0;
 }

@@ -86,7 +86,7 @@ void free_wp(WP *wp)
   free_ = wp;
 }
 
-void print_wps()
+void print_WPs()
 {
   WP *p = head;
   while (p != NULL)
