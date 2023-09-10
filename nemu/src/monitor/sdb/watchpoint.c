@@ -20,10 +20,10 @@
 typedef struct watchpoint
 {
   int NO;
-  char str[16];
   struct watchpoint *next;
 
   /* TODO: Add more members if necessary */
+  char str[65536];
 
 } WP;
 
