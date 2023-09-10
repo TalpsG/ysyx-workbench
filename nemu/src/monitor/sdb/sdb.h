@@ -33,5 +33,6 @@ word_t expr(char *e, bool *success);
 WP *new_wp();
 
 void print_WPs();
+void find_and_print_wp(int id);
 
 #endif

@@ -96,3 +96,19 @@ void print_WPs()
     p = p->next;
   }
 }
+void find_and_print_wp(int id)
+{
+  WP *p = head;
+  while (p != NULL)
+  {
+    if (p->NO == id)
+    {
+      printf(" no. :        expr:        val\n");
+      printf("% 4d : %10s : %10u \n", p->NO, p->str, p->now);
+      return;
+    }
+    p = p->next;
+  }
+  printf("id %d wp not found\n", id);
+  return;
+}

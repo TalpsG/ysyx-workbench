@@ -200,6 +200,12 @@ static int cmd_w(char *args)
 
 static int cmd_d(char *args)
 {
+  if (args == NULL)
+  {
+    printf("need a id of watchpoint\n");
+    return 0;
+  }
+
   return -1;
 }
 
