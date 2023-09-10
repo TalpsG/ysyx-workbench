@@ -25,7 +25,6 @@ typedef struct watchpoint
     /* TODO: Add more members if necessary */
     char str[65536];
     uint32_t old;
-    uint32_t now;
 
 } WP;
 void add_wp(char *name, WP *wp, uint32_t ans);
@@ -35,5 +34,6 @@ WP *new_wp();
 void print_WPs();
 WP *find_wp(int id);
 void delete_wp(WP *target);
+void check_wp();
 
 #endif

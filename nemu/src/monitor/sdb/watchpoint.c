@@ -59,7 +59,6 @@ void add_wp(char *name, WP *wp, uint32_t ans)
   wp->NO = id++;
   wp->next = head;
   wp->old = ans;
-  wp->now = ans;
   head = wp;
 }
 void free_wp(WP *wp)
@@ -79,7 +78,9 @@ void print_WPs()
   printf(" no. :        expr:        val\n");
   while (p != NULL)
   {
-    printf("% 4d : %10s : %10u \n", p->NO, p->str, p->now);
+    bool success = false;
+    p->old = expr(p->str, &success);
+    printf("% 4d : %10s : %10u \n", p->NO, p->str, p->old);
     p = p->next;
   }
 }
@@ -129,4 +130,20 @@ void delete_wp(WP *target)
   free_wp(temp);
   print_free_num();
   print_wp_num();
+}
+void check_wp()
+{
+  WP *p = head;
+  while (p != NULL)
+  {
+    bool success = false;
+    uint32_t res = expr(p->str, &success);
+    if (res != !p->old)
+    {
+      nemu_state.state = NEMU_STOP;
+      printf("watchpoint triggered\n");
+      p->old = res;
+      return;
+    }
+  }
 }
