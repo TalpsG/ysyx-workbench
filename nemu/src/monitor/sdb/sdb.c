@@ -91,7 +91,7 @@ static int cmd_info(char *args)
   }
   else if (strcmp(args, "w") == 0)
   {
-    printf("print watchpoinst info");
+    printf("print watchpoinst info\n");
   }
   return 0;
 }
