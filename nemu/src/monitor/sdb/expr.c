@@ -354,7 +354,8 @@ word_t eval(int p, int q)
         }
       }
     }
-    uint32_t first = eval(p, node - 1), second = eval(node + 1, q);
+    uint32_t first = eval(p, node - 1);
+    uint32_t second = eval(node + 1, q);
     // char op = 0;
     switch (tokens[node].type)
     {
