@@ -156,7 +156,20 @@ static int cmd_x(char *args)
 
 static int cmd_p(char *args)
 {
-  return -1;
+  if (args == NULL)
+  {
+    printf("need a expr\n");
+    return 0;
+  }
+  bool success = false;
+  uint32_t res = expr(args, &success);
+  if (success)
+    printf("%s = %u", args, res);
+  else
+  {
+    printf("illegal expression\n");
+  }
+  return 0;
 }
 
 static int cmd_w(char *args)
