@@ -205,8 +205,11 @@ static int cmd_d(char *args)
     printf("need a id of watchpoint\n");
     return 0;
   }
+  int id = atoi(args);
+  WP *target = find_wp(id);
+  delete_wp(target);
 
-  return -1;
+  return 0;
 }
 
 static int cmd_help(char *args);

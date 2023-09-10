@@ -33,6 +33,7 @@ word_t expr(char *e, bool *success);
 WP *new_wp();
 
 void print_WPs();
-void find_and_print_wp(int id);
+WP *find_wp(int id);
+void delete_wp(WP *target);
 
 #endif

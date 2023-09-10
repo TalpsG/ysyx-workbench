@@ -96,19 +96,26 @@ void print_WPs()
     p = p->next;
   }
 }
-void find_and_print_wp(int id)
+WP *find_wp(int id)
 {
-  WP *p = head;
-  while (p != NULL)
+  // return the prev node of target node
+  WP t, *p;
+  t.next = head;
+  p = &t;
+  while (p->next != NULL)
   {
-    if (p->NO == id)
+    if (p->next->NO == id)
     {
-      printf(" no. :        expr:        val\n");
-      printf("% 4d : %10s : %10u \n", p->NO, p->str, p->now);
-      return;
+      return p;
     }
     p = p->next;
   }
   printf("id %d wp not found\n", id);
-  return;
+  return NULL;
+}
+void delete_wp(WP *target)
+{
+  WP *temp = target->next;
+  target->next = target->next->next;
+  free_wp(temp);
 }
