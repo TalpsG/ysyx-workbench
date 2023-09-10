@@ -291,6 +291,20 @@ word_t eval(int p, int q)
       // printf("tokens[%d]: %u\n", p, res);
       return res;
     }
+    else if (tokens[p].type == TK_REG)
+    {
+      bool success = false;
+      res = isa_reg_str2val(tokens[p].str, &success);
+      if (success == true)
+      {
+        return res;
+      }
+      else
+      {
+        printf("there is no registers named \"%s\"\n", tokens[p].str);
+        assert(0);
+      }
+    }
     else
     {
       printf("illegal expression\n");
