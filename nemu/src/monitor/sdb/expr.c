@@ -259,55 +259,38 @@ bool check_parentheses(int p, int q)
 word_t eval(int p, int q)
 {
   // printf("%d,%d\n", p, q);
+  word_t res = 0;
+
   printf("p:%d ,q:%d\n", p, q);
-  if (tokens[p].type == TK_DEREF && p + 1 > q)
+  if (tokens[p].type == TK_DEREF)
+  {
+    res = eval(p + 1, q);
+    return res;
+  }
+  if (p > q)
   {
     // printf("illegal expression\n");
     printf("abort\np:%d ,q:%d\n", p, q);
     assert(0);
   }
-  word_t res = 0;
-  if ((q - p) >= 0 && (q - p) < 2)
+  if (p == q)
   {
-    if (p == q)
+    if (tokens[p].type == TK_NUM_H)
     {
-      if (tokens[p].type == TK_NUM_H)
-      {
-        res = (word_t)(strtoul(tokens[p].str, NULL, 16));
-        // printf("tokens[%d]: %u\n", p, res);
-        return res;
-      }
-      else if (tokens[p].type == TK_NUM_D)
-      {
-        res = (word_t)strtoul(tokens[p].str, NULL, 10);
-        // printf("tokens[%d]: %u\n", p, res);
-        return res;
-      }
-      else
-      {
-        printf("illegal expression\n");
-        assert(0);
-      }
+      res = (word_t)(strtoul(tokens[p].str, NULL, 16));
+      // printf("tokens[%d]: %u\n", p, res);
+      return res;
+    }
+    else if (tokens[p].type == TK_NUM_D)
+    {
+      res = (word_t)strtoul(tokens[p].str, NULL, 10);
+      // printf("tokens[%d]: %u\n", p, res);
+      return res;
     }
     else
     {
-      if (tokens[q].type == TK_NUM_H)
-      {
-        res = (word_t)(strtoul(tokens[q].str, NULL, 16));
-        // printf("tokens[%d]: %u\n", p, res);
-      }
-      else if (tokens[q].type == TK_NUM_D)
-      {
-        res = (word_t)strtoul(tokens[q].str, NULL, 10);
-        // printf("tokens[%d]: %u\n", p, res);
-      }
-      else
-      {
-        printf("illegal expression\n");
-        assert(0);
-      }
-      res = paddr_read(res, 4);
-      return res;
+      printf("illegal expression\n");
+      assert(0);
     }
   }
   if (check_parentheses(p, q) == true)
