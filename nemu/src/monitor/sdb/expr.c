@@ -258,10 +258,11 @@ bool check_parentheses(int p, int q)
 word_t eval(int p, int q)
 {
   // printf("%d,%d\n", p, q);
+  printf("p:%d ,q:%d\n", p, q);
   if (p > q)
   {
     // printf("illegal expression\n");
-    printf("p:%d ,q:%d\n", p, q);
+    printf("abort\np:%d ,q:%d\n", p, q);
     assert(0);
   }
   word_t res = 0;
