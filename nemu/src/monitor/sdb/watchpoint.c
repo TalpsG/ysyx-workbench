@@ -89,9 +89,10 @@ void free_wp(WP *wp)
 void print_WPs()
 {
   WP *p = head;
+  printf(" no. :    expr    :    val    ");
   while (p != NULL)
   {
-    printf("% 4d : %s : %u ", p->NO, p->str, p->now);
+    printf("% 4d : %10s : %10u \n", p->NO, p->str, p->now);
     p = p->next;
   }
 }
