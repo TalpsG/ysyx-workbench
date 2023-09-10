@@ -20,6 +20,7 @@
 static WP wp_pool[NR_WP] = {};
 static WP *head = NULL, *free_ = NULL;
 static int id = 0;
+static int num = 0;
 
 void init_wp_pool()
 {
@@ -43,6 +44,7 @@ WP *new_wp()
     WP *temp = free_;
     free_ = free_->next;
     temp->next = NULL;
+    num++;
     return temp;
   }
   else
@@ -64,6 +66,11 @@ void free_wp(WP *wp)
 {
   wp->next = free_;
   free_ = wp;
+  num--;
+  if (num == 0)
+  {
+    head = NULL;
+  }
 }
 
 void print_WPs()
