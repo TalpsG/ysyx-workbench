@@ -386,6 +386,7 @@ word_t eval(int p, int q)
     if (node == -1)
     {
       first = eval(first_deref ? p + 1 : p, q);
+      first = paddr_read(first, 4);
       return first;
     }
     int second_deref = tokens[node + 1].type == TK_DEREF;
