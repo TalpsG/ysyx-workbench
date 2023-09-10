@@ -382,9 +382,15 @@ word_t eval(int p, int q)
       }
     }
     int first_deref = tokens[p].type == TK_DEREF;
+    uint32_t first = 0;
+    if (node == -1)
+    {
+      first = eval(first_deref ? p + 1 : p, q);
+      return first;
+    }
     int second_deref = tokens[node + 1].type == TK_DEREF;
 
-    uint32_t first = eval(first_deref ? p + 1 : p, node - 1);
+    first = eval(first_deref ? p + 1 : p, node - 1);
 
     uint32_t second = eval(second_deref ? node + 2 : node + 1, q);
     first = first_deref ? paddr_read(first, 4) : first;
