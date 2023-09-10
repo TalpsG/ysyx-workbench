@@ -61,29 +61,7 @@ void add_wp(char *name, WP *wp, uint32_t ans)
 }
 void free_wp(WP *wp)
 {
-  WP *now = head;
-  WP *prev = NULL;
-  while (now != NULL)
-  {
-    if (now == wp)
-    {
-      if (prev == NULL)
-      {
-        head = now->next;
-        now->next = free_;
-        now->NO = -1;
-        strcpy(now->str, "");
-      }
-      else
-      {
-        prev->next = wp->next;
-        now->next = free_;
-        now->NO = 0;
-        strcpy(now->str, "");
-      }
-    }
-    now = now->next;
-  }
+  wp->next = free_;
   free_ = wp;
 }
 
