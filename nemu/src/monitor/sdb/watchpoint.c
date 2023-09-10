@@ -42,6 +42,7 @@ WP *new_wp()
   {
     WP *temp = free_;
     free_ = free_->next;
+    temp->next = NULL;
     return temp;
   }
   else
