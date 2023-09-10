@@ -150,9 +150,9 @@ static bool make_token(char *e)
           else
           {
             int pos = nr_token - 1;
-            if (tokens[pos].type != TK_NUM_D ||
-                tokens[pos].type != TK_NUM_H ||
-                tokens[pos].type != TK_REG ||
+            if (tokens[pos].type != TK_NUM_D &&
+                tokens[pos].type != TK_NUM_H &&
+                tokens[pos].type != TK_REG &&
                 tokens[pos].type != TK_BRACKET_R)
             {
               tokens[nr_token].type = TK_DEREF;
