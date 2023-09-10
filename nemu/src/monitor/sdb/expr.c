@@ -373,7 +373,7 @@ word_t eval(int p, int q)
       break;
     case TK_MINUS:
       res = first - second;
-      // op = '-';
+      break;
     case TK_LOGIC_AND:
       res = first && second;
       break;
