@@ -260,7 +260,7 @@ word_t eval(int p, int q)
 {
   // printf("%d,%d\n", p, q);
   printf("p:%d ,q:%d\n", p, q);
-  if (p + 1 > q)
+  if (tokens[p].type == TK_DEREF && p + 1 > q)
   {
     // printf("illegal expression\n");
     printf("abort\np:%d ,q:%d\n", p, q);
