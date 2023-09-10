@@ -19,7 +19,7 @@
  * Type 'man regex' for more information about POSIX regex functions.
  */
 #include <regex.h>
-
+#include <memory/paddr.h>
 enum
 {
   TK_NOTYPE = 256,
@@ -143,6 +143,20 @@ static bool make_token(char *e)
           strcpy(tokens[nr_token++].str, "+");
           break;
         case TK_MUL:
+          if (nr_token == 0)
+          {
+            tokens[nr_token].type = TK_DEREF;
+          }
+          else
+          {
+            int pos = nr_token - 1;
+            if (tokens[pos].type != TK_NUM_D ||
+                tokens[pos].type != TK_NUM_H ||
+                tokens[pos].type != TK_REG)
+            {
+              tokens[nr_token].type = TK_DEREF;
+            }
+          }
           strcpy(tokens[nr_token++].str, "*");
           break;
         case TK_DIV:
@@ -354,8 +368,14 @@ word_t eval(int p, int q)
         }
       }
     }
-    uint32_t first = eval(p, node - 1);
-    uint32_t second = eval(node + 1, q);
+    int first_deref = tokens[p].type == TK_DEREF;
+    int second_deref = tokens[node + 1].type == TK_DEREF;
+
+    uint32_t first = eval(first_deref ? p + 1 : p, node - 1);
+
+    uint32_t second = eval(second_deref ? node + 2 : node + 1, q);
+    first = first_deref ? paddr_read(first, 4) : first;
+    second = second_deref ? paddr_read(second, 4) : second;
     // char op = 0;
     switch (tokens[node].type)
     {
