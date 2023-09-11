@@ -92,7 +92,7 @@ static int cmd_info(char *args)
   {
     if (!ISDEF(CONFIG_WATCHPOINT))
     {
-      printf("watchpoints not support.\nplz tick the building option in menuconfig");
+      printf("watchpoints not support.\nplz tick the building option in menuconfig and make again\n");
       return 0;
     }
 #ifdef CONFIG_WATCHPOINT
@@ -186,7 +186,7 @@ static int cmd_w(char *args)
 {
   if (!ISDEF(CONFIG_WATCHPOINT))
   {
-    printf("watchpoints not support.\nplz tick the building option in menuconfig");
+    printf("watchpoints not support.\nplz tick the building option in menuconfig and make again\n");
     return 0;
   }
 #ifdef CONFIG_WATCHPOINT
@@ -216,7 +216,7 @@ static int cmd_d(char *args)
 {
   if (!ISDEF(CONFIG_WATCHPOINT))
   {
-    printf("watchpoints not support.\nplz tick the building option in menuconfig");
+    printf("watchpoints not support.\nplz tick the building option in menuconfig and make again\n");
     return 0;
   }
 #ifdef CONFIG_WATCHPOINT
