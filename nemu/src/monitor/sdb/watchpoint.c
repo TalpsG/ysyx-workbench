@@ -78,7 +78,7 @@ void print_WPs()
   printf(" no. :        expr:        val\n");
   while (p != NULL)
   {
-    printf("% 4d : %10s : %10u \n", p->NO, p->str, p->old);
+    printf("% 4d : %10s :0x%10x\n", p->NO, p->str, p->old);
     p = p->next;
   }
 }
