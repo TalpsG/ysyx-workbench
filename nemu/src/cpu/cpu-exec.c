@@ -24,7 +24,6 @@
  * You can modify this value as you want.
  */
 // 为了能调用wp函数所以引用的头
-#include <../src/monitor/sdb/sdb.h>
 
 #define MAX_INST_TO_PRINT 10
 
@@ -48,7 +47,10 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc)
     IFDEF(CONFIG_ITRACE, puts(_this->logbuf));
   }
   IFDEF(CONFIG_DIFFTEST, difftest_step(_this->pc, dnpc));
+#ifdef CONFIG_WATCHPOINT
+#include <../src/monitor/sdb/sdb.h>
   check_wp();
+#endif
 }
 
 static void exec_once(Decode *s, vaddr_t pc)

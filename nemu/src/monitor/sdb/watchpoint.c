@@ -134,6 +134,7 @@ void delete_wp(WP *target)
 void check_wp()
 {
   WP *p = head;
+
   while (p != NULL)
   {
     bool success = false;
@@ -143,7 +144,6 @@ void check_wp()
       nemu_state.state = NEMU_STOP;
       printf("watchpoint triggered\n");
       p->old = res;
-      return;
     }
   }
 }
