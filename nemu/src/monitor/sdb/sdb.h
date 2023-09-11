@@ -27,6 +27,7 @@ typedef struct watchpoint
     uint32_t old;
 
 } WP;
+#ifdef CONFIG_WATCHPOINT
 void add_wp(char *name, WP *wp, uint32_t ans);
 word_t expr(char *e, bool *success);
 WP *new_wp();
@@ -35,5 +36,6 @@ void print_WPs();
 WP *find_wp(int id);
 void delete_wp(WP *target);
 void check_wp();
+#endif
 
 #endif

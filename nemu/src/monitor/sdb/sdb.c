@@ -177,6 +177,11 @@ static int cmd_p(char *args)
 
 static int cmd_w(char *args)
 {
+  if (!ISDEF(CONFIG_WATCHPOINT))
+  {
+    printf("watchpoints not support.\nplz tick the building option in menuconfig");
+    return 0;
+  }
   if (args == NULL)
   {
     printf("need a expression to watch\n");
@@ -200,6 +205,11 @@ static int cmd_w(char *args)
 
 static int cmd_d(char *args)
 {
+  if (!ISDEF(CONFIG_WATCHPOINT))
+  {
+    printf("watchpoints not support.\nplz tick the building option in menuconfig");
+    return 0;
+  }
   if (args == NULL)
   {
     printf("need a id of watchpoint\n");
