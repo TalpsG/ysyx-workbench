@@ -29,6 +29,7 @@ int main(int argc, char *argv[])
 #else
   init_monitor(argc, argv);
 #endif
+#ifdef CONFIG_EXPR
   char buf[65536 + 128];
   uint32_t ans = 0, eval = 0;
   char expression[65536] = "";
@@ -59,7 +60,7 @@ int main(int argc, char *argv[])
       }
     }
   }
-
+#endif
   /* Start engine. */
   engine_start();
 

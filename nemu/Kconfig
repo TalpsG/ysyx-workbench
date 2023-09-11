@@ -126,6 +126,10 @@ config CC_ASAN
 config WATCHPOINT
   bool "Enable to build watchpoint code"
   default n
+
+config EXPR
+  bool "Enable to test the expression"
+  default n
 endmenu
 
 menu "Testing and Debugging"
