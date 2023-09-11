@@ -78,8 +78,6 @@ void print_WPs()
   printf(" no. :        expr:        val\n");
   while (p != NULL)
   {
-    bool success = false;
-    p->old = expr(p->str, &success);
     printf("% 4d : %10s : %10u \n", p->NO, p->str, p->old);
     p = p->next;
   }
@@ -135,15 +133,20 @@ void check_wp()
 {
   WP *p = head;
 
+  bool isdef = false;
   while (p != NULL)
   {
     bool success = false;
     uint32_t res = expr(p->str, &success);
     if (res != !p->old)
     {
-      nemu_state.state = NEMU_STOP;
-      printf("watchpoint triggered\n");
+      isdef = true;
       p->old = res;
     }
   }
+  if (isdef == true)
+  {
+    printf("watchpoints triggered\n");
+  }
+  print_WPs();
 }
