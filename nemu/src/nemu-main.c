@@ -50,7 +50,7 @@ int main(int argc, char *argv[])
     {
       if (eval == ans)
       {
-        printf("ans = %x", eval);
+        printf("ans = %x\n", eval);
         printf("correct \n");
       }
       else
