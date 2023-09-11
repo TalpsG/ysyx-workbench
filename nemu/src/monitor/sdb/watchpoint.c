@@ -143,6 +143,7 @@ void check_wp()
       isdef = true;
       p->old = res;
     }
+    p = p->next;
   }
   if (isdef == true)
   {
