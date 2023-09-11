@@ -57,3 +57,5 @@ $(BINARY): $(OBJS) $(ARCHIVES)
 
 clean:
 	-rm -rf $(BUILD_DIR)
+# 删除可执行文件,便于统计行数
+	-rm -rf $(NEMU_HOME)/tools/gen-expr/build
