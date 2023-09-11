@@ -138,7 +138,7 @@ void check_wp()
   {
     bool success = false;
     uint32_t res = expr(p->str, &success);
-    if (res != !p->old)
+    if (res != p->old)
     {
       isdef = true;
       p->old = res;
