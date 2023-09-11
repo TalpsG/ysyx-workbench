@@ -44,18 +44,19 @@ int main(int argc, char *argv[])
   while (fgets(buf, 65536 + 128, fp) != NULL)
   {
     sscanf(buf, "%u %s", &ans, expression);
-    printf("expression:\n");
-    printf("%s\n", expression);
+    printf("expression: %s\n", expression);
     eval = expr(expression, &success);
     if (success)
     {
       if (eval == ans)
       {
+        printf("ans = %x", eval);
         printf("correct \n");
       }
       else
       {
         fprintf(fault, "%s", buf);
+        printf("ans = %x , eval = %x\n", eval, ans);
         printf("incorrect \n");
       }
     }
