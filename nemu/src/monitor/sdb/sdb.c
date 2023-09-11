@@ -174,7 +174,7 @@ static int cmd_p(char *args)
   bool success = false;
   uint32_t res = expr(args, &success);
   if (success)
-    printf("%s = %u\n", args, res);
+    printf("%s = 0x%x\n", args, res);
   else
   {
     printf("illegal expression\n");
