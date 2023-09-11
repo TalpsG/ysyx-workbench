@@ -90,7 +90,14 @@ static int cmd_info(char *args)
   }
   else if (strcmp(args, "w") == 0)
   {
+    if (!ISDEF(CONFIG_WATCHPOINT))
+    {
+      printf("watchpoints not support.\nplz tick the building option in menuconfig");
+      return 0;
+    }
+#ifdef CONFIG_WATCHPOINT
     print_WPs();
+#endif
   }
   else
   {
@@ -182,6 +189,7 @@ static int cmd_w(char *args)
     printf("watchpoints not support.\nplz tick the building option in menuconfig");
     return 0;
   }
+#ifdef CONFIG_WATCHPOINT
   if (args == NULL)
   {
     printf("need a expression to watch\n");
@@ -199,6 +207,7 @@ static int cmd_w(char *args)
     WP *new = new_wp();
     add_wp(args, new, ans);
   }
+#endif
 
   return 0;
 }
@@ -210,6 +219,7 @@ static int cmd_d(char *args)
     printf("watchpoints not support.\nplz tick the building option in menuconfig");
     return 0;
   }
+#ifdef CONFIG_WATCHPOINT
   if (args == NULL)
   {
     printf("need a id of watchpoint\n");
@@ -223,6 +233,7 @@ static int cmd_d(char *args)
   }
   delete_wp(target);
 
+#endif
   return 0;
 }
 
