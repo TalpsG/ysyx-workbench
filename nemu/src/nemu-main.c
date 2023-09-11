@@ -29,37 +29,36 @@ int main(int argc, char *argv[])
 #else
   init_monitor(argc, argv);
 #endif
-  // test the expression
-  // char buf[65536 + 128];
-  // uint32_t ans = 0, eval = 0;
-  // char expression[65536] = "";
-  // bool success = false;
-  // FILE *fp = fopen("/home/talps/gitrepo/ysyx-workbench/nemu/tools/gen-expr/test.txt", "r");
-  // if (fp == NULL)
-  //{
-  // printf("open test file failed\n");
-  // return 0;
-  //}
-  // FILE *fault = fopen("/home/talps/gitrepo/ysyx-workbench/nemu/tools/gen-expr/fault.txt", "w");
-  // while (fgets(buf, 65536 + 128, fp) != NULL)
-  //{
-  // sscanf(buf, "%u %s", &ans, expression);
-  // printf("expression:\n");
-  // printf("%s\n", expression);
-  // eval = expr(expression, &success);
-  // if (success)
-  //{
-  // if (eval == ans)
-  //{
-  // printf("correct \n");
-  //}
-  // else
-  //{
-  // fprintf(fault, "%s", buf);
-  // printf("incorrect \n");
-  //}
-  //}
-  //}
+  char buf[65536 + 128];
+  uint32_t ans = 0, eval = 0;
+  char expression[65536] = "";
+  bool success = false;
+  FILE *fp = fopen("/home/talps/gitrepo/ysyx-workbench/nemu/tools/gen-expr/test.txt", "r");
+  if (fp == NULL)
+  {
+    printf("open test file failed\n");
+    return 0;
+  }
+  FILE *fault = fopen("/home/talps/gitrepo/ysyx-workbench/nemu/tools/gen-expr/fault.txt", "w");
+  while (fgets(buf, 65536 + 128, fp) != NULL)
+  {
+    sscanf(buf, "%u %s", &ans, expression);
+    printf("expression:\n");
+    printf("%s\n", expression);
+    eval = expr(expression, &success);
+    if (success)
+    {
+      if (eval == ans)
+      {
+        printf("correct \n");
+      }
+      else
+      {
+        fprintf(fault, "%s", buf);
+        printf("incorrect \n");
+      }
+    }
+  }
 
   /* Start engine. */
   engine_start();

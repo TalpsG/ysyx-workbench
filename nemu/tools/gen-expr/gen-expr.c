@@ -65,24 +65,37 @@ void gen_rand_op()
     return;
   }
   int t = rand() & 3;
-  char op = '\0';
   switch (t)
   {
   case 0:
-    op = '+';
+    strcat(buf, "+");
+    buf_p++;
     break;
   case 1:
-    op = '-';
+    strcat(buf, "-");
+    buf_p++;
     break;
   case 2:
-    op = '*';
+    strcat(buf, "*");
+    buf_p++;
     break;
   case 3:
-    op = '/';
+    strcat(buf, "/");
+    buf_p++;
+    break;
+  case 4:
+    strcat(buf, "==");
+    buf_p += 2;
+    break;
+  case 5:
+    strcat(buf, "!=");
+    buf_p += 2;
+    break;
+  case 6:
+    strcat(buf, "&&");
+    buf_p += 2;
     break;
   }
-  buf[buf_p++] = op;
-  buf[buf_p] = '\0';
 }
 static void gen_rand_expr()
 {
