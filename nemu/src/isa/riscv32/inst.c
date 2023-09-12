@@ -18,7 +18,7 @@
 #include <cpu/ifetch.h>
 #include <cpu/decode.h>
 
-#define R(i) gpr(i)
+#define R(i) gpr(i)           //寄存器
 #define Mr vaddr_read
 #define Mw vaddr_write
 

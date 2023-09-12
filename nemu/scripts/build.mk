@@ -3,14 +3,16 @@
 # Add necessary options if the target is a shared library
 ifeq ($(SHARE),1)
 SO = -so
-CFLAGS  += -fPIC -fvisibility=hidden
+CFLAGS  += -fPIC -fvisibility=hidden 
+
+
 LDFLAGS += -shared -fPIC
 endif
 
 WORK_DIR  = $(shell pwd)
 BUILD_DIR = $(WORK_DIR)/build
 
-INC_PATH := $(WORK_DIR)/include $(INC_PATH)
+INC_PATH := $(WORK_DIR)/include $(INC_PATH) 
 OBJ_DIR  = $(BUILD_DIR)/obj-$(NAME)$(SO)
 BINARY   = $(BUILD_DIR)/$(NAME)$(SO)
 
@@ -22,7 +24,7 @@ CXX := g++
 endif
 LD := $(CXX)
 INCLUDES = $(addprefix -I, $(INC_PATH))
-CFLAGS  := -O2 -MMD -Wall -Werror $(INCLUDES) $(CFLAGS)
+CFLAGS  := -O2 -MMD -Wall -Werror $(INCLUDES) $(CFLAGS) 
 LDFLAGS := -O2 $(LDFLAGS)
 
 OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.o) $(CXXSRC:%.cc=$(OBJ_DIR)/%.o)
@@ -45,7 +47,7 @@ $(OBJ_DIR)/%.o: %.cc
 
 # Some convenient rules
 
-.PHONY: app clean
+.PHONY: app clean count
 
 app: $(BINARY)
 
@@ -55,3 +57,10 @@ $(BINARY): $(OBJS) $(ARCHIVES)
 
 clean:
 	-rm -rf $(BUILD_DIR)
+# 删除可执行文件,便于统计行数
+	-rm -rf $(NEMU_HOME)/tools/gen-expr/build
+
+count:clean
+	
+	
+
