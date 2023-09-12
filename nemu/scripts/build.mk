@@ -61,6 +61,7 @@ clean:
 	-rm -rf $(NEMU_HOME)/tools/gen-expr/build
 
 count:clean
+	/home/talps/gitrepo/ysyx-workbench/nemu/count.sh
 	
 	
 
