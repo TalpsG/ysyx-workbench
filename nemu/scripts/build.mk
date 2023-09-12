@@ -47,7 +47,7 @@ $(OBJ_DIR)/%.o: %.cc
 
 # Some convenient rules
 
-.PHONY: app clean
+.PHONY: app clean count
 
 app: $(BINARY)
 
@@ -59,3 +59,9 @@ clean:
 	-rm -rf $(BUILD_DIR)
 # 删除可执行文件,便于统计行数
 	-rm -rf $(NEMU_HOME)/tools/gen-expr/build
+
+count:clean
+	/home/talps/gitrepo/ysyx-workbench/nemu/count.sh
+	
+	
+
