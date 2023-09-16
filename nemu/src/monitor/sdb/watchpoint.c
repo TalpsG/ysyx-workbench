@@ -15,6 +15,7 @@
 
 #include "sdb.h"
 
+#include <cpu/cpu.h>
 #define NR_WP 32
 
 static WP wp_pool[NR_WP] = {};
@@ -148,7 +149,7 @@ void check_wp()
   if (isdef == true)
   {
     nemu_state.state = NEMU_STOP;
-    printf("watchpoints triggered\n");
+    printf("watchpoints triggered \n");
   }
   print_WPs();
 }
