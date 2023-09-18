@@ -18,7 +18,7 @@ define git_soft_checkout
 	git checkout --detach -q && git reset --soft $(1) -q -- && git checkout $(1) -q --
 endef
 
-# prototype: git_commit(msg)
+# prototype: (msg)
 define git_commit
 	-@flock $(LOCK_DIR) $(MAKE) -C $(YSYX_HOME) .git_commit MSG='$(1)'
 	-@sync
