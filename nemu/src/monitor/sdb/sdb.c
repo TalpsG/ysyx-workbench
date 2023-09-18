@@ -54,6 +54,7 @@ static int cmd_q(char *args)
 {
   if (nemu_state.state == NEMU_STOP)
   {
+    // 如果在断点处想要推出程序，就将nemu的state改为quit,这样程序的返回值为0
     nemu_state.state = NEMU_QUIT;
   }
   return -1;
