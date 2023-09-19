@@ -68,11 +68,9 @@ enum
     printf("a   : %8x\n",a);\
     uint32_t b = BITS(i, 20, 20)<<11;     \
     printf("b   : %8x\n",b);\
-    uint32_t c = BITS(i, 30, 25)<<5;     \
+    uint32_t c = BITS(i, 30, 21)<<1;     \
     printf("c   : %8x\n",c);\
-    uint32_t d = BITS(i, 24, 21)<<1;     \
-    printf("d   : %8x\n",d);\
-    *imm = SEXT(sign|a|b|c|d,21); \
+    *imm = SEXT(sign|a|b|c,21); \
     printf("imm : %8x\n",*imm);\
   } while (0)
 
