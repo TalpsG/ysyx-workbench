@@ -90,14 +90,14 @@ enum
 
 
 
-
-
-static void decode_operand(Decode *s, int *rd, word_t *src1, word_t *src2, word_t *imm, int type)
+static void decode_operand(Decode *s, int *rd, word_t *src1, word_t *src2, word_t *imm, word_t *shamt,int type)
 {
   uint32_t i = s->isa.inst.val;
   int rs1 = BITS(i, 19, 15);
   int rs2 = BITS(i, 24, 20);
+  *shamt = BITS(i,25,20);
   *rd = BITS(i, 11, 7);
+
   switch (type)
   {
   case TYPE_I:
@@ -130,13 +130,13 @@ static void decode_operand(Decode *s, int *rd, word_t *src1, word_t *src2, word_
 static int decode_exec(Decode *s)
 {
   int rd = 0;
-  word_t src1 = 0, src2 = 0, imm = 0;
+  word_t src1 = 0, src2 = 0, imm = 0,shamt = 0;
   s->dnpc = s->snpc;
 
 #define INSTPAT_INST(s) ((s)->isa.inst.val)
 #define INSTPAT_MATCH(s, name, type, ... /* execute body */)         \
   {                                                                  \
-    decode_operand(s, &rd, &src1, &src2, &imm, concat(TYPE_, type)); \
+    decode_operand(s, &rd, &src1, &src2, &imm, &shamt,concat(TYPE_, type)); \
     __VA_ARGS__;                                                     \
   }
 
@@ -172,6 +172,8 @@ static int decode_exec(Decode *s)
   //set if less than immediate unsigned 
   INSTPAT("?????? ?????? ????? 011 ????? 0010011",sltiu,I,R(rd)=(src1<imm)?1:0);
   INSTPAT("?????? ?????? ????? 100 ????? 0010011",xori,I,R(rd)=src1^imm);
+  // shift right arithmatic immediate
+  INSTPAT("010000 0????? ????? 101 ????? 0010011",srai,I,int32_t temp = src1;R(rd)=temp>>shamt);
 
 
 
