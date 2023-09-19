@@ -18,6 +18,7 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 #include <memory/paddr.h>
+#include <string.h>
 #include "sdb.h"
 static int is_batch_mode = false;
 
@@ -120,20 +121,27 @@ static int cmd_x(char *args)
   }
   // just for debug
 
-  char *n = strtok(args, " ");
-  char *addp = n + strlen(n) + 1;
-  if (addp == NULL)
+  int size = strlen(args);
+  int pos = -1;
+  for(int i=0;i<size;i++){
+    if(args[i]==' '){
+      pos = i;
+    }
+  }
+
+  if (pos == -1)
   {
     printf("u need to give a memory address\n");
     return 0;
   }
+  args[pos]='\0';
 
   // 取出要查看的内存长度
-  int size = atoi(n);
+  size = atoi(args+pos+1);
 
   // 内存地址起始位置
   bool success;
-  paddr_t add = expr(addp, &success);
+  paddr_t add = expr(args, &success);
   if (!success)
   {
     printf("bad address expression\n");
