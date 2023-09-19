@@ -32,6 +32,7 @@ enum
   TYPE_S,
   TYPE_J,
   TYPE_B,
+  TYPE_R,
   TYPE_N, // none
 };
 
@@ -120,6 +121,10 @@ static void decode_operand(Decode *s, int *rd, word_t *src1, word_t *src2, word_
     src1R();
     src2R();
     break;
+  case TYPE_R:
+    src1R();
+    src2R();
+    break;
   }
 }
 
@@ -179,6 +184,11 @@ static int decode_exec(Decode *s)
   // B
   INSTPAT("??????? ????? ????? 001 ????? 1100011",bne,B,s->dnpc = (src1==src2)?s->dnpc:(s->pc+imm));
 
+
+
+
+  // R
+  INSTPAT("0000001 ????? ????? 000 ????? 0110011",mul,R,R(rd)=src1*src2);
 
 
   
