@@ -31,6 +31,7 @@ enum
   TYPE_U,
   TYPE_S,
   TYPE_J,
+  TYPE_B,
   TYPE_N, // none
 };
 
@@ -59,6 +60,12 @@ enum
   {                                                          \
     *imm = (SEXT(BITS(i, 31, 25), 7) << 5) | BITS(i, 11, 7); \
   } while (0)
+
+
+
+
+
+  //以下为wwt实现的
 #define immJ()                        \
   do                                  \
   {                                   \
@@ -68,6 +75,21 @@ enum
     uint32_t c = BITS(i, 30, 21)<<1;     \
     *imm = SEXT(sign|a|b|c,21); \
   } while (0)
+
+#define immB()                                               \
+  do                                                         \
+  {                                                          \
+    uint32_t a= BITS(i, 31, 31)<<12;  \
+    uint32_t b= BITS(i, 7 , 7)<<11;  \
+    uint32_t c= BITS(i, 30 , 25)<<5;  \
+    uint32_t d= BITS(i, 11 , 8)<<1;  \
+    *imm = SEXT(a|b|c|d, 13); \
+  } while (0)
+
+
+
+
+
 
 static void decode_operand(Decode *s, int *rd, word_t *src1, word_t *src2, word_t *imm, int type)
 {
@@ -91,6 +113,11 @@ static void decode_operand(Decode *s, int *rd, word_t *src1, word_t *src2, word_
     break;
   case TYPE_J:
     immJ();
+    break;
+  case TYPE_B:
+    immB();
+    src1R();
+    src2R();
     break;
   }
 }
@@ -127,6 +154,7 @@ static int decode_exec(Decode *s)
   INSTPAT("0000000 00001 00000 000 00000 11100 11", ebreak, N, NEMUTRAP(s->pc, R(10))); // R(10) is $a0
   /*
   dummy 实现所需的指令
+  注意要给dnpc赋值，当前pc值为pc
   */
   // U
 
@@ -144,6 +172,12 @@ static int decode_exec(Decode *s)
 
   // S
   INSTPAT("??????? ????? ????? 010 ????? 0100011",sw,S,Mw(src1+imm, 4, src2));
+
+
+  // B
+  INSTPAT("??????? ????? ????? 001 ?????? 1100011",bne,B,s->dnpc = src1!=src2?s->dnpc:(s->pc+imm));
+
+
 
   
 
