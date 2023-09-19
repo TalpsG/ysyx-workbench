@@ -89,7 +89,7 @@ enum
 
 
 
-
+//添加了一个参数shamt
 static void decode_operand(Decode *s, int *rd, word_t *src1, word_t *src2, word_t *imm, word_t *shamt,int type)
 {
   uint32_t i = s->isa.inst.val;
