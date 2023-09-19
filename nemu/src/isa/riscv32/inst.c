@@ -14,9 +14,11 @@
  ***************************************************************************************/
 
 #include "local-include/reg.h"
+#include "macro.h"
 #include <cpu/cpu.h>
 #include <cpu/ifetch.h>
 #include <cpu/decode.h>
+#include <stdint.h>
 
 #define R(i) gpr(i) // 寄存器
 #define Mr vaddr_read
@@ -27,6 +29,7 @@ enum
   TYPE_I,
   TYPE_U,
   TYPE_S,
+  TYPE_J,
   TYPE_N, // none
 };
 
@@ -55,6 +58,16 @@ enum
   {                                                          \
     *imm = (SEXT(BITS(i, 31, 25), 7) << 5) | BITS(i, 11, 7); \
   } while (0)
+#define immJ()                        \
+  do                                  \
+  {                                   \
+    uint32_t sign= BITS(i, 31, 31)<<20;   \
+    uint32_t a = BITS(i, 19, 12)<<12;     \
+    uint32_t b = BITS(i, 20, 20)<<11;     \
+    uint32_t c = BITS(i, 30, 25)<<5;     \
+    uint32_t d = BITS(i, 24, 21)<<1;     \
+    *imm = SEXT(sign|a|b|c|d,21); \
+  } while (0)
 
 static void decode_operand(Decode *s, int *rd, word_t *src1, word_t *src2, word_t *imm, int type)
 {
@@ -75,6 +88,9 @@ static void decode_operand(Decode *s, int *rd, word_t *src1, word_t *src2, word_
     src1R();
     src2R();
     immS();
+    break;
+  case TYPE_J:
+    immJ();
     break;
   }
 }
@@ -110,6 +126,25 @@ static int decode_exec(Decode *s)
 
   INSTPAT("0000000 00001 00000 000 00000 11100 11", ebreak, N, NEMUTRAP(s->pc, R(10))); // R(10) is $a0
   INSTPAT("??????? ????? ????? ??? ????? ????? ??", inv, N, INV(s->pc));
+  /*
+  dummy 实现所需的指令
+  */
+  // U
+
+
+  // I
+  INSTPAT("?????? ?????? ????? 000 ????? 0010011",addi,I,R(rd)=imm+src1);
+
+
+
+  // J
+  INSTPAT("???????? ???????? ???? ????? 1101111",jal,J,R(rd)=s->pc+4;s->pc += imm);
+
+
+
+  // S
+  INSTPAT("??????? ????? ????? 010 ????? 0100011",sw,S,Mw(R(src1)+imm, 4, R(src2)));
+
   INSTPAT_END();
 
   R(0) = 0; // reset $zero to 0
