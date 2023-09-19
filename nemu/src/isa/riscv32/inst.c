@@ -63,15 +63,10 @@ enum
   do                                  \
   {                                   \
     uint32_t sign= BITS(i, 31, 31)<<20;   \
-    printf("sign: %8x\n",sign);\
     uint32_t a = BITS(i, 19, 12)<<12;     \
-    printf("a   : %8x\n",a);\
     uint32_t b = BITS(i, 20, 20)<<11;     \
-    printf("b   : %8x\n",b);\
     uint32_t c = BITS(i, 30, 21)<<1;     \
-    printf("c   : %8x\n",c);\
     *imm = SEXT(sign|a|b|c,21); \
-    printf("imm : %8x\n",*imm);\
   } while (0)
 
 static void decode_operand(Decode *s, int *rd, word_t *src1, word_t *src2, word_t *imm, int type)
