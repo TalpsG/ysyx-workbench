@@ -150,6 +150,6 @@ void check_wp()
   {
     nemu_state.state = NEMU_STOP;
     printf("watchpoints triggered \n");
+    print_WPs();
   }
-  print_WPs();
 }
