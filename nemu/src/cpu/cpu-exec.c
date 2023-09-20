@@ -13,6 +13,7 @@
  * See the Mulan PSL v2 for more details.
  ***************************************************************************************/
 
+#include "utils.h"
 #include <cpu/cpu.h>
 #include <cpu/decode.h>
 #include <cpu/difftest.h>
@@ -49,6 +50,7 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc)
   IFDEF(CONFIG_DIFFTEST, difftest_step(_this->pc, dnpc));
 #ifdef CONFIG_WATCHPOINT
 #include <../src/monitor/sdb/sdb.h>
+  printf("asm : %s\n",_this->logbuf);
   check_wp();
 #endif
 }
