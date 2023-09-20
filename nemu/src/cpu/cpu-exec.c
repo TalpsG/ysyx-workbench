@@ -13,6 +13,7 @@
  * See the Mulan PSL v2 for more details.
  ***************************************************************************************/
 
+#include "isa.h"
 #include "utils.h"
 #include <cpu/cpu.h>
 #include <cpu/decode.h>
@@ -50,7 +51,6 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc)
   IFDEF(CONFIG_DIFFTEST, difftest_step(_this->pc, dnpc));
 #ifdef CONFIG_WATCHPOINT
 #include <../src/monitor/sdb/sdb.h>
-  printf("asm : %s\n",_this->logbuf);
   check_wp();
 #endif
 }
@@ -100,6 +100,9 @@ static void execute(uint64_t n)
     if (nemu_state.state != NEMU_RUNNING)
       break;
     IFDEF(CONFIG_DEVICE, device_update());
+    printf("asm: %s \n",s.logbuf);
+    isa_reg_display();
+    printf("\n");
   }
 }
 
