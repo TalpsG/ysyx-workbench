@@ -100,9 +100,9 @@ static void execute(uint64_t n)
     if (nemu_state.state != NEMU_RUNNING)
       break;
     IFDEF(CONFIG_DEVICE, device_update());
-    //printf("asm: %s \n",s.logbuf);
-    //isa_reg_display();
-    //printf("\n");
+    printf("asm: %s \n",s.logbuf);
+    isa_reg_display();
+    printf("\n");
   }
 }
 
