@@ -31,9 +31,7 @@ int sprintf(char *out, const char *fmt, ...) {
         continue;
       }
       if(fmt[i+1] == 'd'){
-          int t = va_arg(ap,int);
-          char *p = INT2STR(t);
-          printf("%d\n",t);
+          char *p = INT2STR(va_arg(ap,int));
           i += 2;
           num ++;
           int len = strlen(p);
@@ -44,7 +42,6 @@ int sprintf(char *out, const char *fmt, ...) {
       }
       if(fmt[i+1] == 's'){
           char *p = va_arg(ap,char *);
-          printf("%s\n",p);
           i += 2;
           num ++;
           int len = strlen(p);
