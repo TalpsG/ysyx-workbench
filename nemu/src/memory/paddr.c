@@ -67,10 +67,10 @@ word_t paddr_read(paddr_t addr, int len) {
   printf(" read  , add: 0x%08x len:%2d",addr,len);
   word_t res =0 ; 
   if (likely(in_pmem(addr))) res = pmem_read(addr, len);
-  printf(" ,data: 0x%08x",res);
+  printf(" ,data: 0x%08x\n",res);
   return res;
   IFDEF(CONFIG_DEVICE, res = mmio_read(addr, len));
-  printf(" ,data: 0x%08x",res);
+  printf(" ,data: 0x%08x\n",res);
   return res;
   out_of_bound(addr);
   return 0;
