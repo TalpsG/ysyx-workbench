@@ -34,7 +34,6 @@ int sprintf(char *out, const char *fmt, ...) {
           int t = va_arg(ap, int);
           char *p = INT2STR(t);
           t = t+1;// 这条指令没有意义，仅仅是为了让编译器不报unused的错误
-          
           i += 2;
           num ++;
           int len = strlen(p);
