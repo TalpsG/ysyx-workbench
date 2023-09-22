@@ -19,6 +19,8 @@
 #include <cpu/decode.h>
 #include <cpu/difftest.h>
 #include <locale.h>
+#include <stdio.h>
+#include <string.h>
 
 /* The assembly code of instructions executed is only output to the screen
  * when the number of instructions executed is less than this value.
@@ -34,14 +36,38 @@ uint64_t g_nr_guest_inst = 0;
 static uint64_t g_timer = 0; // unit: us
 static bool g_print_step = false;
 
+/*
+ringbuffer for log
+*/
+#define BUF_SIZE 200
+#define LINE_SIZE 200
+char ringbuf[BUF_SIZE][LINE_SIZE];
+int pos=0;
+
 void device_update();
 
+void init_ringbuf(){
+  memset(ringbuf,0, BUF_SIZE*LINE_SIZE);
+}
+
+void flush_ringbuf(){
+  for(int i=0;i<BUF_SIZE&&strlen(ringbuf[i])!=0;i++){
+    printf("%s",ringbuf[i]);
+  }
+}
 static void trace_and_difftest(Decode *_this, vaddr_t dnpc)
 {
 #ifdef CONFIG_ITRACE_COND
   if (ITRACE_COND)
   {
-    log_write("%s\n", _this->logbuf);
+    //log_write("%s\n", _this->logbuf);
+    if(nemu_state.state == NEMU_ABORT){
+      sprintf(ringbuf[pos] , " ---> %s\n",_this->logbuf) ;
+      flush_ringbuf();
+    }else{
+      sprintf(ringbuf[pos] , "      %s\n",_this->logbuf) ;
+      pos = (pos+1)%BUF_SIZE;
+    }
   }
 #endif
   if (g_print_step)
