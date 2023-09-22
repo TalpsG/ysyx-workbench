@@ -4,7 +4,7 @@
 #include <stdarg.h>
 
 #if !defined(__ISA_NATIVE__) || defined(__NATIVE_USE_KLIB__)
-#define INT2STR(x) #x
+#define INT2STR(x) #x 
 int printf(const char *fmt, ...) {
   panic("Not implemented");
 }
@@ -31,7 +31,10 @@ int sprintf(char *out, const char *fmt, ...) {
         continue;
       }
       if(fmt[i+1] == 'd'){
-          char *p = INT2STR(va_arg(ap,int));
+          int t = va_arg(ap, int);
+          char *p = INT2STR(t);
+          t = t+1;// 这条指令没有意义，仅仅是为了让编译器不报unused的错误
+          
           i += 2;
           num ++;
           int len = strlen(p);
