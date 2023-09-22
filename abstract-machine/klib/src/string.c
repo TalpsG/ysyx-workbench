@@ -6,16 +6,17 @@
 
 size_t strlen(const char *s) {
   size_t i;
-  for(i = 0;*s!='\0';i++);
+  for(i = 0;s[i]!='\0';i++);
   return i;
 }
 
 char *strcpy(char *dst, const char *src) {
-  char *temp = dst;
-  while(*src!='\0'){
-    *(temp++) = *(src++);
+  int i = 0;
+  while(src[i]!='\0'){
+    dst[i] = src[i];
+    i++;
   }
-  *temp = '\0';
+  dst[i] = '\0';
   return dst;
 }
 
@@ -42,7 +43,11 @@ char *strcat(char *dst, const char *src) {
 
 int strcmp(const char *s1, const char *s2) {
   while(*s1!='\0'&&*s2!='\0'){
-    if(*s1==*s2) continue;
+    if(*s1==*s2) {
+      s1++;s2++;
+      continue;
+    }
+
     return *s1-*s2;
   }
   if(*s1=='\0'&&*s2=='\0')
