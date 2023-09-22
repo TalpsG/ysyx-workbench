@@ -15,7 +15,8 @@
 
 #include <isa.h>
 #include <memory/paddr.h>
-
+#include <cpu/cpu.h>
+void init_ringbuf();
 void init_rand();
 void init_log(const char *log_file);
 void init_mem();
@@ -101,6 +102,8 @@ static int parse_args(int argc, char *argv[]) {
 void init_monitor(int argc, char *argv[]) {
   /* Perform some global initialization. */
 
+  /* Init ring buffer of instructions  */
+  init_ringbuf();
   /* Parse arguments. */
   parse_args(argc, argv);
 
