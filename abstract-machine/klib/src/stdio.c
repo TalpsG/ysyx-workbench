@@ -4,7 +4,22 @@
 #include <stdarg.h>
 
 #if !defined(__ISA_NATIVE__) || defined(__NATIVE_USE_KLIB__)
-#define INT2STR(x) #x 
+void int2str(int i,char *p){                                              
+    char temp[20];
+    int isNeg = i<0;
+    int pos=0;
+    while(i!=0){
+        temp[pos++] = i%10+'0';
+        i=i/10;
+    }
+    if(isNeg) temp[pos++] = '-';
+    p[pos] = '\0';
+    int j = 0;
+    while(pos>0){
+        p[j++] = temp[--pos];
+    }
+}
+
 int printf(const char *fmt, ...) {
   panic("Not implemented");
 }
@@ -12,6 +27,7 @@ int printf(const char *fmt, ...) {
 int vsprintf(char *out, const char *fmt, va_list ap) {
   panic("Not implemented");
 }
+
 
 int sprintf(char *out, const char *fmt, ...) {
   //todo
@@ -24,16 +40,17 @@ int sprintf(char *out, const char *fmt, ...) {
   va_start(ap,fmt);                                                                                                                                       
   int num = 0;
   int op = 0;
-  for(int i=0;i<=strlen(fmt);i++){
+  for(int i=0;i<=strlen(fmt);){
       if(fmt[i]!='%') {
         out[op] = fmt[i];
         op++;
+        i++;
         continue;
       }
       if(fmt[i+1] == 'd'){
           int t = va_arg(ap, int);
-          char *p = INT2STR(t);
-          t = t+1;// 这条指令没有意义，仅仅是为了让编译器不报unused的错误
+          char p[20];
+          int2str(t,p );
           i += 2;
           num ++;
           int len = strlen(p);
