@@ -68,19 +68,44 @@ int strncmp(const char *s1, const char *s2, size_t n) {
 }
 
 void *memset(void *s, int c, size_t n) {
-  panic("Not implemented");
+  char *p = s;
+  for(size_t i = 0; i<n ;i++){
+    p[i] = c;
+  }
+  return s;
 }
 
 void *memmove(void *dst, const void *src, size_t n) {
-  panic("Not implemented");
+  char temp[n];
+  char *pdst = dst;
+  const char *psrc = src;
+  for(size_t i=0;i<n;i++){
+    temp[i] = psrc[i];
+  }
+  for(size_t i=0;i<n;i++){
+    pdst[i] = temp[i];
+  }
+  return dst;
 }
 
 void *memcpy(void *out, const void *in, size_t n) {
-  panic("Not implemented");
+  char *pout = out;
+  const char *pin = in;
+  for(size_t i =0;i<n;i++){
+    pout[i] = pin[i];
+  }
+  return out;
 }
 
 int memcmp(const void *s1, const void *s2, size_t n) {
-  panic("Not implemented");
+  if(n == 0) return 0;
+  const unsigned char *p1 = s1,*p2 = s2;
+  for(size_t i = 0;i<n;i++){
+    if(p1[i] == p2[i]) continue;
+    return p1[i]-p2[i];
+  }
+  return 0;
+
 }
 
 #endif
