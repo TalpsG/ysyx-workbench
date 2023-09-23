@@ -273,7 +273,7 @@ static int decode_exec(Decode *s)
   INSTPAT("??????? ????? ????? ??? ????? ????? ??", inv, N, INV(s->pc)); //检测到这条宏nemu就变成abort了，所以他应该放在最后
   INSTPAT_END();
   if(s->snpc!=s->dnpc){
-    printf("%s  jump!\n",s->logbuf);
+    printf("%8x,%8x , %s  jump!\n",s->snpc,s->dnpc,s->logbuf);
   }
 
   R(0) = 0; // reset $zero to 0
