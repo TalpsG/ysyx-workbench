@@ -19,6 +19,7 @@
 #include <cpu/cpu.h>
 #include <cpu/ifetch.h>
 #include <cpu/decode.h>
+#include <stdint.h>
 #include <stdio.h>
 
 #define R(i) gpr(i) // 寄存器

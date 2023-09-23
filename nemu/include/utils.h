@@ -17,6 +17,7 @@
 #define __UTILS_H__
 
 #include <common.h>
+#include <elf.h>
 
 // ----------- state -----------
 
@@ -75,3 +76,11 @@ uint64_t get_time();
 
 
 #endif
+
+// ftrace
+//struct func_info{
+  //char name[16];
+  //Elf32_Addr value;
+  //uint32_t size;
+  //struct func_info * next;
+//};

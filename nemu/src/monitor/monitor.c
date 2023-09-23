@@ -17,18 +17,12 @@
 #include <memory/paddr.h>
 #include <cpu/cpu.h>
 #include <stdio.h>
-#include <elf.h>
 #include <stdlib.h>
 #include <string.h>
+#include <debug.h>
 
 //for elf
 static char *elf = NULL;
-struct func_info{
-  char name[16];
-  Elf32_Addr value;
-  uint32_t size;
-  struct func_info * next;
-};
 struct func_info *head = NULL;
 int func_trace = 0;
 

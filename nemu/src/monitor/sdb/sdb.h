@@ -17,6 +17,7 @@
 #define __SDB_H__
 
 #include <common.h>
+#include <elf.h>
 typedef struct watchpoint
 {
     int NO;
@@ -27,6 +28,7 @@ typedef struct watchpoint
     uint32_t old;
 
 } WP;
+
 word_t expr(char *e, bool *success);
 #ifdef CONFIG_WATCHPOINT
 void add_wp(char *name, WP *wp, uint32_t ans);
