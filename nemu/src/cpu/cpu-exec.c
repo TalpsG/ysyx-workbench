@@ -67,7 +67,7 @@ void check_call(Decode s){
         strcat(buf," ");
       }
       char tail[200];
-      sprintf(tail," ret [%6s@0x%08x]\n",temp->name,temp->value);
+      sprintf(tail,"ret  [%6s@0x%08x]\n",temp->name,temp->value);
       strcat(buf, tail);
       strcat(call_buff, buf);
       func_trace--;
