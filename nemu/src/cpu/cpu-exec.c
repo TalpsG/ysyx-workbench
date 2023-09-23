@@ -57,8 +57,6 @@ void check_call(Decode s){
       char tail[200];
       sprintf(tail,"call [%6s@0x%08x]\n",temp->name,temp->value);
       strcat(buf, tail);
-      sprintf(tail,"%s\n",s.logbuf);
-      strcat(buf, tail);
       strcat(call_buff, buf);
       func_trace++;
       break;
