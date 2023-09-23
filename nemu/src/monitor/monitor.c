@@ -28,6 +28,7 @@ struct func_info{
   struct func_info * next;
 };
 struct func_info *head = NULL;
+int func_trace = 0;
 
 #include <stdio.h>  
 #include <unistd.h>  
@@ -50,6 +51,22 @@ static void load_elf(){
   char *elf = mmap(NULL, fs.st_size, PROT_READ  , MAP_PRIVATE, fd,0);
   close(fd);
   memcpy(p, elf, sizeof(Elf32_Ehdr));
+  Elf32_Shdr *sp = (Elf32_Shdr *)malloc(sizeof(Elf32_Shdr));
+
+  char *strtab = (char *)(sp->sh_offset+elf);
+    for(int i=0;i<p->e_shnum;i++){
+        memcpy(sp,elf+p->e_shoff+i*sizeof(Elf32_Shdr),sizeof(Elf32_Shdr));
+        if(sp->sh_type == SHT_SYMTAB){
+            int size = sp->sh_size/sp->sh_entsize;
+            char *table = elf+sp->sh_offset;
+            Elf32_Sym *sym = (Elf32_Sym*)malloc(sizeof(Elf32_Sym));
+            for(int i=0;i<size;i++){
+                memcpy(sym, table+i*sp->sh_entsize,sp->sh_entsize);
+                if(sym->st_info!=18) continue;
+                printf("add:%08x size:%x : %s\n",sym->st_value,sym->st_size,strtab+sym->st_name);
+            }
+        }
+    }
   
 }
 
