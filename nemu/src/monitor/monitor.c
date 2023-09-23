@@ -18,6 +18,8 @@
 #include <cpu/cpu.h>
 #include <stdio.h>
 #include <elf.h>
+#include <stdlib.h>
+#include <string.h>
 
 //for elf
 static char *elf = NULL;
@@ -30,12 +32,21 @@ struct func_info{
 struct func_info *head = NULL;
 int func_trace = 0;
 
+
 #include <stdio.h>  
 #include <unistd.h>  
 #include <fcntl.h>  
 #include <sys/types.h>  
 #include <sys/stat.h> 
 #include <sys/mman.h> //mmap函数的必要头文件
+void new_func_info(char *name,Elf32_Addr add,uint32_t size){
+  struct func_info *temp = malloc(sizeof(struct func_info));
+  strcpy(temp->name, name);
+  temp->value = add;
+  temp->size = size;
+  temp->next = head;
+  head = temp->next;
+}
 static void load_elf(){
   if(elf==NULL){
     printf("no elf file\n");
@@ -48,9 +59,6 @@ static void load_elf(){
   char *elf = mmap(NULL, fs.st_size, PROT_READ  , MAP_PRIVATE, fd,0);
   close(fd);
   memcpy(p, elf, sizeof(Elf32_Ehdr));
-  
-
-
 
 
   Elf32_Shdr *sp = (Elf32_Shdr *)malloc(sizeof(Elf32_Shdr));
@@ -70,13 +78,19 @@ static void load_elf(){
           for(int i=0;i<size;i++){
               memcpy(sym, table+i*sp->sh_entsize,sp->sh_entsize);
               if(sym->st_info!=18) continue;
-              printf("add:%08x size:%x : %s\n",sym->st_value,sym->st_size,strtab+sym->st_name);
+              new_func_info(strtab+sym->st_name, sym->st_value, sym->st_size);
           }
+          free (sym);
           break;
       }
   }
-  
-
+  free(sp);
+  free(p);
+  struct func_info *temp = head;
+  while(temp!=NULL){
+    printf("name:%10s,add:0x%08x,size:0x%04x\n",temp->name,temp->value,temp->size);
+    temp = temp->next;
+  }
 
     
   
