@@ -53,6 +53,8 @@ void check_call(Decode s){
         printf(" ");
       }
       printf("call [%6s@0x%08x]\n",temp->name,temp->value);
+      printf("%s\n",s.logbuf);
+
       break;
     }
   }
@@ -128,9 +130,7 @@ static void exec_once(Decode *s, vaddr_t pc)
   p[0] = '\0'; // the upstream llvm does not support loongarch32r
 #endif
 #endif
-  if(s->snpc!=s->dnpc){
-    printf("snpc:%08x ,dnpc:%08x, %s\n",s->snpc,s->dnpc,s->logbuf);
-  }
+  check_call(*s);
 }
 
 static void execute(uint64_t n)
