@@ -88,9 +88,6 @@ static void exec_once(Decode *s, vaddr_t pc)
   s->pc = pc;
   s->snpc = pc;
   isa_exec_once(s);
-  if(s->snpc!=s->dnpc){
-    printf("snpc:%08x ,dnpc:%08x, %s\n",s->snpc,s->dnpc,s->logbuf);
-  }
   cpu.pc = s->dnpc;
 #ifdef CONFIG_ITRACE
   char *p = s->logbuf;
@@ -118,6 +115,9 @@ static void exec_once(Decode *s, vaddr_t pc)
   p[0] = '\0'; // the upstream llvm does not support loongarch32r
 #endif
 #endif
+  if(s->snpc!=s->dnpc){
+    printf("snpc:%08x ,dnpc:%08x, %s\n",s->snpc,s->dnpc,s->logbuf);
+  }
 }
 
 static void execute(uint64_t n)
