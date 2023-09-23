@@ -45,7 +45,7 @@ void new_func_info(char *name,Elf32_Addr add,uint32_t size){
   temp->value = add;
   temp->size = size;
   temp->next = head;
-  head = temp->next;
+  head = temp;
 }
 static void load_elf(){
   if(elf==NULL){
@@ -91,9 +91,6 @@ static void load_elf(){
     printf("name:%10s,add:0x%08x,size:0x%04x\n",temp->name,temp->value,temp->size);
     temp = temp->next;
   }
-
-    
-  
 }
 
 void init_ringbuf();
