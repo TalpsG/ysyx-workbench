@@ -60,7 +60,7 @@ void check_call(Decode s){
       func_trace++;
       break;
     }
-    else if((s.isa.inst.val ^ 0x00008067 )== 0){
+    if((s.isa.inst.val ^ 0x00008067 )== 0 && temp->value <= s.pc && (temp->value+temp->size)>= s.pc){
       func_trace--;
       char buf[300]={'\0'};
       sprintf(buf,"%08x :",s.pc);
@@ -68,7 +68,7 @@ void check_call(Decode s){
         strcat(buf," ");
       }
       char tail[200];
-      sprintf(tail,"ret  [%6s@0x%08x]\n",temp->name,temp->value);
+      sprintf(tail,"ret  [%6s]\n",temp->name);
       strcat(buf, tail);
       strcat(call_buff, buf);
       break;
