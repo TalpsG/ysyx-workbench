@@ -43,7 +43,20 @@ ringbuffer for log
 #define LINE_SIZE 200
 char ringbuf[BUF_SIZE][LINE_SIZE];
 int pos=0;
-
+void check_call(Decode s){
+  struct func_info *temp = func_head;
+  while(temp!=NULL){
+    if(s.dnpc ==  temp->value){
+      int i = func_trace;
+      printf("%08x :",s.pc);
+      for(int j = 0;j<i;j++){
+        printf(" ");
+      }
+      printf("call [%6s@0x%08x]\n",temp->name,temp->value);
+      break;
+    }
+  }
+}
 void device_update();
 
 void init_ringbuf(){

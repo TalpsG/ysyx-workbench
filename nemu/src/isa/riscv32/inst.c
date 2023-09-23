@@ -27,6 +27,10 @@
 #define Mr vaddr_read
 #define Mw vaddr_write
 
+extern struct func_info *func_head;
+extern int func_trace;
+
+
 enum
 {
   TYPE_I,
