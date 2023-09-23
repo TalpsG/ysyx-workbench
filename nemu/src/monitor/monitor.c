@@ -18,6 +18,7 @@
 #include <cpu/cpu.h>
 #include <stdio.h>
 #include <elf.h>
+#include <stdlib.h>
 
 //for elf
 static char *elf = NULL;
