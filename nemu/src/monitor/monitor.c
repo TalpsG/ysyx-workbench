@@ -63,7 +63,7 @@ static void load_elf(){
             for(int i=0;i<size;i++){
                 memcpy(sym, table+i*sp->sh_entsize,sp->sh_entsize);
                 if(sym->st_info!=18) continue;
-                printf("add:%08x size:%x : %s\n",sym->st_value,sym->st_size,strtab+sym->st_name);
+                printf("add:%08x size:%x : %s\n",sym->st_value,sym->st_size,strtab+sym->st_name+1);
             }
         }
     }
