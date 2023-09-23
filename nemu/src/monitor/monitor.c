@@ -17,7 +17,7 @@
 #include <memory/paddr.h>
 #include <cpu/cpu.h>
 #include <stdio.h>
-
+#include <elf.h>
 
 //for elf
 static char *elf = NULL;
@@ -33,7 +33,6 @@ static void load_elf(){
     printf("no elf file\n");
     return ;
   }
-  printf("%s\n",elf);
 
 }
 
