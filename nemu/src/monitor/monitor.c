@@ -41,32 +41,44 @@ static void load_elf(){
     printf("no elf file\n");
     return ;
   }
-  int fd;
-  if((fd = open(elf, O_RDONLY))<0){
-    printf("no such elf file,plz check filename and restart nemu\n");
-  }
   Elf32_Ehdr *p = (Elf32_Ehdr *)malloc(sizeof(Elf32_Ehdr));
+  int fd = open(elf,O_RDONLY);
   struct stat fs;
   fstat(fd, &fs);
   char *elf = mmap(NULL, fs.st_size, PROT_READ  , MAP_PRIVATE, fd,0);
   close(fd);
   memcpy(p, elf, sizeof(Elf32_Ehdr));
-  Elf32_Shdr *sp = (Elf32_Shdr *)malloc(sizeof(Elf32_Shdr));
+  
 
+
+
+
+  Elf32_Shdr *sp = (Elf32_Shdr *)malloc(sizeof(Elf32_Shdr));
+  for(int i=0;i<p->e_shnum;i++){
+      memcpy(sp,elf+p->e_shoff+i*sizeof(Elf32_Shdr),sizeof(Elf32_Shdr));
+      if(sp->sh_type == SHT_STRTAB){
+          break;
+      }
+  }
   char *strtab = (char *)(sp->sh_offset+elf);
-    for(int i=0;i<p->e_shnum;i++){
-        memcpy(sp,elf+p->e_shoff+i*sizeof(Elf32_Shdr),sizeof(Elf32_Shdr));
-        if(sp->sh_type == SHT_SYMTAB){
-            int size = sp->sh_size/sp->sh_entsize;
-            char *table = elf+sp->sh_offset;
-            Elf32_Sym *sym = (Elf32_Sym*)malloc(sizeof(Elf32_Sym));
-            for(int i=0;i<size;i++){
-                memcpy(sym, table+i*sp->sh_entsize,sp->sh_entsize);
-                if(sym->st_info!=18) continue;
-                printf("add:%08x size:%x : %s\n",sym->st_value,sym->st_size,strtab+sym->st_name+1);
-            }
-        }
-    }
+  for(int i=0;i<p->e_shnum;i++){
+      memcpy(sp,elf+p->e_shoff+i*sizeof(Elf32_Shdr),sizeof(Elf32_Shdr));
+      if(sp->sh_type == SHT_SYMTAB){
+          int size = sp->sh_size/sp->sh_entsize;
+          char *table = elf+sp->sh_offset;
+          Elf32_Sym *sym = (Elf32_Sym*)malloc(sizeof(Elf32_Sym));
+          for(int i=0;i<size;i++){
+              memcpy(sym, table+i*sp->sh_entsize,sp->sh_entsize);
+              if(sym->st_info!=18) continue;
+              printf("add:%08x size:%x : %s\n",sym->st_value,sym->st_size,strtab+sym->st_name);
+          }
+          break;
+      }
+  }
+  
+
+
+    
   
 }
 
