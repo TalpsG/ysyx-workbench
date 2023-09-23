@@ -262,7 +262,7 @@ static int cmd_ftrace(char *args){
 static int cmd_sym(char *args){
   struct func_info *p = func_head;
   while(p!=NULL){
-    printf("name:%8s ,add:0x%08x ,size:%d",p->name,p->value,p->size);
+    printf("name:%8s ,add:0x%08x ,size:%dn",p->name,p->value,p->size);
     p=p->next;
   }
   return 0;
