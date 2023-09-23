@@ -16,10 +16,19 @@
 #include <isa.h>
 #include <memory/paddr.h>
 #include <cpu/cpu.h>
+#include <stdio.h>
 
 
 //for elf
 static char *elf = NULL;
+static void load_elf(){
+  if(elf==NULL){
+    printf("no elf file\n");
+    return ;
+  }
+  printf("%s\n",elf);
+
+}
 
 void init_ringbuf();
 void init_rand();
@@ -114,7 +123,7 @@ void init_monitor(int argc, char *argv[]) {
   init_ringbuf();
   /* Parse arguments. */
   parse_args(argc, argv);
-
+  load_elf();
   /* Set random seed. */
   init_rand();
 
