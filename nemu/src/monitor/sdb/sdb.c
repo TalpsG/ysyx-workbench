@@ -21,7 +21,7 @@
 #include <string.h>
 #include "sdb.h"
 static int is_batch_mode = false;
-
+extern char call_buff[40000];
 void init_regex();
 void init_wp_pool();
 /* We use the `readline' library to provide more flexibility to read from stdin. */
@@ -250,6 +250,14 @@ static int cmd_d(char *args)
   return 0;
 }
 
+void print_call_buff(){
+  printf("%s\n",call_buff);
+}
+static int cmd_ftrace(char *args){
+  print_call_buff();
+  return 0;
+}
+
 static int cmd_help(char *args);
 
 static struct
@@ -269,6 +277,7 @@ static struct
     {"p", "print the value of a expression", cmd_p},
     {"w", "set a watchpoint to a variable or register", cmd_w},
     {"d", "delete a watchpoint", cmd_d},
+    {"ftrace", "delete a watchpoint", cmd_ftrace},
 
 };
 
