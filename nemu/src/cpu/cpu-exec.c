@@ -13,6 +13,7 @@
  * See the Mulan PSL v2 for more details.
  ***************************************************************************************/
 
+#include "debug.h"
 #include "isa.h"
 #include "utils.h"
 #include <cpu/cpu.h>
@@ -54,6 +55,7 @@ void check_call(Decode s){
       }
       printf("call [%6s@0x%08x]\n",temp->name,temp->value);
       printf("%s\n",s.logbuf);
+      func_trace++;
 
       break;
     }
