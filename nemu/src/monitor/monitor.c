@@ -21,6 +21,13 @@
 
 //for elf
 static char *elf = NULL;
+struct func_info{
+  uint32_t add;
+  char name[16];
+  struct func_info * next;
+};
+struct func_info *head = NULL;
+
 static void load_elf(){
   if(elf==NULL){
     printf("no elf file\n");
