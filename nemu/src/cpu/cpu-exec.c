@@ -31,7 +31,7 @@
 // 为了能调用wp函数所以引用的头
 
 #define MAX_INST_TO_PRINT 10
-
+extern char call_buff[100000];
 CPU_state cpu = {};
 uint64_t g_nr_guest_inst = 0;
 static uint64_t g_timer = 0; // unit: us
@@ -49,14 +49,18 @@ void check_call(Decode s){
   while(temp!=NULL){
     if(s.dnpc ==  temp->value){
       int i = func_trace;
-      printf("%08x :",s.pc);
+      char buf[300]={'\0'};
+      sprintf(buf,"%08x :",s.pc);
       for(int j = 0;j<i;j++){
-        printf(" ");
+        strcat(buf," ");
       }
-      printf("call [%6s@0x%08x]\n",temp->name,temp->value);
-      printf("%s\n",s.logbuf);
+      char tail[200];
+      sprintf(tail,"call [%6s@0x%08x]\n",temp->name,temp->value);
+      strcat(buf, tail);
+      sprintf(tail,"%s\n",s.logbuf);
+      strcat(buf, tail);
+      strcat(call_buff, buf);
       func_trace++;
-
       break;
     }
     temp = temp->next;

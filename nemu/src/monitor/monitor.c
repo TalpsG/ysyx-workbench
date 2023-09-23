@@ -25,7 +25,7 @@
 static char *elf = NULL;
 struct func_info *func_head = NULL;
 int func_trace = 0;
-char call_buff[40000] = {'\0'} ;
+char call_buff[100000] = {'\0'} ;
 
 #include <stdio.h>  
 #include <unistd.h>  
@@ -80,13 +80,6 @@ static void load_elf(){
   }
   free(sp);
   free(p);
-  struct func_info *temp = func_head;
-  while(temp!=NULL){
-    char t[100];
-    sprintf(t,"name:%10s,add:0x%08x,size:0x%04x\n",temp->name,temp->value,temp->size);
-    strcat(call_buff, t);
-    temp = temp->next;
-  }
 }
 
 void init_ringbuf();
