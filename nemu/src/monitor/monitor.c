@@ -19,7 +19,6 @@
 
 
 //for elf
-#include <elf.h>
 
 void init_ringbuf();
 void init_rand();
