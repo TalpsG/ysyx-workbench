@@ -16,6 +16,11 @@
 #include <isa.h>
 #include <memory/paddr.h>
 #include <cpu/cpu.h>
+
+
+//for elf
+#include <elf.h>
+
 void init_ringbuf();
 void init_rand();
 void init_log(const char *log_file);
