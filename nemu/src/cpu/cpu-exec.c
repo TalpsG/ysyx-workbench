@@ -57,6 +57,7 @@ void check_call(Decode s){
 
       break;
     }
+    temp = temp->next;
   }
 }
 void device_update();
