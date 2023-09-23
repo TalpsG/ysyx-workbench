@@ -21,6 +21,7 @@
 #include <cpu/decode.h>
 #include <stdint.h>
 #include <stdio.h>
+#include <debug.h>
 
 #define R(i) gpr(i) // 寄存器
 #define Mr vaddr_read

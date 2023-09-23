@@ -48,4 +48,6 @@ struct func_info{
   uint32_t size;
   struct func_info * next;
 };
+extern struct func_info *func_head;
+extern int func_trace;
 #endif

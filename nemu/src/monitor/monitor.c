@@ -23,7 +23,7 @@
 
 //for elf
 static char *elf = NULL;
-struct func_info *head = NULL;
+struct func_info *func_head = NULL;
 int func_trace = 0;
 
 
@@ -38,8 +38,8 @@ void new_func_info(char *name,Elf32_Addr add,uint32_t size){
   strcpy(temp->name, name);
   temp->value = add;
   temp->size = size;
-  temp->next = head;
-  head = temp;
+  temp->next = func_head;
+  func_head = temp;
 }
 static void load_elf(){
   if(elf==NULL){
@@ -80,7 +80,7 @@ static void load_elf(){
   }
   free(sp);
   free(p);
-  struct func_info *temp = head;
+  struct func_info *temp = func_head;
   while(temp!=NULL){
     printf("name:%10s,add:0x%08x,size:0x%04x\n",temp->name,temp->value,temp->size);
     temp = temp->next;
