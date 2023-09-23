@@ -18,23 +18,39 @@
 #include <cpu/cpu.h>
 #include <stdio.h>
 #include <elf.h>
-#include <stdlib.h>
 
 //for elf
 static char *elf = NULL;
 struct func_info{
-  uint32_t add;
   char name[16];
+  Elf32_Addr value;
+  uint32_t size;
   struct func_info * next;
 };
 struct func_info *head = NULL;
 
+#include <stdio.h>  
+#include <unistd.h>  
+#include <fcntl.h>  
+#include <sys/types.h>  
+#include <sys/stat.h> 
+#include <sys/mman.h> //mmap函数的必要头文件
 static void load_elf(){
   if(elf==NULL){
     printf("no elf file\n");
     return ;
   }
-
+  int fd;
+  if((fd = open(elf, O_RDONLY))<0){
+    printf("no such elf file,plz check filename and restart nemu\n");
+  }
+  Elf32_Ehdr *p = (Elf32_Ehdr *)malloc(sizeof(Elf32_Ehdr));
+  struct stat fs;
+  fstat(fd, &fs);
+  char *elf = mmap(NULL, fs.st_size, PROT_READ  , MAP_PRIVATE, fd,0);
+  close(fd);
+  memcpy(p, elf, sizeof(Elf32_Ehdr));
+  
 }
 
 void init_ringbuf();
