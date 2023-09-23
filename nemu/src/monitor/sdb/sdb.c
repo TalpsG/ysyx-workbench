@@ -18,8 +18,10 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 #include <memory/paddr.h>
+#include <stdio.h>
 #include <string.h>
 #include "sdb.h"
+#include <debug.h>
 static int is_batch_mode = false;
 extern char call_buff[40000];
 void init_regex();
@@ -257,7 +259,14 @@ static int cmd_ftrace(char *args){
   print_call_buff();
   return 0;
 }
-
+static int cmd_sym(char *args){
+  struct func_info *p = func_head;
+  while(p!=NULL){
+    printf("name:%8s ,add:0x%08x ,size:%d",p->name,p->value,p->size);
+    p=p->next;
+  }
+  return 0;
+}
 static int cmd_help(char *args);
 
 static struct
@@ -277,7 +286,8 @@ static struct
     {"p", "print the value of a expression", cmd_p},
     {"w", "set a watchpoint to a variable or register", cmd_w},
     {"d", "delete a watchpoint", cmd_d},
-    {"ftrace", "delete a watchpoint", cmd_ftrace},
+    {"ftrace", "trace func stack", cmd_ftrace},
+    {"sym", "print func table", cmd_sym},
 
 };
 
