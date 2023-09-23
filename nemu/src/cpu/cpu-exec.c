@@ -59,19 +59,20 @@ void check_call(Decode s){
       strcat(call_buff, buf);
       func_trace++;
       break;
-    }else if((s.isa.inst.val ^ 0x00008067 )== 0){
-      char buf[300]={'\0'};
-      sprintf(buf,"%08x :",s.pc);
-      for(int j = 0;j<func_trace;j++){
-        strcat(buf," ");
-      }
-      char tail[200];
-      sprintf(tail,"ret  [%6s@0x%08x]\n",temp->name,temp->value);
-      strcat(buf, tail);
-      strcat(call_buff, buf);
-      func_trace--;
-      break;
     }
+    //else if((s.isa.inst.val ^ 0x00008067 )== 0){
+      //char buf[300]={'\0'};
+      //sprintf(buf,"%08x :",s.pc);
+      //for(int j = 0;j<func_trace;j++){
+        //strcat(buf," ");
+      //}
+      //char tail[200];
+      //sprintf(tail,"ret  [%6s@0x%08x]\n",temp->name,temp->value);
+      //strcat(buf, tail);
+      //strcat(call_buff, buf);
+      //func_trace--;
+      //break;
+    //}
     temp = temp->next;
   }
 }
