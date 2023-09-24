@@ -44,7 +44,7 @@
 // ftrace
 struct func_info{
   char name[16];
-  Elf32_Addr value;
+  uint32_t value;
   uint32_t size;
   struct func_info * next;
 };
