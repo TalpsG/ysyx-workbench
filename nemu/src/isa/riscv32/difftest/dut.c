@@ -38,7 +38,6 @@ bool isa_difftest_checkregs(CPU_state *ref_r, vaddr_t pc) {
       diff_reg_display(ref_r);
       return false;
     }
-    printf("reg:%2d ,value:%10x ,ref:%10x\n",i,gpr(i),ref_r->gpr[i]);
   }
   return true;
 }
