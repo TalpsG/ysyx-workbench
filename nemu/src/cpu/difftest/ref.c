@@ -14,6 +14,7 @@
 ***************************************************************************************/
 
 #include "common.h"
+#include <assert.h>
 #include <isa.h>
 #include <cpu/cpu.h>
 #include <difftest-def.h>
@@ -22,6 +23,7 @@
 #include <stdint.h>
 #include <string.h>
 #include "../local-include/reg.h"
+#include "cpu/difftest.h"
 
 __EXPORT void difftest_memcpy(paddr_t addr, void *buf, size_t n, bool direction) {
   size_t num = n;
