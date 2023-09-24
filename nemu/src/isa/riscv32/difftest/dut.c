@@ -21,15 +21,15 @@
 
 void diff_reg_display(CPU_state *ref_r){
   for(int i=0;i<REGLEN;i++){
-    printf("reg:x%2d ,value:0x%8x, ref:0x%8x\n", i,gpr(i),ref_r->gpr[i]);
+    printf("reg:x%2d ,value:0x%10x, ref:0x%10x\n", i,gpr(i),ref_r->gpr[i]);
   }
-  printf("reg: pc ,value:0x%8x, ref:0x%8x\n",  cpu.pc,ref_r->pc);
+  printf("reg: pc ,value:0x%10x, ref:0x%10x\n",  cpu.pc,ref_r->pc);
 }
 bool isa_difftest_checkregs(CPU_state *ref_r, vaddr_t pc) {
   if(cpu.pc!=ref_r->pc){
     printf("pc is diff\n");
-    printf("ref : 0x%8x\n",ref_r->pc);
-    printf("nemu: 0x%8x\n",pc);
+    printf("ref : 0x%10x\n",ref_r->pc);
+    printf("nemu: 0x%10x\n",pc);
     return false;
   }
   for(int i=0;i<32;i++){

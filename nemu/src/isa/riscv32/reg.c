@@ -27,7 +27,7 @@ void isa_reg_display()
 {
   for (int i = 0; i < REGLEN; i++)
   {
-    printf("reg:%3s ,value:0x%8x\n", regs[i], gpr(i));
+    printf("reg:%3s ,value:0x%10x\n", regs[i], gpr(i));
   }
 }
 
