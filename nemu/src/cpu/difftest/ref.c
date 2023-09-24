@@ -74,7 +74,12 @@ __EXPORT void difftest_regcpy(void *dut, bool direction) {
       *(uint32_t *)dut = gpr(i);
       dut+=4;
     }
-    
+  }
+  else{
+    for(int i=0;i<32;i++){
+      gpr(i) = *(uint32_t*) dut;
+      dut+=4;
+    }
   }
 }
 
