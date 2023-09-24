@@ -21,6 +21,7 @@
 #include <stddef.h>
 #include <stdint.h>
 #include <string.h>
+#include "../local-include/reg.h"
 
 __EXPORT void difftest_memcpy(paddr_t addr, void *buf, size_t n, bool direction) {
   size_t num = n;
@@ -68,7 +69,13 @@ __EXPORT void difftest_memcpy(paddr_t addr, void *buf, size_t n, bool direction)
 }
 
 __EXPORT void difftest_regcpy(void *dut, bool direction) {
-  assert(0);
+  if(direction == DIFFTEST_TO_REF){
+    for(int i=0;i<32;i++){
+      *(uint32_t *)dut = gpr(i);
+      dut+=4;
+    }
+    
+  }
 }
 
 __EXPORT void difftest_exec(uint64_t n) {
