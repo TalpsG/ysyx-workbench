@@ -96,10 +96,10 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc)
     if(nemu_state.state == NEMU_ABORT||
       (nemu_state.state == NEMU_END &&
        nemu_state.halt_ret == 1)){
-      sprintf(ringbuf[pos] , " ---> %400s\n",_this->logbuf) ;
+      sprintf(ringbuf[pos] , " ---> %s\n",_this->logbuf) ;
       flush_ringbuf();
     }else{
-      sprintf(ringbuf[pos] , "      %400s\n",_this->logbuf) ;
+      sprintf(ringbuf[pos] , "      %s\n",_this->logbuf) ;
       pos = (pos+1)%BUF_SIZE;
     }
   }
