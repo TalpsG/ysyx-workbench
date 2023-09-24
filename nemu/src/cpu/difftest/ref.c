@@ -13,13 +13,58 @@
 * See the Mulan PSL v2 for more details.
 ***************************************************************************************/
 
+#include "common.h"
 #include <isa.h>
 #include <cpu/cpu.h>
 #include <difftest-def.h>
 #include <memory/paddr.h>
+#include <stddef.h>
+#include <stdint.h>
+#include <string.h>
 
 __EXPORT void difftest_memcpy(paddr_t addr, void *buf, size_t n, bool direction) {
-  assert(0);
+  size_t num = n;
+  if(direction==DIFFTEST_TO_REF){
+    while(num>0){
+      if(num>=4){
+        paddr_write(addr, 4,*(uint32_t*) buf);
+        num -= 4;
+        buf+=4;
+      }else if (num>=2)
+      {
+        paddr_write(addr, 2,*(uint16_t*) buf);
+        num -= 2;
+        buf+=2;
+      }else if (num>=1)
+      {
+        paddr_write(addr, 1,*(uint8_t*) buf);
+        num -= 1;
+        buf += 1;
+      }
+    }
+  }else{
+    while(num>0){
+      if(num>=4){
+        uint32_t t = paddr_read(addr, 4);
+        *(uint32_t*)buf = t;
+        num -= 4;
+        buf+=4;
+      }else if (num>=2)
+      {
+        uint16_t t = paddr_read(addr, 2);
+        *(uint16_t*)buf = t;
+        num -= 2;
+        buf+=2;
+      }else if (num>=1)
+      {
+        uint8_t t = paddr_read(addr, 1);
+        *(uint8_t*)buf = t;
+        num -= 1;
+        buf += 1;
+      }
+    }
+
+  }
 }
 
 __EXPORT void difftest_regcpy(void *dut, bool direction) {
