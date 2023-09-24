@@ -21,7 +21,7 @@
 
 void diff_reg_display(CPU_state *ref_r){
   for(int i=0;i<REGLEN;i++){
-    printf("reg:x%2d ,value:0x%8x, ref:0x%08x\n", gpr(i),ref_r->gpr[i]);
+    printf("reg:x%2d ,value:0x%8x, ref:0x%08x\n", i,gpr(i),ref_r->gpr[i]);
   }
   printf("reg: pc ,value:0x%8x, ref:0x%08x\n",  cpu.pc,ref_r->pc);
 }
