@@ -69,16 +69,15 @@ __EXPORT void difftest_memcpy(paddr_t addr, void *buf, size_t n, bool direction)
 }
 
 __EXPORT void difftest_regcpy(void *dut, bool direction) {
+  CPU_state *p = dut;
   if(direction == DIFFTEST_TO_REF){
     for(int i=0;i<32;i++){
-      *(uint32_t *)dut = gpr(i)+1;
-      dut+=4;
+      p->gpr[i] = gpr(i);
     }
   }
   else{
     for(int i=0;i<32;i++){
-      gpr(i) = *(uint32_t*) dut+1;
-      dut+=4;
+      gpr(i) = p->gpr[i];
     }
   }
 }
