@@ -37,5 +37,6 @@ object playground extends ScalaModule with ScalafmtModule { m =>
       coursier.MavenRepository("https://maven.aliyun.com/repository/central"),
       coursier.MavenRepository("https://repo.scala-sbt.org/scalasbt/maven-releases")
     ) ++ super.repositoriesTask()
+
   }
 }
