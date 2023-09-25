@@ -24,14 +24,6 @@ object playground extends ScalaModule with ScalafmtModule { m =>
     else
       ivy"edu.berkeley.cs:::chisel3-plugin:3.6.0"
   )
-  //object test extends Tests with Utest {
-  //override def ivyDeps = m.ivyDeps() ++ Agg(
-  //ivy"com.lihaoyi::utest:0.8.1",
-  //if (useChisel5) ivy"edu.berkeley.cs::chiseltest:5.0.0"
-  //else
-  //ivy"edu.berkeley.cs::chiseltest:0.6.0"
-  //)
-  //}
   def repositoriesTask = T.task {
     Seq(
       coursier.MavenRepository("https://maven.aliyun.com/repository/central"),
