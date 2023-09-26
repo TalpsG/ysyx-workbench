@@ -2,7 +2,7 @@
 import mill._
 import mill.scalalib._
 import mill.scalalib.scalafmt.ScalafmtModule
-import mill.scalalib.JavaModule.JavaModuleTests
+import mill.scalalib.JavaModule
 // support BSP
 import mill.bsp._
 object playground extends ScalaModule with ScalafmtModule { m =>
