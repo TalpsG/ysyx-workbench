@@ -74,12 +74,12 @@ __EXPORT void difftest_regcpy(void *dut, bool direction) {
   CPU_state *p = dut;
   if(direction == DIFFTEST_TO_REF){
     for(int i=0;i<32;i++){
-      p->gpr[i] = gpr(i);
+      p->gpr[i] = gpr(i)+1;
     }
   }
   else{
     for(int i=0;i<32;i++){
-      gpr(i) = p->gpr[i];
+      gpr(i) = p->gpr[i]+1;
     }
   }
 }
