@@ -56,7 +56,7 @@ int main(int argc, const char** argv) {
       top.ins = getInst(top.outpc);
 	  single_cycle();
 	  printf("pc = 0x%8x\n",top.outpc);
-	  printf("ins: 0x%08x\n",top.ins);
+	  printf("ins: 0x%8x\n",top.ins);
 	  display_regs();
     }
     return 0;
