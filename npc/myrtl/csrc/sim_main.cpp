@@ -43,13 +43,17 @@ void display_regs() {
 
 int main(int argc, const char** argv) {
 	if(argc==2){
+		printf("loading elf : %s\n",argv[1]);
 		int fd = open(argv[1],O_RDONLY);
 		struct stat sb;
 		fstat(fd,&sb);
 		bin = static_cast<uint32_t *>(mmap(NULL, sb.st_size, PROT_READ, MAP_PRIVATE, fd, 0));
 		close(fd);
-		for (int i = 0; i < sb.st_size / 4; i++) {
-			printf("add:%8x, ins:%08x\n",0x80000000+i*4,*(uint32_t*)(bin+i*4));
+		uint32_t *ins= bin;
+		uint32_t add = 0x80000000;
+		while (ins < bin+sb.st_size) {
+			printf("add:%8x, %8x\n",add,*(ins++));
+			add+=4;
 		}
 	}else{
 		bin = instructions;
