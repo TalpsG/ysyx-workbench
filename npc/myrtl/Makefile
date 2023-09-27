@@ -7,7 +7,7 @@ EXE_FLAGS=$(FLAGS)  --exe  --timing  -CFLAGS -g
 
 BIN=
 gdb:exe
-	gdb ./obj_dir/Vtop $(BIN)
+	gdb ./obj_dir/Vtop $(BIN) 
 run:exe
 	./obj_dir/Vtop	$(BIN)
 exe:build $(CSRC)
