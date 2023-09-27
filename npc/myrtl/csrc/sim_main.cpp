@@ -8,12 +8,13 @@
 #include <string.h>
 #include <stdio.h>
 #include <unistd.h>
-#include <sys/stat.h> 
-uint32_t instructions[] = { 
-    0x00100093,  // addi x1,x0,1
-    0x00208113,  // addi x2,x1,2
-    0x00210113,  // addi x2,x2,2
-    0x00100073,  // ebreak (used as nemu_trap)
+#include <sys/stat.h>
+uint32_t instructions[] = {
+    0x00000297,  // auipc t0,0                                              
+	0x00028823,  // sb  zero,16(t0)
+	0x0102c503,  // lbu a0,16(t0)
+	0x00100073,  // ebreak (used as nemu_trap)
+	0xdeadbeef,  // some data
 };
 uint32_t *bin = NULL; 
 Vtop top;
@@ -36,7 +37,7 @@ uint32_t getInst(uint32_t pc){
 }
 void display_regs() {
   for (int i = 0; i < 32; i++) {
-    printf("reg: x%3d : %08x\n",i,top.data[i]);
+    printf("reg: x%3d : %8x\n",i,top.data[i]);
   }
 }
 
