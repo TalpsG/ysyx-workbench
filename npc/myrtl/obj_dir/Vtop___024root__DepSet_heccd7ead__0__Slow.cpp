@@ -115,8 +115,6 @@ VL_ATTR_COLD void Vtop___024root___stl_sequent__TOP__0(Vtop___024root* vlSelf) {
     Vtop__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
     VL_DEBUG_IF(VL_DBG_MSGF("+    Vtop___024root___stl_sequent__TOP__0\n"); );
     // Init
-    IData/*31:0*/ top__DOT__imm;
-    top__DOT__imm = 0;
     CData/*2:0*/ top__DOT__extop;
     top__DOT__extop = 0;
     IData/*31:0*/ top__DOT__idu__DOT__get_imm__DOT__imm_mux__DOT__i0__DOT__lut_out;
@@ -148,7 +146,7 @@ VL_ATTR_COLD void Vtop___024root___stl_sequent__TOP__0(Vtop___024root* vlSelf) {
     CData/*0:0*/ top__DOT__exu__DOT__alu__DOT__get_res__DOT__i0__DOT__hit;
     top__DOT__exu__DOT__alu__DOT__get_res__DOT__i0__DOT__hit = 0;
     // Body
-    vlSelf->top__DOT__exu__DOT__oprand1__DOT__i0__DOT__data_list[1U] 
+    vlSelf->top__DOT__exu__DOT__oprand1__DOT__i0__DOT__data_list[0U] 
         = vlSelf->outpc;
     vlSelf->top__DOT__idu__DOT__get_imm__DOT__imm_mux__DOT__i0__DOT__data_list[0U] 
         = (0xfffff000U & vlSelf->ins);
@@ -343,9 +341,9 @@ VL_ATTR_COLD void Vtop___024root___stl_sequent__TOP__0(Vtop___024root* vlSelf) {
         = ((IData)(top__DOT__idu__DOT__get_imm__DOT__imm_mux__DOT__i0__DOT__hit) 
            | ((IData)(top__DOT__extop) == vlSelf->top__DOT__idu__DOT__get_imm__DOT__imm_mux__DOT__i0__DOT__key_list
               [4U]));
-    top__DOT__imm = ((IData)(top__DOT__idu__DOT__get_imm__DOT__imm_mux__DOT__i0__DOT__hit)
-                      ? top__DOT__idu__DOT__get_imm__DOT__imm_mux__DOT__i0__DOT__lut_out
-                      : 0U);
+    vlSelf->top__DOT__imm = ((IData)(top__DOT__idu__DOT__get_imm__DOT__imm_mux__DOT__i0__DOT__hit)
+                              ? top__DOT__idu__DOT__get_imm__DOT__imm_mux__DOT__i0__DOT__lut_out
+                              : 0U);
     vlSelf->top__DOT__select_num2 = (IData)(((0x2020U 
                                               == (0x707cU 
                                                   & vlSelf->ins)) 
@@ -417,14 +415,20 @@ VL_ATTR_COLD void Vtop___024root___stl_sequent__TOP__0(Vtop___024root* vlSelf) {
         [1U];
     vlSelf->data[0U] = vlSelf->top__DOT____Vcellout__regfile__data
         [0U];
-    vlSelf->top__DOT__exu__DOT__oprand2__DOT__i0__DOT__data_list[0U] 
-        = top__DOT__imm;
+    vlSelf->top__DOT__exu__DOT__oprand2__DOT__i0__DOT__data_list[1U] 
+        = vlSelf->top__DOT__imm;
     vlSelf->top__DOT__pc_write = (IData)(((0x68U == 
                                            (0x78U & vlSelf->ins)) 
                                           & (IData)(top__DOT__cu__DOT____VdfgTmp_h0348156f__0)));
-    vlSelf->top__DOT__exu__DOT__oprand1__DOT__i0__DOT__data_list[0U] 
+    vlSelf->top__DOT__rs1_value = vlSelf->data[(0x1fU 
+                                                & (vlSelf->ins 
+                                                   >> 0xfU))];
+    vlSelf->top__DOT__rs2_value = vlSelf->data[(0x1fU 
+                                                & (vlSelf->ins 
+                                                   >> 0x14U))];
+    vlSelf->top__DOT__exu__DOT__oprand1__DOT__i0__DOT__data_list[1U] 
         = vlSelf->data[(0x1fU & (vlSelf->ins >> 0xfU))];
-    vlSelf->top__DOT__exu__DOT__oprand2__DOT__i0__DOT__data_list[1U] 
+    vlSelf->top__DOT__exu__DOT__oprand2__DOT__i0__DOT__data_list[0U] 
         = vlSelf->data[(0x1fU & (vlSelf->ins >> 0x14U))];
     vlSelf->top__DOT__select_num1 = ((IData)(vlSelf->top__DOT__pc_write) 
                                      | (IData)(((0x10U 
@@ -595,6 +599,7 @@ VL_ATTR_COLD void Vtop___024root___ctor_var_reset(Vtop___024root* vlSelf) {
         vlSelf->data[__Vi0] = 0;
     }
     vlSelf->top__DOT__dnpc = 0;
+    vlSelf->top__DOT__imm = 0;
     vlSelf->top__DOT__res = 0;
     for (int __Vi0 = 0; __Vi0 < 32; ++__Vi0) {
         vlSelf->top__DOT____Vcellout__regfile__data[__Vi0] = 0;
@@ -602,6 +607,8 @@ VL_ATTR_COLD void Vtop___024root___ctor_var_reset(Vtop___024root* vlSelf) {
     vlSelf->top__DOT__pc_write = 0;
     vlSelf->top__DOT__select_num1 = 0;
     vlSelf->top__DOT__select_num2 = 0;
+    vlSelf->top__DOT__rs1_value = 0;
+    vlSelf->top__DOT__rs2_value = 0;
     for (int __Vi0 = 0; __Vi0 < 5; ++__Vi0) {
         vlSelf->top__DOT__idu__DOT__get_imm__DOT__imm_mux__DOT__i0__DOT__key_list[__Vi0] = 0;
     }

@@ -48,17 +48,21 @@ int main(int argc, const char** argv) {
 		fstat(fd,&sb);
 		bin = static_cast<uint32_t *>(mmap(NULL, sb.st_size, PROT_READ, MAP_PRIVATE, fd, 0));
 		close(fd);
+		for (int i = 0; i < sb.st_size / 4; i++) {
+			printf("add:%8x, ins:%08x\n",0x80000000+i*4,*(uint32_t*)(bin+i*4));
+		}
 	}else{
 		bin = instructions;
 	}
 	reset();
 	int i = 1000;
     while(i--){
-      top.ins = getInst(top.outpc);
-	  single_cycle();
-	  printf("pc = 0x%8x\n",top.outpc);
-	  printf("ins: 0x%8x\n",top.ins);
-	  display_regs();
+		top.ins = getInst(top.outpc);
+		printf("pc = 0x%8x\n",top.outpc);
+		printf("ins: 0x%8x\n",top.ins);
+		printf("\n");
+		display_regs();
+		single_cycle();
     }
     return 0;
 }
