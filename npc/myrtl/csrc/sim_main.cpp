@@ -23,24 +23,23 @@ void single_cycle(){
     top.clk = 0;
     top.eval();
 }
-void reset(){
-    int i= 100;
-    top.pc = 0;
-    for(auto &p:top.regfile){
-        p = 0;
-    }
-    top.clk=0;
-    while(i--);
-    top.clk=0;
-    for(auto &p:top.regfile){
-        p = 0;
-    }
-
+void reset() {
+  top.clk = 0;
+  int i= 10000;
+  top.eval();
+  while (i--)
+    ;
 }
 uint32_t getInst(uint32_t pc){
     uint32_t temp = pc & 0x7fffffff;
-    return bin[temp];
+    return bin[temp/4];
 }
+void display_regs() {
+  for (int i = 0; i < 32; i++) {
+    printf("reg: x%3d : %08x\n",i,top.data[i]);
+  }
+}
+
 int main(int argc, const char** argv) {
 	if(argc==2){
 		int fd = open(argv[1],O_RDONLY);
@@ -51,10 +50,14 @@ int main(int argc, const char** argv) {
 	}else{
 		bin = instructions;
 	}
-    reset();
-    while(1){
-        top.ins = getInst(top.pc);
-        single_cycle();
+	reset();
+	int i = 1000;
+    while(i--){
+      top.ins = getInst(top.outpc);
+	  single_cycle();
+	  printf("pc = 0x%8x\n",top.outpc);
+	  printf("ins: 0x%08x\n",top.ins);
+	  display_regs();
     }
     return 0;
 }

@@ -8,14 +8,31 @@
 #include "Vtop__Syms.h"
 #include "Vtop___024root.h"
 
-extern "C" void ebreak(int i);
+extern "C" void ebreak(int ins);
 
-VL_INLINE_OPT void Vtop___024root____Vdpiimwrap_top__DOT__idu__DOT__ebreak_TOP(IData/*31:0*/ i) {
+VL_INLINE_OPT void Vtop___024root____Vdpiimwrap_top__DOT__idu__DOT__ebreak_TOP(IData/*31:0*/ ins) {
     VL_DEBUG_IF(VL_DBG_MSGF("+    Vtop___024root____Vdpiimwrap_top__DOT__idu__DOT__ebreak_TOP\n"); );
     // Body
-    int i__Vcvt;
-    for (size_t i__Vidx = 0; i__Vidx < 1; ++i__Vidx) i__Vcvt = i;
-    ebreak(i__Vcvt);
+    int ins__Vcvt;
+    for (size_t ins__Vidx = 0; ins__Vidx < 1; ++ins__Vidx) ins__Vcvt = ins;
+    ebreak(ins__Vcvt);
+}
+
+#ifdef VL_DEBUG
+VL_ATTR_COLD void Vtop___024root___dump_triggers__ico(Vtop___024root* vlSelf);
+#endif  // VL_DEBUG
+
+void Vtop___024root___eval_triggers__ico(Vtop___024root* vlSelf) {
+    if (false && vlSelf) {}  // Prevent unused
+    Vtop__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
+    VL_DEBUG_IF(VL_DBG_MSGF("+    Vtop___024root___eval_triggers__ico\n"); );
+    // Body
+    vlSelf->__VicoTriggered.at(0U) = (0U == vlSelf->__VicoIterCount);
+#ifdef VL_DEBUG
+    if (VL_UNLIKELY(vlSymsp->_vm_contextp__->debug())) {
+        Vtop___024root___dump_triggers__ico(vlSelf);
+    }
+#endif
 }
 
 #ifdef VL_DEBUG
