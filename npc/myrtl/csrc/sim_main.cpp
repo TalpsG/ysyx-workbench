@@ -1,6 +1,5 @@
 #include <cstdint>
 #include<verilated.h>
-#include<iostream>
 #include<Vtop.h>
 #include <sys/mman.h>
 #include <sys/types.h>
@@ -9,6 +8,13 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <sys/stat.h>
+const char *regs[] = {
+    "$0", "ra", "sp", "gp", "tp", "t0", "t1", "t2",
+    "s0", "s1", "a0", "a1", "a2", "a3", "a4", "a5",
+    "a6", "a7", "s2", "s3", "s4", "s5", "s6", "s7",
+    "s8", "s9", "s10", "s11", "t3", "t4", "t5", "t6"};
+
+extern void sdb_mainloop();
 uint32_t instructions[] = {
     0x00000297,  // auipc t0,0                                              
 	0x00028823,  // sb  zero,16(t0)
@@ -18,7 +24,13 @@ uint32_t instructions[] = {
 };
 uint32_t *bin = NULL; 
 Vtop top;
+uint32_t getInst(uint32_t pc){
+    uint32_t temp = pc & 0x7fffffff;
+    return bin[temp/4];
+}
 void single_cycle(){
+	top.ins = getInst(top.outpc);
+	printf("pc: %8x ,ins:%08x\n",top.outpc,top.ins);
     top.clk = 1;
     top.eval();
     top.clk = 0;
@@ -31,16 +43,12 @@ void reset() {
   while (i--)
     ;
 }
-uint32_t getInst(uint32_t pc){
-    uint32_t temp = pc & 0x7fffffff;
-    return bin[temp/4];
-}
 void display_regs() {
   for (int i = 0; i < 32; i++) {
-    printf("reg: x%3d : %8x\n",i,top.data[i]);
+    printf("reg: %3s : %8x\n",regs[i],top.data[i]);
   }
 }
-
+char *cmd=NULL;
 int main(int argc, const char** argv) {
 	if(argc==2){
 		printf("loading elf : %s\n",argv[1]);
@@ -49,24 +57,11 @@ int main(int argc, const char** argv) {
 		fstat(fd,&sb);
 		bin = static_cast<uint32_t *>(mmap(NULL, sb.st_size, PROT_READ, MAP_PRIVATE, fd, 0));
 		close(fd);
-		uint32_t *ins= bin;
-		uint32_t add = 0x80000000;
-		while (ins < bin+sb.st_size) {
-			printf("add:%8x, %8x\n",add,*(ins++));
-			add+=4;
-		}
 	}else{
 		bin = instructions;
 	}
 	reset();
-	int i = 1000;
-    while(i--){
-		top.ins = getInst(top.outpc);
-		printf("pc = 0x%8x\n",top.outpc);
-		printf("ins: 0x%8x\n",top.ins);
-		printf("\n");
-		display_regs();
-		single_cycle();
-    }
+	sdb_mainloop();
+	
     return 0;
 }

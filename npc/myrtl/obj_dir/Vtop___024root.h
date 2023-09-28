@@ -22,10 +22,7 @@ class Vtop___024root final : public VerilatedModule {
     VL_IN(ins,31,0);
     VL_OUT(outpc,31,0);
     IData/*31:0*/ top__DOT__dnpc;
-    IData/*31:0*/ top__DOT__imm;
     IData/*31:0*/ top__DOT__res;
-    IData/*31:0*/ top__DOT__rs1_value;
-    IData/*31:0*/ top__DOT__rs2_value;
     IData/*31:0*/ __VstlIterCount;
     IData/*31:0*/ __VicoIterCount;
     IData/*31:0*/ __VactIterCount;

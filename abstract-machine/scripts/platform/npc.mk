@@ -23,6 +23,8 @@ image: $(IMAGE).elf
 
 
 run: $(IMAGE).bin
-	make -C $(NPC_HOME)/myrtl run BIN=$(abspath $(IMAGE).bin)
+	make -C $(NPC_HOME)/myrtl run BIN=$(abspath $(IMAGE).bin);
+	echo $?
+
     
     
