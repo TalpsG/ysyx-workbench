@@ -14,7 +14,8 @@ const char *regs[] = {
     "a6", "a7", "s2", "s3", "s4", "s5", "s6", "s7",
     "s8", "s9", "s10", "s11", "t3", "t4", "t5", "t6"};
 
-extern void sdb_mainloop();
+void sdb_mainloop();
+void print_ins();
 uint32_t instructions[] = {
     0x00000297,  // auipc t0,0                                              
 	0x00028823,  // sb  zero,16(t0)
@@ -30,7 +31,7 @@ uint32_t getInst(uint32_t pc){
 }
 void single_cycle(){
 	top.ins = getInst(top.outpc);
-	printf("pc: %8x ,ins:%08x\n",top.outpc,top.ins);
+	print_ins();
     top.clk = 1;
     top.eval();
     top.clk = 0;
