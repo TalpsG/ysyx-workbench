@@ -5,21 +5,33 @@
 #include <readline/history.h>
 #include "verilated.h"
 #include <Vtop.h>
-extern void single_cycle();
-extern void display_regs();
+#include "utils.h"
 
+state npc_state = RUNNING;
+void single_cycle();
+void display_regs();
+void print_ringbuf();
+extern char ringbuffer[200][500];
 static int is_batch_mode = false;
 static int cmd_c (char *args){
-  while (1) {
-	single_cycle();
-  }
-  return 0;
-}
-static int cmd_q (char *args){
-	exit(0);
+	while (1) {
+		if (npc_state == ENDING || npc_state == ABORT) {
+			printf(npc_state == ABORT?"npc is abort \n":"npc is ending\n");
+			return 0;
+		}
+		single_cycle();
+	}
 	return 0;
 }
+static int cmd_q (char *args){
+	if(npc_state == ABORT) exit(1);
+	exit(0);
+}
 static int cmd_si (char *args){
+	if (npc_state == ENDING || npc_state == ABORT) {
+		printf(npc_state == ABORT?"npc is abort \n":"npc is ending\n");
+		return 0;
+	}
 	if (args == NULL) {
 		single_cycle();
 		return 0;
@@ -47,6 +59,10 @@ static int cmd_x (char *args){
 	printf("not support cmd x\n");
 	return 0;
 }
+static int cmd_itrace (char *args){
+	print_ringbuf();
+	return 0;
+}
 static struct {
 	const char *name;
 	const char *description;
@@ -56,7 +72,8 @@ static struct {
     {"q","quit npc",cmd_q},
 	{"si","step forward n inst",cmd_si},
     {"i","display regs",cmd_i},
-    {"x","display mems",cmd_x}
+    {"x","display mems",cmd_x},
+    {"itrace","display ins",cmd_itrace}
 };
 #define NR_CMD (sizeof(cmd_table)/sizeof(cmd_table[0]))
 static char *rl_gets()

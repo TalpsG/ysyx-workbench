@@ -50,7 +50,7 @@ static void load_elf(){
   int fd = open(elf,O_RDONLY);
   struct stat fs;
   fstat(fd, &fs);
-  char *elf = mmap(NULL, fs.st_size, PROT_READ  , MAP_PRIVATE, fd,0);
+  elf =  mmap(NULL, fs.st_size, PROT_READ  , MAP_PRIVATE, fd,0);
   close(fd);
   memcpy(p, elf, sizeof(Elf32_Ehdr));
 

@@ -22,8 +22,8 @@ image: $(IMAGE).elf
 	@$(OBJCOPY) -S --set-section-flags .bss=alloc,contents -O binary $(IMAGE).elf $(IMAGE).bin
 
 
-run: $(IMAGE).bin
-	make -C $(NPC_HOME)/myrtl run BIN=$(abspath $(IMAGE).bin);
+run: $(IMAGE).bin $(IMAGE).elf
+	make -C $(NPC_HOME)/myrtl run BIN=$(abspath $(IMAGE).bin) ELF=$(abspath $(IMAGE).elf);
 	echo $?
 
     
