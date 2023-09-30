@@ -118,7 +118,7 @@ static long load_img() {
     Log("No image is given. Use the default build-in image.");
     return 4096; // built-in image size
   }
-
+	printf("img is %s\n",img_file);
   FILE *fp = fopen(img_file, "rb");
   Assert(fp, "Can not open '%s'", img_file);
 
