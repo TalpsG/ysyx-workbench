@@ -33,6 +33,7 @@ char call_buff[100000] = {'\0'} ;
 #include <sys/types.h>  
 #include <sys/stat.h> 
 #include <sys/mman.h> //mmap函数的必要头文件
+#include "elf.h"
 void new_func_info(char *name,Elf32_Addr add,uint32_t size){
   struct func_info *temp = malloc(sizeof(struct func_info));
   strcpy(temp->name, name);
@@ -47,37 +48,36 @@ static void load_elf(){
     return ;
   }
   Elf32_Ehdr *p = (Elf32_Ehdr *)malloc(sizeof(Elf32_Ehdr));
-  int fd = open(elf,O_RDONLY);
-  struct stat fs;
-  fstat(fd, &fs);
-  elf =  mmap(NULL, fs.st_size, PROT_READ  , MAP_PRIVATE, fd,0);
-  close(fd);
-  memcpy(p, elf, sizeof(Elf32_Ehdr));
+    int fd = open("tests/cpu-tests/build/dummy-riscv32-nemu.elf",O_RDONLY);
+    struct stat fs;
+    fstat(fd, &fs);
+    char *elf = mmap(NULL, fs.st_size, PROT_READ  , MAP_PRIVATE, fd,0);
+    close(fd);
+    memcpy(p, elf, sizeof(Elf32_Ehdr));
 
+    Elf32_Shdr *sp = (Elf32_Shdr *)malloc(sizeof(Elf32_Shdr));
+    for(int i=0;i<p->e_shnum;i++){
+        memcpy(sp,elf+p->e_shoff+i*sizeof(Elf32_Shdr),sizeof(Elf32_Shdr));
+        if(sp->sh_type == SHT_STRTAB){
+            break;
+        }
+    }
+    char *strtab = (char *)(sp->sh_offset+elf);
+    for(int i=0;i<p->e_shnum;i++){
+        memcpy(sp,elf+p->e_shoff+i*sizeof(Elf32_Shdr),sizeof(Elf32_Shdr));
+        if(sp->sh_type == SHT_SYMTAB){
+            int size = sp->sh_size/sp->sh_entsize;
+            char *table = elf+sp->sh_offset;
+            Elf32_Sym *sym = (Elf32_Sym*)malloc(sizeof(Elf32_Sym));
+            for(int i=0;i<size;i++){
+                memcpy(sym, table+i*sp->sh_entsize,sp->sh_entsize);
+                if(sym->st_info!=18) continue;
+				new_func_info(strtab+sym->st_name, sym->st_value, sym->st_size);
 
-  Elf32_Shdr *sp = (Elf32_Shdr *)malloc(sizeof(Elf32_Shdr));
-  for(int i=0;i<p->e_shnum;i++){
-      memcpy(sp,elf+p->e_shoff+i*sizeof(Elf32_Shdr),sizeof(Elf32_Shdr));
-      if(sp->sh_type == SHT_STRTAB){
-          break;
-      }
-  }
-  char *strtab = (char *)(sp->sh_offset+elf);
-  for(int i=0;i<p->e_shnum;i++){
-      memcpy(sp,elf+p->e_shoff+i*sizeof(Elf32_Shdr),sizeof(Elf32_Shdr));
-      if(sp->sh_type == SHT_SYMTAB){
-          int size = sp->sh_size/sp->sh_entsize;
-          char *table = elf+sp->sh_offset;
-          Elf32_Sym *sym = (Elf32_Sym*)malloc(sizeof(Elf32_Sym));
-          for(int i=0;i<size;i++){
-              memcpy(sym, table+i*sp->sh_entsize,sp->sh_entsize);
-              if(sym->st_info!=18) continue;
-              new_func_info(strtab+sym->st_name, sym->st_value, sym->st_size);
-          }
-          free (sym);
-          break;
-      }
-  }
+            }
+            break;
+        }
+    }
   free(sp);
   free(p);
 }
