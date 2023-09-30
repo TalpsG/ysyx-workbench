@@ -48,6 +48,7 @@ static void load_elf(){
     printf("no elf file\n");
     return ;
   }
+  printf("no the %s\n",elf);
   Elf32_Ehdr *p = (Elf32_Ehdr *)malloc(sizeof(Elf32_Ehdr));
     int fd = open(elf,O_RDONLY);
     struct stat fs;
