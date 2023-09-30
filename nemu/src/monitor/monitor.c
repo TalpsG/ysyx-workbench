@@ -142,7 +142,7 @@ static int parse_args(int argc, char *argv[]) {
     {"diff"     , required_argument, NULL, 'd'},
     {"port"     , required_argument, NULL, 'p'},
     {"help"     , no_argument      , NULL, 'h'},
-    {"readelf"  , required_argument, NULL, 'r'},
+    {"readbin"  , required_argument, NULL, 'r'},
     {0          , 0                , NULL,  0 },
   };
   int o;
