@@ -14,6 +14,7 @@ class Vtop___024root final : public VerilatedModule {
 
     // DESIGN SPECIFIC STATE
     VL_IN8(clk,0,0);
+    CData/*2:0*/ top__DOT__extop;
     CData/*0:0*/ top__DOT__pc_write;
     CData/*0:0*/ top__DOT__select_num1;
     CData/*0:0*/ top__DOT__select_num2;
@@ -30,8 +31,8 @@ class Vtop___024root final : public VerilatedModule {
     VlUnpacked<IData/*31:0*/, 32> top__DOT____Vcellout__regfile__data;
     VlUnpacked<CData/*2:0*/, 5> top__DOT__idu__DOT__get_imm__DOT__imm_mux__DOT__i0__DOT__key_list;
     VlUnpacked<IData/*31:0*/, 5> top__DOT__idu__DOT__get_imm__DOT__imm_mux__DOT__i0__DOT__data_list;
-    VlUnpacked<CData/*6:0*/, 5> top__DOT__idu__DOT__get_extop__DOT__gen_extop__DOT__i0__DOT__key_list;
-    VlUnpacked<CData/*2:0*/, 5> top__DOT__idu__DOT__get_extop__DOT__gen_extop__DOT__i0__DOT__data_list;
+    VlUnpacked<CData/*6:0*/, 9> top__DOT__idu__DOT__get_extop__DOT__gen_extop__DOT__i0__DOT__key_list;
+    VlUnpacked<CData/*2:0*/, 9> top__DOT__idu__DOT__get_extop__DOT__gen_extop__DOT__i0__DOT__data_list;
     VlUnpacked<IData/*31:0*/, 32> top__DOT__regfile__DOT__rf;
     VlUnpacked<CData/*0:0*/, 2> top__DOT__exu__DOT__oprand1__DOT__i0__DOT__key_list;
     VlUnpacked<IData/*31:0*/, 2> top__DOT__exu__DOT__oprand1__DOT__i0__DOT__data_list;

@@ -17,7 +17,7 @@ void print_ins() {
 	disassemble(ins_buf, 50, top.outpc,
 				(uint8_t *)&top.ins,4);
 	sprintf(ringbuffer[buf_p++],"pc:%8x,ins:%s",top.outpc,ins_buf);
-	printf("pc:%8x,ins:%s\n",top.outpc,ins_buf);
+	printf("pc:%8x,machinecode:%08x ,ins:%s\n",top.outpc,top.ins,ins_buf);
 }
 void print_ringbuf() {
   for (int i=0; i < 200; i++) {

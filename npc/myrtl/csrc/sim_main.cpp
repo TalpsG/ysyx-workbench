@@ -10,6 +10,7 @@
 #include <sys/stat.h>
 #include "disasm.h"
 #include "utils.h"
+int first_inst = 1;
 extern const char * elf;
 const char *regs[] = {
     "$0", "ra", "sp", "gp", "tp", "t0", "t1", "t2",
@@ -36,12 +37,16 @@ uint32_t getInst(uint32_t pc){
     return bin[temp/4];
 }
 void single_cycle(){
+	if (first_inst == 1) {
+		first_inst = 0;
+	} else {
+		top.clk = 1;
+		top.eval();
+		top.clk = 0;
+		top.eval();
+	}
 	top.ins = getInst(top.outpc);
 	print_ins();
-    top.clk = 1;
-    top.eval();
-    top.clk = 0;
-    top.eval();
 }
 void reset() {
   top.clk = 0;

@@ -11,6 +11,7 @@ state npc_state = RUNNING;
 void single_cycle();
 void display_regs();
 void print_ringbuf();
+void print_callbuf();
 extern char ringbuffer[200][500];
 static int is_batch_mode = false;
 static int cmd_c (char *args){
@@ -63,6 +64,10 @@ static int cmd_itrace (char *args){
 	print_ringbuf();
 	return 0;
 }
+static int cmd_ftrace(char *args){
+	print_callbuf();
+	return 0;
+}
 static struct {
 	const char *name;
 	const char *description;
@@ -73,7 +78,8 @@ static struct {
 	{"si","step forward n inst",cmd_si},
     {"i","display regs",cmd_i},
     {"x","display mems",cmd_x},
-    {"itrace","display ins",cmd_itrace}
+    {"itrace","display ins",cmd_itrace},
+    {"ftrace","display call",cmd_ftrace}
 };
 #define NR_CMD (sizeof(cmd_table)/sizeof(cmd_table[0]))
 static char *rl_gets()

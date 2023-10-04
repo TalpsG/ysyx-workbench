@@ -22,6 +22,7 @@
 #include <stddef.h>
 #include <stdint.h>
 #include <string.h>
+#include <sys/types.h>
 #include "../local-include/reg.h"
 #include "cpu/difftest.h"
 

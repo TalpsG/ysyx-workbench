@@ -11,7 +11,7 @@ LIBS += $(shell llvm-config --libs)
 BIN=
 ELF=
 gdb:exe
-	gdb ./obj_dir/Vtop $(BIN)  $(ELF)
+	gdb --args ./obj_dir/Vtop $(BIN)  $(ELF)
 run:exe
 	./obj_dir/Vtop $(BIN) $(ELF)
 exe:build $(CSRC)  obj_dir/disasm.o

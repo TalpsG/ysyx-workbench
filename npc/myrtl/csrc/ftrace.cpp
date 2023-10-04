@@ -18,7 +18,7 @@ struct func_info{
 };
 struct func_info *func_head;
 int func_trace= 0 ;
-const char *elf = NULL;
+char *elf = NULL;
 char call_buff[10000]={'\0'};
 void new_func_info(char *name,Elf32_Addr add,uint32_t size){
   struct func_info *temp;
@@ -66,41 +66,40 @@ void load_elf(){
     printf("no elf file\n");
     return ;
   }
+  printf("elf : %s \n",elf);
   Elf32_Ehdr *p = (Elf32_Ehdr *)malloc(sizeof(Elf32_Ehdr));
-  int fd = open(elf,O_RDONLY);
-  struct stat fs;
-  fstat(fd, &fs);
-  elf = static_cast<char*>(mmap(NULL, fs.st_size, PROT_READ  , MAP_PRIVATE, fd,0));
-  close(fd);
-  memcpy(p, elf, sizeof(Elf32_Ehdr));
-
-
-  Elf32_Shdr *sp = (Elf32_Shdr *)malloc(sizeof(Elf32_Shdr));
-  for(int i=0;i<p->e_shnum;i++){
-      memcpy(sp,elf+p->e_shoff+i*sizeof(Elf32_Shdr),sizeof(Elf32_Shdr));
-      if(sp->sh_type == SHT_STRTAB){
-          break;
-      }
-  }
-  char *strtab = (char *)(sp->sh_offset+elf);
-  for(int i=0;i<p->e_shnum;i++){
-      memcpy(sp,elf+p->e_shoff+i*sizeof(Elf32_Shdr),sizeof(Elf32_Shdr));
-      if(sp->sh_type == SHT_SYMTAB){
-          int size = sp->sh_size/sp->sh_entsize;
-          const char *table = elf+sp->sh_offset;
-          Elf32_Sym *sym = (Elf32_Sym*)malloc(sizeof(Elf32_Sym));
-          for(int i=0;i<size;i++){
-              memcpy(sym, table+i*sp->sh_entsize,sp->sh_entsize);
-              if(sym->st_info!=18) continue;
-              new_func_info(strtab+sym->st_name, sym->st_value, sym->st_size);
-          }
-          free (sym);
-          break;
-      }
-  }
+    int fd = open(elf,O_RDONLY);
+    struct stat fs;
+    fstat(fd, &fs);
+    elf = (char *)mmap(NULL, fs.st_size, PROT_READ  , MAP_PRIVATE, fd,0);
+    close(fd);
+    memcpy(p, elf, sizeof(Elf32_Ehdr));
+    Elf32_Shdr *sp = (Elf32_Shdr *)malloc(sizeof(Elf32_Shdr));
+    for(int i=0;i<p->e_shnum;i++){
+        memcpy(sp,elf+p->e_shoff+i*sizeof(Elf32_Shdr),sizeof(Elf32_Shdr));
+        if(sp->sh_type == SHT_STRTAB){
+            break;
+        }
+    }
+    char *strtab = (char *)(sp->sh_offset+elf);
+    for(int i=0;i<p->e_shnum;i++){
+        memcpy(sp,elf+p->e_shoff+i*sizeof(Elf32_Shdr),sizeof(Elf32_Shdr));
+        if(sp->sh_type == SHT_SYMTAB){
+            int size = sp->sh_size/sp->sh_entsize;
+            char *table = elf+sp->sh_offset;
+            Elf32_Sym *sym = (Elf32_Sym*)malloc(sizeof(Elf32_Sym));
+            for(int i=0;i<size;i++){
+                memcpy(sym, table+i*sp->sh_entsize,sp->sh_entsize);
+                if(sym->st_info!=18) continue;
+                printf("add:%08x size:%x : %s\n",sym->st_value,sym->st_size,strtab+sym->st_name);
+				new_func_info(strtab+sym->st_name, sym->st_value, sym->st_size);
+            }
+            break;
+        }
+    }
   free(sp);
   free(p);
 }
 void print_callbuf() {
-  printf("%s\n",call_buff);
+	printf("%s\n",call_buff);
 }
