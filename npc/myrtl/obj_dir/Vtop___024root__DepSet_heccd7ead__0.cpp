@@ -33,6 +33,21 @@ VL_INLINE_OPT void Vtop___024root___nba_sequent__TOP__0(Vtop___024root* vlSelf) 
     __Vdlyvset__top__DOT__regfile__DOT__rf__v0 = 0;
     // Body
     Vtop___024root____Vdpiimwrap_top__DOT__idu__DOT__ebreak_TOP(vlSelf->ins);
+    VL_WRITEF("Regfile:\n\nwen:%1#,waddr:%2#,wdata:%8x\n\n",
+              1,((8U == (IData)(vlSelf->top__DOT__extop)) 
+                 | ((9U == (IData)(vlSelf->top__DOT__extop)) 
+                    | ((1U == (IData)(vlSelf->top__DOT__extop)) 
+                       | ((2U == (IData)(vlSelf->top__DOT__extop)) 
+                          | (0xaU == (IData)(vlSelf->top__DOT__extop)))))),
+              5,(0x1fU & (vlSelf->ins >> 7U)),32,((IData)(vlSelf->top__DOT__pc_write)
+                                                   ? 
+                                                  ((IData)(4U) 
+                                                   + vlSelf->outpc)
+                                                   : 
+                                                  ((1U 
+                                                    == (IData)(vlSelf->top__DOT__extop))
+                                                    ? vlSelf->top__DOT__mem_rdata
+                                                    : vlSelf->top__DOT__res)));
     __Vdlyvset__top__DOT__regfile__DOT__rf__v0 = 0U;
     Vtop___024root____Vdpiimwrap_top__DOT__u_IFU__DOT__fetch_TOP(vlSelf->out_dnpc, __Vtask_top__DOT__u_IFU__DOT__fetch__0__ins);
     vlSelf->ins = __Vtask_top__DOT__u_IFU__DOT__fetch__0__ins;

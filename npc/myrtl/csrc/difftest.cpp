@@ -72,9 +72,9 @@ void check_regs(void *dut) {
 			return;
 		}
 	}
-    if (cxt->pc != top.out_dnpc) {
+    if (cxt->pc != top.outpc) {
 		printf("pc is diff\n");
-		printf("ref:%8x,npc_dnpc:%8x\n",cxt->pc,top.out_dnpc);
+		printf("ref:%8x,npc_dnpc:%8x\n",cxt->pc,top.outpc);
 		npc_state = ABORT;
 		return;
 	}
@@ -82,7 +82,7 @@ void check_regs(void *dut) {
 }
 void difftest_step(uint32_t pc,uint32_t npc) {
   struct context ref;
-  ref_difftest_exec(1);
   ref_difftest_regcpy(&ref,DIFFTEST_TO_DUT );
   check_regs(&ref);
+  ref_difftest_exec(1);
 }
