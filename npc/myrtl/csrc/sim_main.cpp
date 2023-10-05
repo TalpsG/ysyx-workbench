@@ -1,14 +1,4 @@
-#include <cstdint>
-#include<verilated.h>
-#include<Vtop.h>
-#include <sys/mman.h>
-#include <sys/types.h>
-#include <fcntl.h>
-#include <string.h>
-#include <stdio.h>
-#include <unistd.h>
-#include <sys/stat.h>
-#include "disasm.h"
+
 #include "utils.h"
 int first_inst = 1;
 extern const char * elf;
@@ -33,7 +23,6 @@ void single_cycle(){
 	top.eval();
 	top.clk = 0;
 	top.eval();
-	top.ins = getInst(top.outpc);
 	print_ins();
 }
 void reset() {

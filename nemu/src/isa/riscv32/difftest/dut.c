@@ -26,7 +26,7 @@ void diff_reg_display(CPU_state *ref_r){
   printf("reg: pc ,value:0x%10x, ref:0x%10x\n",  cpu.pc,ref_r->pc);
 }
 bool isa_difftest_checkregs(CPU_state *ref_r, vaddr_t pc) {
-  if(cpu.pc!=ref_r->pc){
+  if(pc!=ref_r->pc){
     printf("pc is diff\n");
     printf("ref : 0x%10x\n",ref_r->pc);
     printf("nemu: 0x%10x\n",pc);
