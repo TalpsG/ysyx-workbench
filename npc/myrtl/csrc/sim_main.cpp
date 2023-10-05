@@ -15,14 +15,15 @@ void single_cycle(){
 	top.eval();
 	top.clk = 0;
 	top.eval();
+	difftest_step(top.outpc,top.out_dnpc);
 	print_ins();
 }
 void reset() {
   top.clk = 0;
   int i= 10000;
-  top.eval();
   while (i--)
     ;
+  top.eval();
 }
 void display_regs() {
   for (int i = 0; i < 32; i++) {
@@ -30,14 +31,22 @@ void display_regs() {
   }
 }
 char *cmd=NULL;
-int main(int argc, const char** argv) {
+void init(int argc,const char **argv) {
 	int img_size;
 	init_ringbuf();
 	img_size = init_mem(argc,argv);
+	char ref_so_file[]="/home/talps/gitrepo/ysyx-workbench/npc/riscv32-nemu-interpreter-so";
+	init_difftest(ref_so_file, img_size, 1235);
 	load_elf();
 	print_callbuf();	
 	init_disasm("riscv32");
 	reset();
+	init_difftest(ref_so_file, img_size, 1235);
+	top.outpc-=4;
+	top.eval();
+}
+int main(int argc, const char** argv) {
+	init(argc, argv);
 	sdb_mainloop();
 	
     return 0;

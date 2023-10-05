@@ -16,7 +16,7 @@ gdb:exe
 run:exe
 	./obj_dir/Vtop $(BIN) $(ELF)
 exe:build $(CSRC)  obj_dir/disasm.o
-	$(CPL) $(EXE_FLAGS) $(VSRC) $(CSRC)  -LDFLAGS disasm.o -LDFLAGS $(LIBS) -LDFLAGS -pie -CFLAGS -ldl -LDFLAGS -L$(DIFF_SO_PATH)
+	$(CPL) $(EXE_FLAGS) $(VSRC) $(CSRC)  -LDFLAGS disasm.o -LDFLAGS $(LIBS) -LDFLAGS -pie -CFLAGS -ldl -LDFLAGS -L$(DIFF_SO_PATH) -j 4
 build:$(VSRC) 
 	$(CPL) $(VSRC) $(FLAGS)
 clean:

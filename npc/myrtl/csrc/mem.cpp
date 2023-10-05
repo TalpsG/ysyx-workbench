@@ -1,7 +1,8 @@
 #include <cstdint>
 #include <cstring>
+#include <sys/mman.h>
 #include "utils.h"
-#define  MBASE 0x80000000u
+#include "macro.h"
 uint8_t mem[0x8000000];
 extern const char * elf;
 uint32_t instructions[] = {
@@ -38,7 +39,7 @@ int init_mem(int argc,const char **argv) {
 		bin = static_cast<uint32_t *>(mmap(NULL, sb.st_size, PROT_READ, MAP_PRIVATE, fd, 0));
 		close(fd);
 		memcpy(mem, bin, sb.st_size);
-		free(bin);
+		munmap(bin, image_size);
 	}else{
 		bin = instructions;
 		memcpy(mem,bin,20);

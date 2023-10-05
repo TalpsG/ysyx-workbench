@@ -22,6 +22,18 @@ class Vtop___024root final : public VerilatedModule {
     CData/*2:0*/ top__DOT__aluop;
     CData/*0:0*/ top__DOT__valid;
     CData/*7:0*/ top__DOT__mem_mask;
+    CData/*0:0*/ top__DOT__idu__DOT__get_imm__DOT__imm_mux__DOT__i0__DOT__hit;
+    CData/*3:0*/ top__DOT__idu__DOT__get_extop__DOT__gen_extop__DOT__i0__DOT__lut_out;
+    CData/*0:0*/ top__DOT__idu__DOT__get_extop__DOT__gen_extop__DOT__i0__DOT__hit;
+    CData/*2:0*/ top__DOT__cu__DOT__fake_aluop;
+    CData/*6:0*/ top__DOT__cu__DOT____Vcellinp__get_mem_mask__key;
+    CData/*1:0*/ top__DOT__cu__DOT__get_selectnum1__DOT__i0__DOT__lut_out;
+    CData/*0:0*/ top__DOT__cu__DOT__get_selectnum1__DOT__i0__DOT__hit;
+    CData/*2:0*/ top__DOT__cu__DOT__get_fakeop__DOT__i0__DOT__lut_out;
+    CData/*2:0*/ top__DOT__cu__DOT__get_aluop__DOT__i0__DOT__lut_out;
+    CData/*0:0*/ top__DOT__cu__DOT__get_aluop__DOT__i0__DOT__hit;
+    CData/*7:0*/ top__DOT__cu__DOT__get_mem_mask__DOT__i0__DOT__lut_out;
+    CData/*0:0*/ top__DOT__cu__DOT__get_mem_mask__DOT__i0__DOT__hit;
     CData/*0:0*/ top__DOT__exu__DOT__oprand2__DOT__i0__DOT__hit;
     CData/*0:0*/ top__DOT__exu__DOT__alu__DOT__get_res__DOT__i0__DOT__hit;
     CData/*0:0*/ __Vtrigrprev__TOP__clk;
@@ -33,6 +45,7 @@ class Vtop___024root final : public VerilatedModule {
     IData/*31:0*/ top__DOT__res;
     IData/*31:0*/ top__DOT__mem_rdata;
     IData/*31:0*/ top__DOT__mem_wdata;
+    IData/*31:0*/ top__DOT__idu__DOT__get_imm__DOT__imm_mux__DOT__i0__DOT__lut_out;
     IData/*31:0*/ top__DOT__exu__DOT__num1;
     IData/*31:0*/ top__DOT__exu__DOT__num2;
     IData/*31:0*/ top__DOT__exu__DOT__oprand1__DOT__i0__DOT__lut_out;
@@ -40,7 +53,7 @@ class Vtop___024root final : public VerilatedModule {
     IData/*31:0*/ top__DOT__exu__DOT__alu__DOT__res_set;
     IData/*31:0*/ top__DOT__exu__DOT__alu__DOT____VdfgTmp_h170331db__0;
     IData/*31:0*/ top__DOT__exu__DOT__alu__DOT__get_res__DOT__i0__DOT__lut_out;
-    IData/*31:0*/ __Vtask_top__DOT__u_mem__DOT__pmem_read__1__rdata;
+    IData/*31:0*/ __Vtask_top__DOT__u_mem__DOT__pmem_read__2__rdata;
     IData/*31:0*/ __VstlIterCount;
     IData/*31:0*/ __VactIterCount;
     VL_OUT(gpr[32],31,0);
