@@ -46,7 +46,7 @@ VM_USER_LDLIBS = \
 	disasm.o \
 	-lLLVM-14 \
 	-pie \
-	-mcmodel=large \
+	-I/home/talps/gitrepo/ysyx-workbench/npc/myrtl/csrc/riscv32-nemu-interpreter-so \
 
 # User .cpp files (from .cpp's on Verilator command line)
 VM_USER_CLASSES = \

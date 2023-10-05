@@ -5,6 +5,7 @@ CPL=verilator
 FLAGS=--build --cc --top-module top --sv --x-initial 0 -CFLAGS -g 
 EXE_FLAGS=$(FLAGS)  --exe  --timing  -CFLAGS -g -LDFLAGS -lreadline -LDFLAGS -lLLVM-14 
 
+DIFF_SO_PATH=/home/talps/gitrepo/ysyx-workbench/npc
 CXXFLAGS += $(shell llvm-config --cxxflags) -fPIE
 LIBS += $(shell llvm-config --libs)
 
@@ -15,7 +16,7 @@ gdb:exe
 run:exe
 	./obj_dir/Vtop $(BIN) $(ELF)
 exe:build $(CSRC)  obj_dir/disasm.o
-	$(CPL) $(EXE_FLAGS) $(VSRC) $(CSRC)  -LDFLAGS disasm.o -LDFLAGS $(LIBS) -LDFLAGS -pie -CFLAGS -ldl -LDFLAGS  -mcmodel=large
+	$(CPL) $(EXE_FLAGS) $(VSRC) $(CSRC)  -LDFLAGS disasm.o -LDFLAGS $(LIBS) -LDFLAGS -pie -CFLAGS -ldl -LDFLAGS -L$(DIFF_SO_PATH)
 build:$(VSRC) 
 	$(CPL) $(VSRC) $(FLAGS)
 clean:
