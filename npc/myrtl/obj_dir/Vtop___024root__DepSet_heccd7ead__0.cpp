@@ -27,7 +27,7 @@ VL_INLINE_OPT void Vtop___024root___nba_sequent__TOP__0(Vtop___024root* vlSelf) 
     CData/*0:0*/ __Vdlyvset__top__DOT__regfile__DOT__rf__v0;
     __Vdlyvset__top__DOT__regfile__DOT__rf__v0 = 0;
     // Body
-    Vtop___024root____Vdpiimwrap_top__DOT__idu__DOT__ebreak_TOP(vlSelf->top__DOT__ins);
+    Vtop___024root____Vdpiimwrap_top__DOT__idu__DOT__ebreak_TOP(vlSelf->ins);
     __Vdlyvset__top__DOT__regfile__DOT__rf__v0 = 0U;
     if (((8U == (IData)(vlSelf->top__DOT__extop)) | 
          ((9U == (IData)(vlSelf->top__DOT__extop)) 
@@ -42,7 +42,7 @@ VL_INLINE_OPT void Vtop___024root___nba_sequent__TOP__0(Vtop___024root* vlSelf) 
                                                  : vlSelf->top__DOT__res));
         __Vdlyvset__top__DOT__regfile__DOT__rf__v0 = 1U;
         __Vdlyvdim0__top__DOT__regfile__DOT__rf__v0 
-            = (0x1fU & (vlSelf->top__DOT__ins >> 7U));
+            = (0x1fU & (vlSelf->ins >> 7U));
     }
     if (__Vdlyvset__top__DOT__regfile__DOT__rf__v0) {
         vlSelf->top__DOT__regfile__DOT__rf[__Vdlyvdim0__top__DOT__regfile__DOT__rf__v0] 
@@ -114,81 +114,79 @@ VL_INLINE_OPT void Vtop___024root___nba_sequent__TOP__0(Vtop___024root* vlSelf) 
         = vlSelf->top__DOT__regfile__DOT__rf[1U];
     vlSelf->top__DOT____Vcellout__regfile__data[0U] 
         = vlSelf->top__DOT__regfile__DOT__rf[0U];
-    vlSelf->data[0x1fU] = vlSelf->top__DOT____Vcellout__regfile__data
+    vlSelf->gpr[0x1fU] = vlSelf->top__DOT____Vcellout__regfile__data
         [0x1fU];
-    vlSelf->data[0x1eU] = vlSelf->top__DOT____Vcellout__regfile__data
+    vlSelf->gpr[0x1eU] = vlSelf->top__DOT____Vcellout__regfile__data
         [0x1eU];
-    vlSelf->data[0x1dU] = vlSelf->top__DOT____Vcellout__regfile__data
+    vlSelf->gpr[0x1dU] = vlSelf->top__DOT____Vcellout__regfile__data
         [0x1dU];
-    vlSelf->data[0x1cU] = vlSelf->top__DOT____Vcellout__regfile__data
+    vlSelf->gpr[0x1cU] = vlSelf->top__DOT____Vcellout__regfile__data
         [0x1cU];
-    vlSelf->data[0x1bU] = vlSelf->top__DOT____Vcellout__regfile__data
+    vlSelf->gpr[0x1bU] = vlSelf->top__DOT____Vcellout__regfile__data
         [0x1bU];
-    vlSelf->data[0x1aU] = vlSelf->top__DOT____Vcellout__regfile__data
+    vlSelf->gpr[0x1aU] = vlSelf->top__DOT____Vcellout__regfile__data
         [0x1aU];
-    vlSelf->data[0x19U] = vlSelf->top__DOT____Vcellout__regfile__data
+    vlSelf->gpr[0x19U] = vlSelf->top__DOT____Vcellout__regfile__data
         [0x19U];
-    vlSelf->data[0x18U] = vlSelf->top__DOT____Vcellout__regfile__data
+    vlSelf->gpr[0x18U] = vlSelf->top__DOT____Vcellout__regfile__data
         [0x18U];
-    vlSelf->data[0x17U] = vlSelf->top__DOT____Vcellout__regfile__data
+    vlSelf->gpr[0x17U] = vlSelf->top__DOT____Vcellout__regfile__data
         [0x17U];
-    vlSelf->data[0x16U] = vlSelf->top__DOT____Vcellout__regfile__data
+    vlSelf->gpr[0x16U] = vlSelf->top__DOT____Vcellout__regfile__data
         [0x16U];
-    vlSelf->data[0x15U] = vlSelf->top__DOT____Vcellout__regfile__data
+    vlSelf->gpr[0x15U] = vlSelf->top__DOT____Vcellout__regfile__data
         [0x15U];
-    vlSelf->data[0x14U] = vlSelf->top__DOT____Vcellout__regfile__data
+    vlSelf->gpr[0x14U] = vlSelf->top__DOT____Vcellout__regfile__data
         [0x14U];
-    vlSelf->data[0x13U] = vlSelf->top__DOT____Vcellout__regfile__data
+    vlSelf->gpr[0x13U] = vlSelf->top__DOT____Vcellout__regfile__data
         [0x13U];
-    vlSelf->data[0x12U] = vlSelf->top__DOT____Vcellout__regfile__data
+    vlSelf->gpr[0x12U] = vlSelf->top__DOT____Vcellout__regfile__data
         [0x12U];
-    vlSelf->data[0x11U] = vlSelf->top__DOT____Vcellout__regfile__data
+    vlSelf->gpr[0x11U] = vlSelf->top__DOT____Vcellout__regfile__data
         [0x11U];
-    vlSelf->data[0x10U] = vlSelf->top__DOT____Vcellout__regfile__data
+    vlSelf->gpr[0x10U] = vlSelf->top__DOT____Vcellout__regfile__data
         [0x10U];
-    vlSelf->data[0xfU] = vlSelf->top__DOT____Vcellout__regfile__data
+    vlSelf->gpr[0xfU] = vlSelf->top__DOT____Vcellout__regfile__data
         [0xfU];
-    vlSelf->data[0xeU] = vlSelf->top__DOT____Vcellout__regfile__data
+    vlSelf->gpr[0xeU] = vlSelf->top__DOT____Vcellout__regfile__data
         [0xeU];
-    vlSelf->data[0xdU] = vlSelf->top__DOT____Vcellout__regfile__data
+    vlSelf->gpr[0xdU] = vlSelf->top__DOT____Vcellout__regfile__data
         [0xdU];
-    vlSelf->data[0xcU] = vlSelf->top__DOT____Vcellout__regfile__data
+    vlSelf->gpr[0xcU] = vlSelf->top__DOT____Vcellout__regfile__data
         [0xcU];
-    vlSelf->data[0xbU] = vlSelf->top__DOT____Vcellout__regfile__data
+    vlSelf->gpr[0xbU] = vlSelf->top__DOT____Vcellout__regfile__data
         [0xbU];
-    vlSelf->data[0xaU] = vlSelf->top__DOT____Vcellout__regfile__data
+    vlSelf->gpr[0xaU] = vlSelf->top__DOT____Vcellout__regfile__data
         [0xaU];
-    vlSelf->data[9U] = vlSelf->top__DOT____Vcellout__regfile__data
+    vlSelf->gpr[9U] = vlSelf->top__DOT____Vcellout__regfile__data
         [9U];
-    vlSelf->data[8U] = vlSelf->top__DOT____Vcellout__regfile__data
+    vlSelf->gpr[8U] = vlSelf->top__DOT____Vcellout__regfile__data
         [8U];
-    vlSelf->data[7U] = vlSelf->top__DOT____Vcellout__regfile__data
+    vlSelf->gpr[7U] = vlSelf->top__DOT____Vcellout__regfile__data
         [7U];
-    vlSelf->data[6U] = vlSelf->top__DOT____Vcellout__regfile__data
+    vlSelf->gpr[6U] = vlSelf->top__DOT____Vcellout__regfile__data
         [6U];
-    vlSelf->data[5U] = vlSelf->top__DOT____Vcellout__regfile__data
+    vlSelf->gpr[5U] = vlSelf->top__DOT____Vcellout__regfile__data
         [5U];
-    vlSelf->data[4U] = vlSelf->top__DOT____Vcellout__regfile__data
+    vlSelf->gpr[4U] = vlSelf->top__DOT____Vcellout__regfile__data
         [4U];
-    vlSelf->data[3U] = vlSelf->top__DOT____Vcellout__regfile__data
+    vlSelf->gpr[3U] = vlSelf->top__DOT____Vcellout__regfile__data
         [3U];
-    vlSelf->data[2U] = vlSelf->top__DOT____Vcellout__regfile__data
+    vlSelf->gpr[2U] = vlSelf->top__DOT____Vcellout__regfile__data
         [2U];
-    vlSelf->data[1U] = vlSelf->top__DOT____Vcellout__regfile__data
+    vlSelf->gpr[1U] = vlSelf->top__DOT____Vcellout__regfile__data
         [1U];
-    vlSelf->data[0U] = vlSelf->top__DOT____Vcellout__regfile__data
+    vlSelf->gpr[0U] = vlSelf->top__DOT____Vcellout__regfile__data
         [0U];
     vlSelf->top__DOT__exu__DOT__oprand1__DOT__i0__DOT__data_list[1U] 
         = vlSelf->outpc;
-    vlSelf->top__DOT__mem_wdata = vlSelf->data[(0x1fU 
-                                                & (vlSelf->top__DOT__ins 
-                                                   >> 0x14U))];
+    vlSelf->top__DOT__mem_wdata = vlSelf->gpr[(0x1fU 
+                                               & (vlSelf->ins 
+                                                  >> 0x14U))];
     vlSelf->top__DOT__exu__DOT__oprand1__DOT__i0__DOT__data_list[2U] 
-        = vlSelf->data[(0x1fU & (vlSelf->top__DOT__ins 
-                                 >> 0xfU))];
+        = vlSelf->gpr[(0x1fU & (vlSelf->ins >> 0xfU))];
     vlSelf->top__DOT__exu__DOT__oprand2__DOT__i0__DOT__data_list[0U] 
-        = vlSelf->data[(0x1fU & (vlSelf->top__DOT__ins 
-                                 >> 0x14U))];
+        = vlSelf->gpr[(0x1fU & (vlSelf->ins >> 0x14U))];
 }
 
 void Vtop___024root____Vdpiimwrap_top__DOT__u_mem__DOT__pmem_read_TOP(IData/*31:0*/ raddr, IData/*31:0*/ &rdata);

@@ -28,7 +28,7 @@ class Vtop___024root final : public VerilatedModule {
     CData/*0:0*/ __VactContinue;
     VL_OUT(outpc,31,0);
     VL_OUT(out_dnpc,31,0);
-    IData/*31:0*/ top__DOT__ins;
+    VL_OUT(ins,31,0);
     IData/*31:0*/ top__DOT__imm;
     IData/*31:0*/ top__DOT__res;
     IData/*31:0*/ top__DOT__mem_rdata;
@@ -43,7 +43,7 @@ class Vtop___024root final : public VerilatedModule {
     IData/*31:0*/ __Vtask_top__DOT__u_mem__DOT__pmem_read__1__rdata;
     IData/*31:0*/ __VstlIterCount;
     IData/*31:0*/ __VactIterCount;
-    VL_OUT(data[32],31,0);
+    VL_OUT(gpr[32],31,0);
     VlUnpacked<IData/*31:0*/, 32> top__DOT____Vcellout__regfile__data;
     VlUnpacked<CData/*3:0*/, 10> top__DOT__idu__DOT__get_imm__DOT__imm_mux__DOT__i0__DOT__key_list;
     VlUnpacked<IData/*31:0*/, 10> top__DOT__idu__DOT__get_imm__DOT__imm_mux__DOT__i0__DOT__data_list;

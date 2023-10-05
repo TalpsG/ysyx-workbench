@@ -13,6 +13,8 @@
 #include <unistd.h>
 #include <sys/stat.h>
 #include "disasm.h"
+#include <readline/history.h>
+#include <readline/readline.h>
 enum state {
   ABORT,
   RUNNING,
@@ -24,6 +26,8 @@ void print_ins();
 void init_ringbuf();
 void load_elf();
 void print_callbuf();
+void display_regs();
+int init_mem(int argc,const char **argv);
 extern "C" {
 	void difftest_memcpy(uint32_t addr, void *buf, size_t n, bool direction);
 	void difftest_regcpy(void *dut, bool direction) ;

@@ -1,8 +1,6 @@
 #include <cstdlib>
 #include <cstdio>
 #include <cstring>
-#include <readline/readline.h>
-#include <readline/history.h>
 #include "verilated.h"
 #include <Vtop.h>
 #include "utils.h"

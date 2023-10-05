@@ -1,7 +1,7 @@
 
 #include "utils.h"
+#include <cstring>
 int first_inst = 1;
-extern const char * elf;
 const char *regs[] = {
     "$0", "ra", "sp", "gp", "tp", "t0", "t1", "t2",
     "s0", "s1", "a0", "a1", "a2", "a3", "a4", "a5",
@@ -9,14 +9,6 @@ const char *regs[] = {
     "s8", "s9", "s10", "s11", "t3", "t4", "t5", "t6"};
 
 
-uint32_t instructions[] = {
-    0x00000297,  // auipc t0,0                                              
-	0x00028823,  // sb  zero,16(t0)
-	0x0102c503,  // lbu a0,16(t0)
-	0x00100073,  // ebreak (used as nemu_trap)
-	0xdeadbeef,  // some data
-};
-uint32_t *bin = NULL; 
 Vtop top;
 void single_cycle(){
 	top.clk = 1;
@@ -34,23 +26,14 @@ void reset() {
 }
 void display_regs() {
   for (int i = 0; i < 32; i++) {
-    printf("reg: %3s : %8x\n",regs[i],top.data[i]);
+    printf("reg: %3s : %8x\n",regs[i],top.gpr[i]);
   }
 }
 char *cmd=NULL;
 int main(int argc, const char** argv) {
+	int img_size;
 	init_ringbuf();
-	if(argc==3){
-		elf = argv[2];
-		printf("loading bin: %s\n",argv[1]);
-		int fd = open(argv[1],O_RDONLY);
-		struct stat sb;
-		fstat(fd,&sb);
-		bin = static_cast<uint32_t *>(mmap(NULL, sb.st_size, PROT_READ, MAP_PRIVATE, fd, 0));
-		close(fd);
-	}else{
-		bin = instructions;
-	}
+	img_size = init_mem(argc,argv);
 	load_elf();
 	print_callbuf();	
 	init_disasm("riscv32");
