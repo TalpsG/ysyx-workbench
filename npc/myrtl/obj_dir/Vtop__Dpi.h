@@ -16,8 +16,14 @@ extern "C" {
 
 
     // DPI IMPORTS
-    // DPI import at /home/talps/gitrepo/ysyx-workbench/npc/myrtl/vsrc/IDU.sv:32:32
+    // DPI import at /home/talps/gitrepo/ysyx-workbench/npc/myrtl/vsrc/IDU.sv:36:32
     extern void ebreak(int ins);
+    // DPI import at /home/talps/gitrepo/ysyx-workbench/npc/myrtl/vsrc/IFU.sv:14:32
+    extern void fetch(int in, int* ins);
+    // DPI import at /home/talps/gitrepo/ysyx-workbench/npc/myrtl/vsrc/mem.sv:11:32
+    extern void pmem_read(int raddr, int* rdata);
+    // DPI import at /home/talps/gitrepo/ysyx-workbench/npc/myrtl/vsrc/mem.sv:15:32
+    extern void pmem_write(int waddr, int wdata, char wmask);
 
 #ifdef __cplusplus
 }

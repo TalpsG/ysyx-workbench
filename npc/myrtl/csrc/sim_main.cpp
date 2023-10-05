@@ -18,11 +18,7 @@ const char *regs[] = {
     "a6", "a7", "s2", "s3", "s4", "s5", "s6", "s7",
     "s8", "s9", "s10", "s11", "t3", "t4", "t5", "t6"};
 
-void sdb_mainloop();
-void print_ins();
-void init_ringbuf();
-void load_elf();
-void print_callbuf();
+
 uint32_t instructions[] = {
     0x00000297,  // auipc t0,0                                              
 	0x00028823,  // sb  zero,16(t0)
@@ -32,19 +28,11 @@ uint32_t instructions[] = {
 };
 uint32_t *bin = NULL; 
 Vtop top;
-uint32_t getInst(uint32_t pc){
-    uint32_t temp = pc & 0x7fffffff;
-    return bin[temp/4];
-}
 void single_cycle(){
-	if (first_inst == 1) {
-		first_inst = 0;
-	} else {
-		top.clk = 1;
-		top.eval();
-		top.clk = 0;
-		top.eval();
-	}
+	top.clk = 1;
+	top.eval();
+	top.clk = 0;
+	top.eval();
 	top.ins = getInst(top.outpc);
 	print_ins();
 }
