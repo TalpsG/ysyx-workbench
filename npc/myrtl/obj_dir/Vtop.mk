@@ -37,16 +37,17 @@ VM_MODPREFIX = Vtop
 VM_USER_CFLAGS = \
 	-g \
 	-g \
-	-ldl \
+	-DCONFIG_DIFFTEST=1 \
 
 # User LDLIBS (from -LDFLAGS on Verilator command line)
 VM_USER_LDLIBS = \
 	-lreadline \
 	-lLLVM-14 \
-	disasm.o \
-	-lLLVM-14 \
 	-pie \
-	-L/home/talps/gitrepo/ysyx-workbench/npc \
+	-ldl \
+	disasm.o \
+	-pie \
+	-lLLVM-14 \
 
 # User .cpp files (from .cpp's on Verilator command line)
 VM_USER_CLASSES = \
@@ -55,6 +56,7 @@ VM_USER_CLASSES = \
 	ftrace \
 	itrace \
 	mem \
+	mtrace \
 	sdb \
 	sim_main \
 
@@ -81,6 +83,8 @@ ftrace.o: /home/talps/gitrepo/ysyx-workbench/npc/myrtl/csrc/ftrace.cpp
 itrace.o: /home/talps/gitrepo/ysyx-workbench/npc/myrtl/csrc/itrace.cpp
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
 mem.o: /home/talps/gitrepo/ysyx-workbench/npc/myrtl/csrc/mem.cpp
+	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
+mtrace.o: /home/talps/gitrepo/ysyx-workbench/npc/myrtl/csrc/mtrace.cpp
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
 sdb.o: /home/talps/gitrepo/ysyx-workbench/npc/myrtl/csrc/sdb.cpp
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<

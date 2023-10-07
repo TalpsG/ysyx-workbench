@@ -1,6 +1,9 @@
 
 #include "utils.h"
+#include <cstdio>
 #include <cstring>
+#include "macro.h"
+#include <verilated_vcd_c.h>
 int first_inst = 1;
 const char *regs[] = {
     "$0", "ra", "sp", "gp", "tp", "t0", "t1", "t2",
@@ -8,15 +11,30 @@ const char *regs[] = {
     "a6", "a7", "s2", "s3", "s4", "s5", "s6", "s7",
     "s8", "s9", "s10", "s11", "t3", "t4", "t5", "t6"};
 
-
 Vtop top;
+#ifdef TRACE
+VerilatedVcdC m_trace ;
+int sim_time = 0;
+#endif
 void single_cycle(){
+	//printf("-------->begin \n");
 	top.clk = 1;
 	top.eval();
+#ifdef TRACE
+	m_trace.dump(sim_time);
+	sim_time++;
+#endif
 	top.clk = 0;
 	top.eval();
-	difftest_step(top.outpc,top.out_dnpc);
+#ifdef TRACE
+	m_trace.dump(sim_time);
+	sim_time++;
+#endif
 	print_ins();
+#ifdef CONFIG_DIFFTEST
+	difftest_step(top.outpc,top.out_dnpc);
+#endif // DEBUG
+	//printf("-------->end \n\n");
 }
 void reset() {
   top.clk = 0;
@@ -35,17 +53,27 @@ void init(int argc,const char **argv) {
 	int img_size;
 	init_ringbuf();
 	img_size = init_mem(argc,argv);
+#ifdef CONFIG_DIFFTEST
 	char ref_so_file[]="/home/talps/gitrepo/ysyx-workbench/npc/riscv32-nemu-interpreter-so";
 	init_difftest(ref_so_file, img_size, 1235);
+#endif // DEBUG
 	load_elf();
 	print_callbuf();	
 	init_disasm("riscv32");
 	reset();
+#ifdef CONFIG_DIFFTEST
 	init_difftest(ref_so_file, img_size, 1235);
+#endif
 	top.outpc-=4;
 	top.eval();
 }
 int main(int argc, const char** argv) {
+
+#ifdef TRACE
+    Verilated::traceEverOn(true);
+    top.trace(&m_trace, 5);
+    m_trace.open("waveform.vcd");
+#endif
 	init(argc, argv);
 	sdb_mainloop();
 	

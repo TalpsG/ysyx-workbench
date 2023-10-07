@@ -1,4 +1,5 @@
 #include <cstdint>
+#include <cstdio>
 #include <cstring>
 #include <sys/mman.h>
 #include "utils.h"
@@ -13,19 +14,31 @@ uint32_t instructions[] = {
 	0xdeadbeef,  // some data
 };
 uint32_t *bin = NULL; 
-extern "C" void pmem_read(uint32_t raddr, int *rdata) {
+extern "C" void npc_mem_read(uint32_t raddr, uint32_t*rdata) {
   // 总是读取地址为`raddr & ~0x3u`的4字节返回给`rdata`
   *rdata = *(uint32_t*)&mem[(raddr&(~0x3u))-MBASE];
+  read_mtrace(raddr, *rdata);
 }
-extern "C" void pmem_write(uint32_t waddr, int wdata, char wmask) {
+extern "C" void npc_mem_write(uint32_t waddr, uint32_t wdata, char wmask) {
   // 总是往地址为`waddr & ~0x3u`的4字节按写掩码`wmask`写入`wdata`
   // `wmask`中每比特表示`wdata`中1个字节的掩码,
   // 如`wmask = 0x3`代表只写入最低2个字节, 内存中的其它字节保持不变
   uint32_t *p = (uint32_t *)&mem[waddr-MBASE];
-  *p |= (wdata & wmask);
+  uint32_t mask = 0;
+  for (int i = 0; i < 4; i++) {
+			if (wmask % 2 == 1) {
+			for (int j = 0; j < 8; j++) {
+				mask+=(1<<(i*8+j));
+			}
+			wmask >>=1;
+		}
+  }
+  printf("%8x",mask);
+  *p = (wdata & mask);
+  write_mtrace(waddr, wdata);
 }
-extern "C" void fetch(int in, int *ins) {
-	pmem_read(in, ins);
+extern "C" void fetch(uint32_t in, uint32_t *ins) {
+	npc_mem_read(in, ins);
 }
 int init_mem(int argc,const char **argv) {
 	int image_size = 0;

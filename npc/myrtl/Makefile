@@ -3,7 +3,6 @@ VSRC=$(shell find $(abspath ./vsrc) -name "*.sv")
 
 CPL=verilator
 FLAGS=--build --cc --top-module top --sv --x-initial 0 -CFLAGS -g 
-EXE_FLAGS=$(FLAGS)  --exe  --timing  -CFLAGS -g -LDFLAGS -lreadline -LDFLAGS -lLLVM-14 
 
 DIFF_SO_PATH=/home/talps/gitrepo/ysyx-workbench/npc
 CXXFLAGS += $(shell llvm-config --cxxflags) -fPIE
@@ -11,18 +10,25 @@ LIBS += $(shell llvm-config --libs)
 
 BIN=
 ELF=
+
+EXE_FLAGS=$(FLAGS)  --exe  --timing     
+EXE_CFLAGS=-CFLAGS -g -CFLAGS -DCONFIG_DIFFTEST=1 
+EXE_LDFLAGS=-LDFLAGS -lreadline -LDFLAGS -lLLVM-14 -LDFLAGS -pie -LDFLAGS -ldl  -LDFLAGS disasm.o -LDFLAGS -pie -LDFLAGS $(LIBS)
+
+TRACE_CFLAGS=-CFLAGS -g -CFLAGS -DCONFIG_DIFFTEST=1 -CFLAGS -DTRACE=1
+TRACE_FLAGS=--trace $(FLAGS)  --exe  --timing     
 gdb:exe
 	gdb --args ./obj_dir/Vtop $(BIN)  $(ELF)
 run:exe
 	./obj_dir/Vtop $(BIN) $(ELF)
 exe:build $(CSRC)  obj_dir/disasm.o
-	$(CPL) $(EXE_FLAGS) $(VSRC) $(CSRC)  -LDFLAGS disasm.o -LDFLAGS $(LIBS) -LDFLAGS -pie -CFLAGS -ldl -LDFLAGS -L$(DIFF_SO_PATH) -j 4
+	$(CPL) $(EXE_FLAGS) $(VSRC) $(CSRC) $(EXE_CFLAGS) $(EXE_LDFLAGS) -j 4  
 build:$(VSRC) 
 	$(CPL) $(VSRC) $(FLAGS)
 clean:
 	-rm -rf  obj_dir
-echo:
-	echo $(CSRC)
+trace:build $(CSRC)  obj_dir/disasm.o
+	$(CPL) $(TRACE_FLAGS) $(VSRC) $(CSRC) $(TRACE_CFLAGS) $(EXE_LDFLAGS) -j 4 
 
 obj_dir/disasm.o: csrc/disasm.cc
 	g++ -O2 -MMD -Wall  -O2  -Og -ggdb3  -DITRACE_COND=true -D__GUEST_ISA__=riscv32  -I/usr/lib/llvm-14/include -std=c++14   -fno-exceptions -D_GNU_SOURCE -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -fPIE -c -o ./obj_dir/disasm.o ./csrc/disasm.cc

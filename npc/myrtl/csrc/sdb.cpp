@@ -23,8 +23,8 @@ static int cmd_c (char *args){
 	return 0;
 }
 static int cmd_q (char *args){
-	if(npc_state == ABORT) exit(1);
-	exit(0);
+	if(npc_state == ABORT) std::exit(1);
+	std::exit(0);
 }
 static int cmd_si (char *args){
 	if (npc_state == ENDING || npc_state == ABORT) {
@@ -66,6 +66,10 @@ static int cmd_ftrace(char *args){
 	print_callbuf();
 	return 0;
 }
+static int cmd_mtrace(char *args){
+	print_mtrace();
+	return 0;
+}
 static struct {
 	const char *name;
 	const char *description;
@@ -77,7 +81,8 @@ static struct {
     {"i","display regs",cmd_i},
     {"x","display mems",cmd_x},
     {"itrace","display ins",cmd_itrace},
-    {"ftrace","display call",cmd_ftrace}
+    {"ftrace","display call",cmd_ftrace},
+    {"mtrace","display memtrace",cmd_mtrace}
 };
 #define NR_CMD (sizeof(cmd_table)/sizeof(cmd_table[0]))
 static char *rl_gets()

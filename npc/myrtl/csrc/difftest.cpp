@@ -74,7 +74,7 @@ void check_regs(void *dut) {
 	}
     if (cxt->pc != top.outpc) {
 		printf("pc is diff\n");
-		printf("ref:%8x,npc_dnpc:%8x\n",cxt->pc,top.outpc);
+		printf("ref:%8x,npc_outpc:%8x\n",cxt->pc,top.outpc);
 		npc_state = ABORT;
 		return;
 	}
