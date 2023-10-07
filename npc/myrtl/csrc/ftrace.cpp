@@ -11,7 +11,7 @@
 #include "Vtop.h"
 extern Vtop top;
 struct func_info{
-  char name[16];
+  char name[32];
   uint32_t value;
   uint32_t size;
   struct func_info * next;
@@ -19,7 +19,13 @@ struct func_info{
 struct func_info *func_head;
 int func_trace= 0 ;
 char *elf = NULL;
-char call_buff[10000]={'\0'};
+char call_buff[300][10000];
+int call_buffp=-1;
+void init_callbuff() {
+  for (int i = 0; i < 200; i++) {
+    call_buff[i][0]='\0';
+  }
+}
 void new_func_info(char *name,Elf32_Addr add,uint32_t size){
   struct func_info *temp;
   temp =static_cast<struct func_info*>( malloc(sizeof(struct func_info)));
@@ -33,21 +39,22 @@ void check_call(){
   struct func_info *temp = func_head;
   while(temp!=NULL){
     if(top.out_dnpc ==  temp->value){
-      char buf[300]={'\0'};
+      char buf[10000]={'\0'};
       sprintf(buf,"%08x :",top.outpc);
       for(int j = 0;j<func_trace;j++){
         strcat(buf," ");
       }
-      char tail[200];
+      char tail[100];
       sprintf(tail,"call [%6s@0x%08x]\n",temp->name,temp->value);
       strcat(buf, tail);
-      strcat(call_buff, buf);
+	  call_buffp = (call_buffp+1)%300;
+	  strcpy(call_buff[call_buffp], buf);
       func_trace++;
       break;
     }
     if((top.ins ^ 0x00008067 )== 0 && temp->value <= top.outpc && (temp->value+temp->size)>= top.outpc){
       func_trace--;
-      char buf[300]={'\0'};
+      char buf[10000]={'\0'};
       sprintf(buf,"%08x :",top.outpc);
       for(int j = 0;j<func_trace;j++){
         strcat(buf," ");
@@ -55,7 +62,8 @@ void check_call(){
       char tail[200];
       sprintf(tail,"ret  [%6s]\n",temp->name);
       strcat(buf, tail);
-      strcat(call_buff, buf);
+	  call_buffp = (call_buffp+1)%300;
+	  strcpy(call_buff[call_buffp], buf);
       break;
     }
     temp = temp->next;
@@ -101,5 +109,7 @@ void load_elf(){
   free(p);
 }
 void print_callbuf() {
-	printf("%s\n",call_buff);
+	for (int i = 0; i < 300; i++) {
+		printf("%s",call_buff[i]);
+	}
 }

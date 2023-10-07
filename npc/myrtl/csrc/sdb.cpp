@@ -10,12 +10,15 @@ void single_cycle();
 void display_regs();
 void print_ringbuf();
 void print_callbuf();
-extern char ringbuffer[200][500];
+extern char ringbuffer[200][100];
+extern char mem_trace[200][100];
+extern int mtrace_p;
 static int is_batch_mode = false;
 static int cmd_c (char *args){
 	while (1) {
 		if (npc_state == ENDING || npc_state == ABORT) {
-			printf(npc_state == ABORT?"npc is abort \n":"npc is ending\n");
+			printf(npc_state == ABORT?"npc is abort \n":"Program is executed successfully\n");
+			strcat(mem_trace[mtrace_p], "  ^ ----- \n ");
 			return 0;
 		}
 		single_cycle();

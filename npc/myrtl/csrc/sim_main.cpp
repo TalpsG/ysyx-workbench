@@ -17,13 +17,14 @@ VerilatedVcdC m_trace ;
 int sim_time = 0;
 #endif
 void single_cycle(){
-	//printf("-------->begin \n");
+	printf("-------->begin \n");
 	top.clk = 1;
 	top.eval();
 #ifdef TRACE
 	m_trace.dump(sim_time);
 	sim_time++;
 #endif
+	printf("-------------mid\n");
 	top.clk = 0;
 	top.eval();
 #ifdef TRACE
@@ -34,7 +35,7 @@ void single_cycle(){
 #ifdef CONFIG_DIFFTEST
 	difftest_step(top.outpc,top.out_dnpc);
 #endif // DEBUG
-	//printf("-------->end \n\n");
+	printf("-------->end \n\n");
 }
 void reset() {
   top.clk = 0;
@@ -51,6 +52,8 @@ void display_regs() {
 char *cmd=NULL;
 void init(int argc,const char **argv) {
 	int img_size;
+	init_callbuff();
+	init_mtrace();
 	init_ringbuf();
 	img_size = init_mem(argc,argv);
 #ifdef CONFIG_DIFFTEST

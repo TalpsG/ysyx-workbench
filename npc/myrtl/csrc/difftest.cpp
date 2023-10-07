@@ -78,7 +78,7 @@ void check_regs(void *dut) {
 		npc_state = ABORT;
 		return;
 	}
-	printf("diff pass\n");
+	//printf("diff pass\n");
 }
 void difftest_step(uint32_t pc,uint32_t npc) {
   struct context ref;

@@ -33,7 +33,6 @@ extern "C" void npc_mem_write(uint32_t waddr, uint32_t wdata, char wmask) {
 			wmask >>=1;
 		}
   }
-  printf("%8x",mask);
   *p = (wdata & mask);
   write_mtrace(waddr, wdata);
 }
