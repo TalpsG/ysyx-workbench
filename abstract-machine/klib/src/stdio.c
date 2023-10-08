@@ -9,6 +9,12 @@ void int2str(int i,char *p){
     char temp[20];
     int isNeg = i<0;
     int pos=0;
+    if (i == 0) {
+      p[0] = '0';
+      p[1] = '\0';
+	  return;
+	}
+	
     while(i!=0){
         temp[pos++] = i%10+'0';
         i=i/10;
