@@ -39,10 +39,21 @@ static bool g_print_step = false;
 /*
 ringbuffer for log
 */
+#ifdef CONFIG_ITRACE
 #define BUF_SIZE 200
 #define LINE_SIZE 500
 char ringbuf[BUF_SIZE][LINE_SIZE];
 int pos=0;
+void init_ringbuf(){
+  memset(ringbuf,0, BUF_SIZE*LINE_SIZE);
+}
+
+void flush_ringbuf(){
+  for(int i=0;i<BUF_SIZE&&strlen(ringbuf[i])!=0;i++){
+    printf("%s",ringbuf[i]);
+  }
+}
+#endif // DEBUG
 #ifdef CONFIG_FTRACE
 extern char call_buff[200][500];
 extern int call_buff_p;
@@ -83,15 +94,6 @@ void check_call(Decode s){
 #endif
 void device_update();
 
-void init_ringbuf(){
-  memset(ringbuf,0, BUF_SIZE*LINE_SIZE);
-}
-
-void flush_ringbuf(){
-  for(int i=0;i<BUF_SIZE&&strlen(ringbuf[i])!=0;i++){
-    printf("%s",ringbuf[i]);
-  }
-}
 static void trace_and_difftest(Decode *_this, vaddr_t dnpc)
 {
 #ifdef CONFIG_ITRACE_COND

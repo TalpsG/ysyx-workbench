@@ -16,6 +16,7 @@
 #include "sdb.h"
 
 #include <cpu/cpu.h>
+#ifdef CONFIG_WATCHPOINT
 #define NR_WP 32
 
 static WP wp_pool[NR_WP] = {};
@@ -153,3 +154,4 @@ void check_wp()
     print_WPs();
   }
 }
+#endif
