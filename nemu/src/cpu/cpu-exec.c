@@ -168,7 +168,9 @@ static void execute(uint64_t n)
     g_nr_guest_inst++;
     trace_and_difftest(&s, cpu.pc);
     if (nemu_state.state != NEMU_RUNNING) {
+#ifdef CONFIG_FTRACE
 		strcat(call_buff[call_buff_p], "----- ^^^^^ -----\n");
+#endif
       break;
 	}
     IFDEF(CONFIG_DEVICE, device_update());
