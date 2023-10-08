@@ -4,7 +4,8 @@
 
 #if !defined(__ISA_NATIVE__) || defined(__NATIVE_USE_KLIB__)
 static unsigned long int next = 1;
-
+static void *mem_sbrk = 0;
+extern Area heap;
 int rand(void) {
   // RAND_MAX assumed to be 32767
   next = next * 1103515245 + 12345;
@@ -34,9 +35,18 @@ void *malloc(size_t size) {
   // Therefore do not call panic() here, else it will yield a dead recursion:
   //   panic() -> putchar() -> (glibc) -> malloc() -> panic()
 #if !(defined(__ISA_NATIVE__) && defined(__NATIVE_USE_KLIB__))
-  panic("Not implemented");
+
+  //panic("Not implemented");
 #endif
-  return NULL;
+static int first = 0;
+	if (first == 0) {
+		first = 1;
+		mem_sbrk = heap.start;
+	} 
+	size = (size+3)&(~0x3u);
+	void *temp = mem_sbrk;
+	mem_sbrk += size;
+  return temp;
 }
 
 void free(void *ptr) {
