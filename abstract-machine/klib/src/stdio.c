@@ -20,18 +20,55 @@ void int2str(int i,char *p){
         p[j++] = temp[--pos];
     }
 }
+void width_print(char *str,int width,int zero_fill) {
+	if (zero_fill) {
+		int len = strlen(str);
+		if (len > width) {
+			for (int i = 0; i < width; i++) {
+				putch(str[len-width+i]);
+			}
+		} else {
+			for (int i = 0; i < width - len; i++) {
+				putch('0');
+			}
+			for (int i = 0; i < len; i++) {
+				putch(str[i]);
+			}
+		}
+	} else {
+		int len = strlen(str);
+		if (len > width) {
+			for (int i = 0; i < width; i++) {
+				putch(str[len-width+i]);
+			}
+		} else {
+			for (int i = 0; i < width - len; i++) {
+				putch(' ');
+			}
+			for (int i = 0; i < len; i++) {
+				putch(str[i]);
+			}
+		}
 
+	}
+
+}
 int printf(const char *fmt, ...) {
   va_list ap;
   va_start(ap, fmt);
   int num = 0;
   int fmt_p = 0;
+  int zero_fill = 0,width = -1;
+
   while (fmt[fmt_p] != '\0') {
-    if (fmt[fmt_p] != '%') {
-      putch(fmt[fmt_p]);
+	char c= fmt[fmt_p];
+	zero_fill = 0;
+    if (c!= '%') {
+      putch(c);
 	  fmt_p++;
     } else {
-      if (fmt[fmt_p + 1] == 'd') {
+		char c_next = fmt[fmt_p+1];
+      if (c_next == 'd') {
 		num++;
         char buf[15];
         int i = va_arg(ap, int);
@@ -42,7 +79,7 @@ int printf(const char *fmt, ...) {
 			buf_p++;
 		}
 		fmt_p += 2;
-      } else if(fmt[fmt_p+1]=='s') {
+      } else if(c_next=='s') {
         num++;
         char *str = va_arg(ap, char *);
         int len = strlen(str);
@@ -50,6 +87,34 @@ int printf(const char *fmt, ...) {
           putch(str[i]);
 		}
 		fmt_p+=2;
+      } else if (c_next >= '0' && c_next <= '9') {
+		num++;
+        if (c_next == 0) {
+          zero_fill = 1;
+          width = fmt[fmt_p+2]-'0';
+          if (fmt[fmt_p + 3] == 's') {
+			char *p = va_arg(ap, char *);
+			width_print(p, width, zero_fill);
+          } else if (fmt[fmt_p + 3] == 'd') {
+            char buf[width];
+            int temp = va_arg(ap, int);
+            int2str(temp, buf);
+			width_print(buf, width, zero_fill);
+		  }
+		  fmt_p += 4;
+        } else {
+          width = c_next-'0';
+          if (fmt[fmt_p + 2] == 's') {
+			char *p = va_arg(ap, char *);
+			width_print(p, width, zero_fill);
+          } else if (fmt[fmt_p + 2] == 'd') {
+            char buf[width];
+            int temp = va_arg(ap, int);
+            int2str(temp, buf);
+			width_print(buf, width, zero_fill);
+		  }
+		  fmt_p += 3;
+		}
 	  }
 	}
   }
