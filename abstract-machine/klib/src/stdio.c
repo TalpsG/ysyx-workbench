@@ -95,23 +95,16 @@ int printf(const char *fmt, ...) {
 		fmt_p+=2;
       } else if (c_next >= '0' && c_next <= '9') {
 		num++;
-		putch('c');
-		putch('n');
-		putch('e');
-		putch('x');
-		putch('t');
-		putch(':');
-		putch(c_next);
-		putch(' ');
 
-        if (c_next == 0) {
-          putch('0');
-          putch('f');
-          putch('i');
-          putch('l');
-          putch('l');
+        if (c_next == '0') {
           zero_fill = 1;
           width = fmt[fmt_p+2]-'0';
+
+putch('w');
+putch(':');
+putch(fmt[fmt_p+2]);
+putch(' ');
+
           if (fmt[fmt_p + 3] == 's') {
 			char *p = va_arg(ap, char *);
 			width_print(p, width, zero_fill);
