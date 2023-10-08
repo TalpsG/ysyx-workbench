@@ -96,6 +96,11 @@ int printf(const char *fmt, ...) {
       } else if (c_next >= '0' && c_next <= '9') {
 		num++;
         if (c_next == 0) {
+          putch('0');
+          putch('f');
+          putch('i');
+          putch('l');
+          putch('l');
           zero_fill = 1;
           width = fmt[fmt_p+2]-'0';
           if (fmt[fmt_p + 3] == 's') {
