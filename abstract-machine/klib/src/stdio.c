@@ -95,6 +95,15 @@ int printf(const char *fmt, ...) {
 		fmt_p+=2;
       } else if (c_next >= '0' && c_next <= '9') {
 		num++;
+		putch('c');
+		putch('n');
+		putch('e');
+		putch('x');
+		putch('t');
+		putch(':');
+		putch(c_next);
+		putch(' ');
+
         if (c_next == 0) {
           putch('0');
           putch('f');
