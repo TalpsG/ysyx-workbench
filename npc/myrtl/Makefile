@@ -18,9 +18,9 @@ EXE_LDFLAGS=-LDFLAGS -lreadline -LDFLAGS -lLLVM-14 -LDFLAGS -pie -LDFLAGS -ldl  
 TRACE_CFLAGS=-CFLAGS -g -CFLAGS -DCONFIG_DIFFTEST=1 -CFLAGS -DTRACE=1
 TRACE_FLAGS=--trace $(FLAGS)  --exe  --timing     
 gdb:exe
-	gdb --args ./obj_dir/Vtop $(BIN)  $(ELF)
+	gdb --args ./obj_dir/Vtop $(BIN)  $(ELF) 
 run:exe
-	./obj_dir/Vtop $(BIN) $(ELF)
+	./obj_dir/Vtop $(BIN) $(ELF) b
 exe:build $(CSRC)  obj_dir/disasm.o
 	$(CPL) $(EXE_FLAGS) $(VSRC) $(CSRC) $(EXE_CFLAGS) $(EXE_LDFLAGS) -j 4  
 build:$(VSRC) 

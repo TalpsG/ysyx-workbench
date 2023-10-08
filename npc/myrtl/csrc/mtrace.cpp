@@ -13,14 +13,14 @@ void init_mtrace() {
   }
 }
 
-void write_mtrace(uint32_t addr,uint32_t data) {
+void write_mtrace(uint32_t addr,uint32_t data ,int len) {
   char buf[100];
-  sprintf(buf, "write -> pc : %8x ,addr: %8x, data:%8x\n",top.outpc,addr,data);
+  sprintf(buf, "write -> pc : %8x ,addr: %8x, data:%8x  ,len:%d\n",top.outpc,addr,data,len);
   mtrace_p = (mtrace_p +1)%200;
   strcpy(mem_trace[mtrace_p], buf);
 }
 
-void read_mtrace(uint32_t addr,uint32_t data) {
+void read_mtrace(uint32_t addr,uint32_t data ) {
   char buf[100];
   sprintf(buf, "read  <- pc : %8x ,addr: %8x, data:%8x\n",top.outpc,addr,data);
   mtrace_p = (mtrace_p +1)%200;

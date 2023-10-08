@@ -491,6 +491,16 @@ VL_ATTR_COLD void Vtop___024root___stl_sequent__TOP__0(Vtop___024root* vlSelf) {
         = vlSelf->top__DOT__cu__DOT__aluop_I;
     vlSelf->top__DOT__cu__DOT__get_aluop__DOT__i0__DOT__data_list[2U] 
         = vlSelf->top__DOT__cu__DOT__aluop_I;
+    vlSelf->top__DOT__reg_write = ((8U == (IData)(vlSelf->top__DOT__extop)) 
+                                   | ((9U == (IData)(vlSelf->top__DOT__extop)) 
+                                      | ((1U == (IData)(vlSelf->top__DOT__extop)) 
+                                         | ((2U == (IData)(vlSelf->top__DOT__extop)) 
+                                            | ((0xaU 
+                                                == (IData)(vlSelf->top__DOT__extop)) 
+                                               | ((7U 
+                                                   == (IData)(vlSelf->top__DOT__extop)) 
+                                                  | (0U 
+                                                     == (IData)(vlSelf->top__DOT__extop))))))));
     vlSelf->top__DOT__pc_write = ((0U == (IData)(vlSelf->top__DOT__extop)) 
                                   | ((7U == (IData)(vlSelf->top__DOT__extop)) 
                                      | (6U == (IData)(vlSelf->top__DOT__extop))));
@@ -1007,13 +1017,10 @@ VL_ATTR_COLD void Vtop___024root___stl_sequent__TOP__0(Vtop___024root* vlSelf) {
                                  : vlSelf->out_snpc)
                              : vlSelf->top__DOT__res)
                          : vlSelf->out_snpc);
-    if (VL_UNLIKELY(((1U == (IData)(vlSelf->top__DOT__extop)) 
-                     | (5U == (IData)(vlSelf->top__DOT__extop))))) {
+    if (((1U == (IData)(vlSelf->top__DOT__extop)) | 
+         (5U == (IData)(vlSelf->top__DOT__extop)))) {
         Vtop___024root____Vdpiimwrap_top__DOT__u_mem__DOT__npc_mem_read_TOP(vlSelf->top__DOT__res, vlSelf->__Vtask_top__DOT__u_mem__DOT__npc_mem_read__2__rdata);
         vlSelf->top__DOT__u_mem__DOT__rdata_w = vlSelf->__Vtask_top__DOT__u_mem__DOT__npc_mem_read__2__rdata;
-        VL_WRITEF("read --> raddr:%8x , rdata:%8x ,readop:%1#\n",
-                  32,vlSelf->top__DOT__res,32,vlSelf->top__DOT__u_mem__DOT__rdata_w,
-                  3,(7U & (vlSelf->ins >> 0xcU)));
         if ((5U == (IData)(vlSelf->top__DOT__extop))) {
             Vtop___024root____Vdpiimwrap_top__DOT__u_mem__DOT__npc_mem_write_TOP(vlSelf->top__DOT__res, vlSelf->top__DOT__mem_wdata, (IData)(vlSelf->top__DOT__mem_mask));
         }
@@ -1205,6 +1212,7 @@ VL_ATTR_COLD void Vtop___024root___ctor_var_reset(Vtop___024root* vlSelf) {
     vlSelf->top__DOT__reg_wdata = 0;
     vlSelf->top__DOT__mem_mask = 0;
     vlSelf->top__DOT__reg_waddr = 0;
+    vlSelf->top__DOT__reg_write = 0;
     for (int __Vi0 = 0; __Vi0 < 32; ++__Vi0) {
         vlSelf->top__DOT____Vcellout__regfile__data[__Vi0] = 0;
     }

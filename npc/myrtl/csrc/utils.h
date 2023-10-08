@@ -40,7 +40,8 @@ void check_regs(void *dut) ;
 void diff_display_regs(struct context *p);
 void init_difftest(char *ref_so_file, long img_size, int port);
 void init_mtrace();
-void write_mtrace(uint32_t addr,uint32_t data);
+void write_mtrace(uint32_t addr,uint32_t data,int len);
 void read_mtrace(uint32_t addr,uint32_t data);
 void print_mtrace();
+extern state npc_state;
 #endif /* DD1B04DF_7733_4BFA_946C_24C526BD872D */

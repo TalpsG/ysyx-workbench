@@ -25,23 +25,24 @@ extern "C" void npc_mem_write(uint32_t waddr, uint32_t wdata, char wmask) {
   // 如`wmask = 0x3`代表只写入最低2个字节, 内存中的其它字节保持不变
   uint32_t *p = (uint32_t *)&mem[waddr-MBASE];
   uint32_t mask = 0;
+  uint32_t mask_temp = wmask;
   for (int i = 0; i < 4; i++) {
-			if (wmask % 2 == 1) {
-			for (int j = 0; j < 8; j++) {
-				mask+=(1<<(i*8+j));
-			}
-			wmask >>=1;
+		if (wmask % 2 == 1) {
+			mask |= ((1<<((i+1)*8))-1);
 		}
+		wmask >>=1;
   }
-  *p = (wdata & mask);
-  write_mtrace(waddr, wdata);
+  *p &= (~mask);
+  *p |= (wdata & mask);
+  printf("wmask:%x\n",wmask);
+  write_mtrace(waddr, wdata,mask_temp);
 }
 extern "C" void fetch(uint32_t in, uint32_t *ins) {
 	npc_mem_read(in, ins);
 }
 int init_mem(int argc,const char **argv) {
 	int image_size = 0;
-  if(argc==3){
+  if(argc>=3){
 		elf = argv[2];
 		printf("loading bin: %s\n",argv[1]);
 		int fd = open(argv[1],O_RDONLY);

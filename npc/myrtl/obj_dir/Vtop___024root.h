@@ -24,6 +24,7 @@ class Vtop___024root final : public VerilatedModule {
         CData/*2:0*/ top__DOT__aluop;
         CData/*7:0*/ top__DOT__mem_mask;
         CData/*4:0*/ top__DOT__reg_waddr;
+        CData/*0:0*/ top__DOT__reg_write;
         CData/*0:0*/ top__DOT__idu__DOT__get_imm__DOT__imm_mux__DOT__i0__DOT__hit;
         CData/*3:0*/ top__DOT__idu__DOT__get_extop__DOT__gen_extop__DOT__i0__DOT__lut_out;
         CData/*0:0*/ top__DOT__idu__DOT__get_extop__DOT__gen_extop__DOT__i0__DOT__hit;
@@ -78,9 +79,9 @@ class Vtop___024root final : public VerilatedModule {
         VlUnpacked<IData/*31:0*/, 10> top__DOT__idu__DOT__get_imm__DOT__imm_mux__DOT__i0__DOT__data_list;
         VlUnpacked<CData/*6:0*/, 9> top__DOT__idu__DOT__get_extop__DOT__gen_extop__DOT__i0__DOT__key_list;
         VlUnpacked<CData/*3:0*/, 9> top__DOT__idu__DOT__get_extop__DOT__gen_extop__DOT__i0__DOT__data_list;
-        VlUnpacked<IData/*31:0*/, 32> top__DOT__regfile__DOT__rf;
     };
     struct {
+        VlUnpacked<IData/*31:0*/, 32> top__DOT__regfile__DOT__rf;
         VlUnpacked<CData/*2:0*/, 3> top__DOT__cu__DOT__get_mask__DOT__i0__DOT__key_list;
         VlUnpacked<CData/*7:0*/, 3> top__DOT__cu__DOT__get_mask__DOT__i0__DOT__data_list;
         VlUnpacked<CData/*3:0*/, 3> top__DOT__cu__DOT__get_selectnum1__DOT__i0__DOT__key_list;

@@ -17,14 +17,14 @@ VerilatedVcdC m_trace ;
 int sim_time = 0;
 #endif
 void single_cycle(){
-	printf("-------->begin \n");
+	//printf("-------->begin \n");
 	top.clk = 1;
 	top.eval();
 #ifdef TRACE
 	m_trace.dump(sim_time);
 	sim_time++;
 #endif
-	printf("-------------mid\n");
+	//printf("-------------mid\n");
 	top.clk = 0;
 	top.eval();
 #ifdef TRACE
@@ -35,7 +35,7 @@ void single_cycle(){
 #ifdef CONFIG_DIFFTEST
 	difftest_step(top.outpc,top.out_dnpc);
 #endif // DEBUG
-	printf("-------->end \n\n");
+	//printf("-------->end \n\n");
 }
 void reset() {
   top.clk = 0;
@@ -49,6 +49,15 @@ void display_regs() {
     printf("reg: %3s : %8x\n",regs[i],top.gpr[i]);
   }
 }
+
+
+
+bool batch=false;
+void batch_mode() {
+  while (npc_state == RUNNING  ) {
+    single_cycle();
+  }
+}
 char *cmd=NULL;
 void init(int argc,const char **argv) {
 	int img_size;
@@ -60,6 +69,9 @@ void init(int argc,const char **argv) {
 	char ref_so_file[]="/home/talps/gitrepo/ysyx-workbench/npc/riscv32-nemu-interpreter-so";
 	init_difftest(ref_so_file, img_size, 1235);
 #endif // DEBUG
+	if (argc == 4) {
+		batch=true;
+	}
 	load_elf();
 	print_callbuf();	
 	init_disasm("riscv32");
@@ -78,7 +90,10 @@ int main(int argc, const char** argv) {
     m_trace.open("waveform.vcd");
 #endif
 	init(argc, argv);
-	sdb_mainloop();
-	
+	if (batch) {
+		batch_mode();
+	} else {
+		sdb_mainloop();
+	}
     return 0;
 }
