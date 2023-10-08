@@ -31,7 +31,6 @@
 // 为了能调用wp函数所以引用的头
 
 #define MAX_INST_TO_PRINT 10
-extern char call_buff[100000];
 CPU_state cpu = {};
 uint64_t g_nr_guest_inst = 0;
 static uint64_t g_timer = 0; // unit: us
@@ -44,6 +43,9 @@ ringbuffer for log
 #define LINE_SIZE 500
 char ringbuf[BUF_SIZE][LINE_SIZE];
 int pos=0;
+#ifdef CONFIG_FTRACE
+extern char call_buff[200][500];
+extern int call_buff_p;
 void check_call(Decode s){
   struct func_info *temp = func_head;
   while(temp!=NULL){
@@ -56,7 +58,8 @@ void check_call(Decode s){
       char tail[200];
       sprintf(tail,"call [%6s@0x%08x]\n",temp->name,temp->value);
       strcat(buf, tail);
-      strcat(call_buff, buf);
+      call_buff_p++;
+      strcpy(call_buff[call_buff_p], buf);
       func_trace++;
       break;
     }
@@ -70,12 +73,14 @@ void check_call(Decode s){
       char tail[200];
       sprintf(tail,"ret  [%6s]\n",temp->name);
       strcat(buf, tail);
-      strcat(call_buff, buf);
+      call_buff_p++;
+      strcpy(call_buff[call_buff_p], buf);
       break;
     }
     temp = temp->next;
   }
 }
+#endif
 void device_update();
 
 void init_ringbuf(){
@@ -147,7 +152,10 @@ static void exec_once(Decode *s, vaddr_t pc)
   p[0] = '\0'; // the upstream llvm does not support loongarch32r
 #endif
 #endif
+
+#ifdef CONFIG_FTRACE
   check_call(*s);
+#endif
 }
 
 static void execute(uint64_t n)
@@ -159,8 +167,10 @@ static void execute(uint64_t n)
 
     g_nr_guest_inst++;
     trace_and_difftest(&s, cpu.pc);
-    if (nemu_state.state != NEMU_RUNNING)
+    if (nemu_state.state != NEMU_RUNNING) {
+		strcat(call_buff[call_buff_p], "----- ^^^^^ -----\n");
       break;
+	}
     IFDEF(CONFIG_DEVICE, device_update());
     //printf("asm: %s \n",s.logbuf);
     //isa_reg_display();

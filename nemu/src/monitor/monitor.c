@@ -25,7 +25,8 @@
 static char *elf = NULL;
 struct func_info *func_head = NULL;
 int func_trace = 0;
-char call_buff[100000] = {'\0'} ;
+char call_buff[200][500];
+int call_buff_p = -1;
 
 #include <stdio.h>  
 #include <unistd.h>  

@@ -171,6 +171,9 @@ config DIFFTEST
 config MTRACE
   bool "enable to trace mem read and write"
   default n
+config FTRACE
+  bool "enable to trace func call"
+  default n
 
 choice
   prompt "Reference design"

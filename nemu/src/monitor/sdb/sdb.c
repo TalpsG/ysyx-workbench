@@ -22,7 +22,7 @@
 #include "sdb.h"
 #include <debug.h>
 static int is_batch_mode = false;
-extern char call_buff[40000];
+extern char call_buff[200][500];
 void init_regex();
 void init_wp_pool();
 /* We use the `readline' library to provide more flexibility to read from stdin. */
@@ -252,7 +252,9 @@ static int cmd_d(char *args)
 }
 
 void print_call_buff(){
-  printf("%s\n",call_buff);
+  for (int i = 0; i < 200; i++) {
+    printf("%s",call_buff[i]);
+	}
 }
 static int cmd_ftrace(char *args){
   print_call_buff();
