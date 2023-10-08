@@ -2,6 +2,7 @@
 #include <klib.h>
 #include <klib-macros.h>
 #include <stdarg.h>
+#include <stdio.h>
 
 #if !defined(__ISA_NATIVE__) || defined(__NATIVE_USE_KLIB__)
 void int2str(int i,char *p){                                              
@@ -21,7 +22,38 @@ void int2str(int i,char *p){
 }
 
 int printf(const char *fmt, ...) {
-  panic("Not implemented");
+  va_list ap;
+  va_start(ap, fmt);
+  int num = 0;
+  int fmt_p = 0;
+  while (fmt[fmt_p] != '\0') {
+    if (fmt[fmt_p] != '%') {
+      putch(fmt[fmt_p]);
+	  fmt_p++;
+    } else {
+      if (fmt[fmt_p + 1] == 'd') {
+		num++;
+        char buf[15];
+        int i = va_arg(ap, int);
+		int2str(i, buf);
+		int buf_p = 0;
+		while (buf[buf_p] != '\0') {
+			putch(buf[buf_p]);
+			buf_p++;
+		}
+		fmt_p += 2;
+      } else if(fmt[fmt_p+1]=='s') {
+        num++;
+        char *str = va_arg(ap, char *);
+        int len = strlen(str);
+        for (int i = 0; i < len; i++) {
+          putch(str[i]);
+		}
+		fmt_p+=2;
+	  }
+	}
+  }
+	return num;
 }
 
 int vsprintf(char *out, const char *fmt, va_list ap) {
