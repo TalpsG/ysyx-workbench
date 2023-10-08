@@ -173,7 +173,9 @@ void init_monitor(int argc, char *argv[]) {
   /* Perform some global initialization. */
 
   /* Init ring buffer of instructions  */
+#ifdef CONFIG_ITRACE
   init_ringbuf();
+#endif
   /* Parse arguments. */
   parse_args(argc, argv);
   load_elf();

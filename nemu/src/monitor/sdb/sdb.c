@@ -22,7 +22,9 @@
 #include "sdb.h"
 #include <debug.h>
 static int is_batch_mode = false;
+#ifdef CONFIG_FTRACE
 extern char call_buff[200][500];
+#endif
 void init_regex();
 void init_wp_pool();
 /* We use the `readline' library to provide more flexibility to read from stdin. */
@@ -250,16 +252,20 @@ static int cmd_d(char *args)
 #endif
   return 0;
 }
-
+#ifdef CONFIG_FTRACE
 void print_call_buff(){
   for (int i = 0; i < 200; i++) {
     printf("%s",call_buff[i]);
 	}
 }
-static int cmd_ftrace(char *args){
+#endif
+static int cmd_ftrace(char *args) {
+#ifdef CONFIG_FTRACE
   print_call_buff();
+#endif // 
   return 0;
 }
+
 static int cmd_sym(char *args){
   struct func_info *p = func_head;
   while(p!=NULL){
@@ -387,5 +393,7 @@ void init_sdb()
   init_regex();
 
   /* Initialize the watchpoint pool. */
+#ifdef CONFIG_WATCHPOINT
   init_wp_pool();
+#endif
 }
