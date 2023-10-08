@@ -99,7 +99,8 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc)
 #ifdef CONFIG_ITRACE_COND
   if (ITRACE_COND)
   {
-    //log_write("%s\n", _this->logbuf);
+    log_write("%s\n", _this->logbuf);
+
     if(nemu_state.state == NEMU_ABORT||
       (nemu_state.state == NEMU_END &&
        nemu_state.halt_ret == 1)){
@@ -110,6 +111,17 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc)
       pos = (pos+1)%BUF_SIZE;
     }
   }
+#endif
+#ifdef CONFIG_ITRACE
+    if(nemu_state.state == NEMU_ABORT||
+      (nemu_state.state == NEMU_END &&
+       nemu_state.halt_ret == 1)){
+      sprintf(ringbuf[pos] , " ---> %s\n",_this->logbuf) ;
+      flush_ringbuf();
+    }else{
+      sprintf(ringbuf[pos] , "      %s\n",_this->logbuf) ;
+      pos = (pos+1)%BUF_SIZE;
+    }
 #endif
   if (g_print_step)
   {
