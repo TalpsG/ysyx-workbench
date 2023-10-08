@@ -99,12 +99,6 @@ int printf(const char *fmt, ...) {
         if (c_next == '0') {
           zero_fill = 1;
           width = fmt[fmt_p+2]-'0';
-
-putch('w');
-putch(':');
-putch(fmt[fmt_p+2]);
-putch(' ');
-
           if (fmt[fmt_p + 3] == 's') {
 			char *p = va_arg(ap, char *);
 			width_print(p, width, zero_fill);
