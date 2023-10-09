@@ -68,22 +68,12 @@ static uint32_t key_dequeue() {
     key = key_queue[key_f];
     key_f = (key_f + 1) % KEY_QUEUE_LEN;
   }
-#ifdef CONFIG_DTRACE
-  char buf[100];
-	sprintf(buf,"device:%10s read  ----> addr:%8x ,len:%2d data:%8x\n", "kbd deq",CONFIG_I8042_DATA_MMIO,4,key);
-  add_dtrace(buf);
-#endif
   return key;
 }
 
 void send_key(uint8_t scancode, bool is_keydown) {
   if (nemu_state.state == NEMU_RUNNING && keymap[scancode] != _KEY_NONE) {
     uint32_t am_scancode = keymap[scancode] | (is_keydown ? KEYDOWN_MASK : 0);
-#ifdef CONFIG_DTRACE
-  char buf[100];
-	sprintf(buf,"device:%10s read  ----> addr:%8x ,len:%2d data:%8x\n", "kbd send",CONFIG_I8042_DATA_MMIO,4,am_scancode);
-  add_dtrace(buf);
-#endif
     key_enqueue(am_scancode);
   }
 }
