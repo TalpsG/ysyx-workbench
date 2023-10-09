@@ -5,7 +5,7 @@
 #define KEYDOWN_MASK 0x8000
 
 void __am_input_keybrd(AM_INPUT_KEYBRD_T *kbd) {
-	unsigned int code = inl(KBD_ADDR);
+	uint32_t code = 0;
 	if (code != 0) {
 		printf("keycode :%d\n",code);
 		kbd->keycode = code ;
