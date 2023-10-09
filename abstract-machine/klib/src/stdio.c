@@ -2,6 +2,7 @@
 #include <klib.h>
 #include <klib-macros.h>
 #include <stdarg.h>
+#include <stdio.h>
 
 #if !defined(__ISA_NATIVE__) || defined(__NATIVE_USE_KLIB__)
 void int2str(int i,char *p){                                              
@@ -64,6 +65,9 @@ int printf(const char *fmt, ...) {
   int num = 0;
   int fmt_p = 0;
   int zero_fill = 0,width = -1;
+  for (int i = 0; i < strlen(fmt); i++) {
+	putch(fmt[i]);
+  }
 
   while (fmt[fmt_p] != '\0') {
 	char c= fmt[fmt_p];
