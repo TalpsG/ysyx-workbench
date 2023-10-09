@@ -8,7 +8,7 @@ void __am_input_keybrd(AM_INPUT_KEYBRD_T *kbd) {
 	int code = inb(KBD_ADDR);
 	static int wait = 0;
 	if (code != 0) {
-		printf("keycode :%d\n",code);
+		printf("keycode :%d ",code);
 		if (wait == 1) {
 			wait = 0;
 			return ;
@@ -21,8 +21,9 @@ void __am_input_keybrd(AM_INPUT_KEYBRD_T *kbd) {
 			kbd->keycode = code ;
 			kbd->keydown = true;
 		}
+		printf("%s\n",kbd->keydown?"down":"release");
 	} else {
-		kbd->keycode =AM_KEY_NONE;
+		kbd->keycode = AM_KEY_NONE;
 		kbd->keydown = false;
 	}
 }
