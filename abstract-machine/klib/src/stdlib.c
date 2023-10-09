@@ -42,9 +42,7 @@ void *malloc(size_t size) {
 #endif
 	size = (size+3)&(~0x3u);
 	void *temp = mem_sbrk;
-	unsigned char *p = temp;
 	mem_sbrk += size;
-	printf("malloc,size:%d,sbrk:%c %c %c %c\n",size,p[0],p[1],p[2],p[3]);
   return temp;
 }
 
