@@ -29,6 +29,7 @@ char call_buff[200][500];
 int call_buff_p = -1;
 
 #include <stdio.h>  
+#ifdef CONFIG_FTRACE
 #include <unistd.h>  
 #include <fcntl.h>  
 #include <sys/types.h>  
@@ -82,7 +83,7 @@ static void load_elf(){
     }
   free(p);
 }
-
+#endif
 void init_ringbuf();
 void init_rand();
 void init_log(const char *log_file);
@@ -178,7 +179,9 @@ void init_monitor(int argc, char *argv[]) {
 #endif
   /* Parse arguments. */
   parse_args(argc, argv);
+#ifdef CONFIG_FTRACE
   load_elf();
+#endif
   /* Set random seed. */
   init_rand();
 
