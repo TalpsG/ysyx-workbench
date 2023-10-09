@@ -74,6 +74,11 @@ static uint32_t key_dequeue() {
 void send_key(uint8_t scancode, bool is_keydown) {
   if (nemu_state.state == NEMU_RUNNING && keymap[scancode] != _KEY_NONE) {
     uint32_t am_scancode = keymap[scancode] | (is_keydown ? KEYDOWN_MASK : 0);
+#ifdef CONFIG_DTRACE
+  char buf[100];
+	sprintf(buf,"device:%10s read  ----> addr:%8x ,len:%2d data:%8x\n", "keyboard",CONFIG_I8042_DATA_MMIO,4,am_scancode);
+  add_dtrace(buf);
+#endif
     key_enqueue(am_scancode);
   }
 }
