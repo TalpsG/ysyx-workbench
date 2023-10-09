@@ -280,18 +280,24 @@ static int cmd_sym(char *args){
 static int cmd_mtrace(char *args){
 #ifdef CONFIG_MTRACE
 	print_mtrace();
+#else
+	printf("menuconfig tick MTRACE\n");
 #endif
   return 0;
 }
 static int cmd_itrace(char *args){
 #ifdef CONFIG_ITRACE
 	print_itrace();
+#else
+	printf("menuconfig tick ITRACE\n");
 #endif
   return 0;
 }
 static int cmd_dtrace(char *args){
 #ifdef CONFIG_DTRACE
 	print_dtrace();
+#else
+	printf("menuconfig tick DTRACE\n");
 #endif
   return 0;
 }
