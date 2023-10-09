@@ -21,8 +21,6 @@ void __am_input_keybrd(AM_INPUT_KEYBRD_T *kbd) {
 			kbd->keycode = code ;
 			kbd->keydown = true;
 		}
-		printf("keycode :%d ",code);
-		printf("%s\n",kbd->keydown?"down":"release");
 	} else {
 		kbd->keycode = AM_KEY_NONE;
 		kbd->keydown = false;
