@@ -11,7 +11,7 @@ void add_mtrace(char *str) {
 	strcpy(mtrace_buff[mtrace_buffp],str);
 }
 void print_mtrace() {
-  for (int i = 0; i < 1500; i++) {
+  for (int i = 0; i < 500; i++) {
     printf("%s",mtrace_buff[i]);
   }
 }
