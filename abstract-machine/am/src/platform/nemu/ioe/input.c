@@ -5,7 +5,7 @@
 #define KEYDOWN_MASK 0x8000
 
 void __am_input_keybrd(AM_INPUT_KEYBRD_T *kbd) {
-	int code = *(uint16_t*)KBD_ADDR;
+	unsigned int code = inl(KBD_ADDR);
 	static int wait = 0;
 	if (code != 0) {
 		if (wait == 1) {
