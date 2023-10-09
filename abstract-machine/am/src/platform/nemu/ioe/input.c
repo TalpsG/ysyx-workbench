@@ -5,18 +5,24 @@
 #define KEYDOWN_MASK 0x8000
 
 void __am_input_keybrd(AM_INPUT_KEYBRD_T *kbd) {
-	unsigned int code = inl(SERIAL_PORT);
+	int code = inb(SERIAL_PORT);
+	static int wait = 0;
 	if (code != 0) {
 		printf("keycode :%d\n",code);
-		kbd->keycode = code ;
-		if ((code & 0xff00) == 0xf000) {
+		if (wait == 1) {
+			wait = 0;
+			return ;
+		}
+		if (code  == 0xf0) {
+			kbd->keydown = AM_KEY_NONE;
 			kbd->keydown = false;
+			wait = 1;
 		} else {
+			kbd->keycode = code ;
 			kbd->keydown = true;
 		}
 	} else {
 		kbd->keycode =AM_KEY_NONE;
 		kbd->keydown = false;
-
 	}
 }
