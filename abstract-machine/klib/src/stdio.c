@@ -2,7 +2,6 @@
 #include <klib.h>
 #include <klib-macros.h>
 #include <stdarg.h>
-#include <stdio.h>
 
 #if !defined(__ISA_NATIVE__) || defined(__NATIVE_USE_KLIB__)
 void int2str(int i,char *p){                                              
@@ -93,7 +92,15 @@ int printf(const char *fmt, ...) {
           putch(str[i]);
 		}
 		fmt_p+=2;
-      } else if (c_next >= '0' && c_next <= '9') {
+      } else if (c_next == 'p') {
+		num++;
+		int temp  = sizeof(void *);
+		char buf[10];
+		int2str(temp, buf);
+		for (int i = 0; i < strlen(buf); i++) {
+			putch(buf[i]);
+		}
+	  }else if (c_next >= '0' && c_next <= '9') {
 		num++;
 
         if (c_next == '0') {
