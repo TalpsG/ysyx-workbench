@@ -4,7 +4,7 @@
 
 #if !defined(__ISA_NATIVE__) || defined(__NATIVE_USE_KLIB__)
 static unsigned long int next = 1;
-static void *mem_sbrk = 0;
+static void *mem_sbrk = (void*)0x1000;
 extern Area heap;
 int rand(void) {
   // RAND_MAX assumed to be 32767
@@ -38,11 +38,6 @@ void *malloc(size_t size) {
 
   //panic("Not implemented");
 #endif
-static int first = 0;
-	if (first == 0) {
-		first = 1;
-		mem_sbrk = heap.start;
-	} 
 	size = (size+3)&(~0x3u);
 	void *temp = mem_sbrk;
 	mem_sbrk += size;
