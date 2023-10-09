@@ -68,6 +68,11 @@ static uint32_t key_dequeue() {
     key = key_queue[key_f];
     key_f = (key_f + 1) % KEY_QUEUE_LEN;
   }
+#ifdef CONFIG_DTRACE
+  char buf[100];
+	sprintf(buf,"device:%10s read  ----> addr:%8x ,len:%2d data:%8x\n", "kbd deq",CONFIG_I8042_DATA_MMIO,4,key);
+  add_dtrace(buf);
+#endif
   return key;
 }
 
