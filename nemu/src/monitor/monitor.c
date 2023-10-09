@@ -39,6 +39,11 @@ int call_buff_p = -1;
 #include <sys/stat.h> 
 #include <sys/mman.h> //mmap函数的必要头文件
 #include "elf.h"
+void init_callbuff() {
+  for (int i = 0; i < 200; i++) {
+    call_buff[i][0] = '\0';
+  }
+}
 void new_func_info(char *name,Elf32_Addr add,uint32_t size){
   struct func_info *temp = malloc(sizeof(struct func_info));
   strcpy(temp->name, name);
@@ -182,6 +187,7 @@ void init_monitor(int argc, char *argv[]) {
   /* Parse arguments. */
   parse_args(argc, argv);
 #ifdef CONFIG_FTRACE
+	init_callbuff() ;
   load_elf();
 #endif
 #ifdef CONFIG_MTRACE
