@@ -5,7 +5,7 @@
 #define KEYDOWN_MASK 0x8000
 
 void __am_input_keybrd(AM_INPUT_KEYBRD_T *kbd) {
-	int code = inb(SERIAL_PORT);
+	int code = 0;
 	static int wait = 0;
 	if (code != 0) {
 		printf("keycode :%d\n",code);
