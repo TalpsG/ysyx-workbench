@@ -20,6 +20,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <debug.h>
+#include <trace/itrace.h>
+#include <trace/mtrace.h>
+#include <trace/dtrace.h>
 
 //for elf
 static char *elf = NULL;
@@ -84,9 +87,6 @@ static void load_elf(){
   free(p);
 }
 #endif
-#ifdef CONFIG_ITRACE
-void init_ringbuf();
-#endif // DEBUG
 void init_rand();
 void init_log(const char *log_file);
 void init_mem();
@@ -177,7 +177,7 @@ void init_monitor(int argc, char *argv[]) {
 
   /* Init ring buffer of instructions  */
 #ifdef CONFIG_ITRACE
-  init_ringbuf();
+  init_itrace();
 #endif
   /* Parse arguments. */
   parse_args(argc, argv);
@@ -186,6 +186,9 @@ void init_monitor(int argc, char *argv[]) {
 #endif
 #ifdef CONFIG_MTRACE
   init_mtrace();
+#endif
+#ifdef CONFIG_DTRACE
+	init_dtrace();
 #endif
   /* Set random seed. */
   init_rand();

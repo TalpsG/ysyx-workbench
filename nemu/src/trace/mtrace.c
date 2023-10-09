@@ -1,4 +1,4 @@
-#include "memory/mtrace.h"
+#include "trace/mtrace.h"
 char mtrace_buff[500][100];
 int mtrace_buffp = -1;
 void init_mtrace() {

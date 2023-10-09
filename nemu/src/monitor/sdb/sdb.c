@@ -17,7 +17,7 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 #include <memory/paddr.h>
-#include <memory/mtrace.h>
+#include <trace/mtrace.h>
 #include <stdio.h>
 #include <string.h>
 #include "sdb.h"

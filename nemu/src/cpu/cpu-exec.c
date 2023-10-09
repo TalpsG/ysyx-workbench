@@ -22,6 +22,7 @@
 #include <locale.h>
 #include <stdio.h>
 #include <string.h>
+#include <trace/itrace.h>
 
 /* The assembly code of instructions executed is only output to the screen
  * when the number of instructions executed is less than this value.
@@ -39,21 +40,7 @@ static bool g_print_step = false;
 /*
 ringbuffer for log
 */
-#ifdef CONFIG_ITRACE
-#define BUF_SIZE 200
-#define LINE_SIZE 500
-char ringbuf[BUF_SIZE][LINE_SIZE];
-int pos=0;
-void init_ringbuf(){
-  memset(ringbuf,0, BUF_SIZE*LINE_SIZE);
-}
 
-void flush_ringbuf(){
-  for(int i=0;i<BUF_SIZE&&strlen(ringbuf[i])!=0;i++){
-    printf("%s",ringbuf[i]);
-  }
-}
-#endif // DEBUG
 #ifdef CONFIG_FTRACE
 extern char call_buff[200][500];
 extern int call_buff_p;
@@ -106,11 +93,14 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc)
     if(nemu_state.state == NEMU_ABORT||
       (nemu_state.state == NEMU_END &&
        nemu_state.halt_ret == 1)){
-      sprintf(ringbuf[pos] , " ---> %s\n",_this->logbuf) ;
-      flush_ringbuf();
+		char buf[500];
+      sprintf(buf , " ---> %s\n",_this->logbuf) ;
+	  add_itrace(buf);
+	  print_itrace();
     }else{
-      sprintf(ringbuf[pos] , "      %s\n",_this->logbuf) ;
-      pos = (pos+1)%BUF_SIZE;
+		char buf[500];
+      sprintf(buf , " ---> %s\n",_this->logbuf) ;
+	  add_itrace(buf);
     }
 #endif
   if (g_print_step)
