@@ -32,11 +32,11 @@ OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.o) $(CXXSRC:%.cc=$(OBJ_DIR)/%.o)
 # Compilation patterns
 $(OBJ_DIR)/%.o: %.c
 	echo $(OBJ_DIR)
-	@echo + CC $<
-	@mkdir -p $(dir $@)
-	@$(CC) $(CFLAGS) -c -o $@ $<
-	@$(CC) $(CFLAGS) -E -MF /dev/null $< | clang-format > $@.i
-	$(call call_fixdep, $(@:.o=.d), $@)
+#@echo + CC $<
+#@mkdir -p $(dir $@)
+#@$(CC) $(CFLAGS) -c -o $@ $<
+#@$(CC) $(CFLAGS) -E -MF /dev/null $< | clang-format > $@.i
+#$(call call_fixdep, $(@:.o=.d), $@)
 
 $(OBJ_DIR)/%.o: %.cc
 	@echo + CXX $<
