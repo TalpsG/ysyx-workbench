@@ -22,6 +22,8 @@
 #include <string.h>
 #include "sdb.h"
 #include <debug.h>
+#include <trace/itrace.h>
+#include "trace/dtrace.h"
 static int is_batch_mode = false;
 #ifdef CONFIG_FTRACE
 extern char call_buff[200][500];
@@ -276,7 +278,21 @@ static int cmd_sym(char *args){
   return 0;
 }
 static int cmd_mtrace(char *args){
+#ifdef CONFIG_MTRACE
 	print_mtrace();
+#endif
+  return 0;
+}
+static int cmd_itrace(char *args){
+#ifdef CONFIG_ITRACE
+	print_itrace();
+#endif
+  return 0;
+}
+static int cmd_dtrace(char *args){
+#ifdef CONFIG_DTRACE
+	print_dtrace();
+#endif
   return 0;
 }
 static int cmd_help(char *args);
@@ -301,6 +317,8 @@ static struct
     {"ftrace", "trace func stack", cmd_ftrace},
     {"sym", "print func table", cmd_sym},
     {"mtrace", "print mem trace", cmd_mtrace},
+    {"itrace", "print instructs trace", cmd_itrace},
+    {"dtrace", "print device trace", cmd_dtrace},
 
 };
 
