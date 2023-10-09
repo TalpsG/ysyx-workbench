@@ -15,6 +15,7 @@
 
 #include <memory/host.h>
 #include <memory/paddr.h>
+#include <memory/mtrace.h>
 #include <device/mmio.h>
 #include <isa.h>
 #include <stdio.h>
@@ -35,11 +36,16 @@ paddr_t host_to_guest(uint8_t *haddr) { return haddr - pmem + CONFIG_MBASE; }
 
 static word_t pmem_read(paddr_t addr, int len) {
   word_t ret = host_read(guest_to_host(addr), len);
-
+  char buf[100];
+  sprintf(buf, "read   <---- pc:%8x,addr:%8x,data:%8x,len:%2d\n",cpu.pc,addr,ret,len);
+  add_mtrace(buf);
   return ret;
 }
 
 static void pmem_write(paddr_t addr, int len, word_t data) {
+	char buf[100];
+  sprintf(buf, "write  ----> pc:%8x,addr:%8x,data:%8x,len:%2d\n",cpu.pc,addr,data,len);
+  add_mtrace(buf);
   host_write(guest_to_host(addr), len, data);
 }
 
@@ -68,8 +74,10 @@ word_t paddr_read(paddr_t addr, int len) {
   //printf("pc: %08x ,",cpu.pc);
   //printf(" read  , add: 0x%08x len:%2d",addr,len);
 #endif
-  word_t res =0 ; 
-  if (likely(in_pmem(addr))) res = pmem_read(addr, len);
+  word_t res =0 ;
+  if (likely(in_pmem(addr))) {
+    res = pmem_read(addr, len);
+	}
   else {IFDEF(CONFIG_DEVICE, res = mmio_read(addr, len));}
 #ifdef CONFIG_MTRACE
   //printf(" ,data: 0x%08x\n",res);

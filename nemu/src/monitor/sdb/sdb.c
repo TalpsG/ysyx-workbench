@@ -17,6 +17,7 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 #include <memory/paddr.h>
+#include <memory/mtrace.h>
 #include <stdio.h>
 #include <string.h>
 #include "sdb.h"
@@ -274,6 +275,10 @@ static int cmd_sym(char *args){
   }
   return 0;
 }
+static int cmd_mtrace(char *args){
+	print_mtrace();
+  return 0;
+}
 static int cmd_help(char *args);
 
 static struct
@@ -295,6 +300,7 @@ static struct
     {"d", "delete a watchpoint", cmd_d},
     {"ftrace", "trace func stack", cmd_ftrace},
     {"sym", "print func table", cmd_sym},
+    {"mtrace", "print mem trace", cmd_mtrace},
 
 };
 
