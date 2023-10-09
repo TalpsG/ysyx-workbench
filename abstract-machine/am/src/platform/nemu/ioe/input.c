@@ -5,8 +5,7 @@
 #define KEYDOWN_MASK 0x8000
 
 void __am_input_keybrd(AM_INPUT_KEYBRD_T *kbd) {
-	int code = inb(KBD_ADDR);
-	int code2= inb(KBD_ADDR+1);
+	int code = *(uint16_t*)KBD_ADDR;
 	static int wait = 0;
 	if (code != 0) {
 		if (wait == 1) {
@@ -14,7 +13,7 @@ void __am_input_keybrd(AM_INPUT_KEYBRD_T *kbd) {
 			kbd->keydown = AM_KEY_NONE;
 			kbd->keydown = false;
 		}
-		else if (code2  == 0x80) {
+		else if (code  == 0x80) {
 			kbd->keydown = AM_KEY_NONE;
 			kbd->keydown = false;
 			wait = 1;
