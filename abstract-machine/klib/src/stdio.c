@@ -94,12 +94,19 @@ int printf(const char *fmt, ...) {
 		fmt_p+=2;
       } else if (c_next == 'p') {
 		num++;
+		fmt_p +=2;
 		int temp  = sizeof(void *);
 		char buf[10];
 		int2str(temp, buf);
 		for (int i = 0; i < strlen(buf); i++) {
 			putch(buf[i]);
 		}
+
+	}else if (c_next == 'c') {
+		num++;
+		fmt_p += 2;
+		unsigned char t = va_arg(ap, int);
+		putch(t);
 	  }else if (c_next >= '0' && c_next <= '9') {
 		num++;
 
