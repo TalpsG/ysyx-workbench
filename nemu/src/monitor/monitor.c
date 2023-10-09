@@ -84,7 +84,9 @@ static void load_elf(){
   free(p);
 }
 #endif
+#ifdef CONFIG_ITRACE
 void init_ringbuf();
+#endif // DEBUG
 void init_rand();
 void init_log(const char *log_file);
 void init_mem();
