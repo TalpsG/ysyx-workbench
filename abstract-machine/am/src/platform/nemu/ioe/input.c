@@ -14,6 +14,7 @@ void __am_input_keybrd(AM_INPUT_KEYBRD_T *kbd) {
 			kbd->keydown = false;
 		}
 		else if (code  == 0xf0) {
+
 			kbd->keydown = AM_KEY_NONE;
 			kbd->keydown = false;
 			wait = 1;
