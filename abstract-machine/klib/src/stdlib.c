@@ -42,7 +42,7 @@ static int first = 0;
 	if (first == 0) {
 		first = 1;
 		mem_sbrk = heap.start;
-		printf("heapstart:%d\n",(int)mem_sbrk);
+		printf("heapstart:%d\n",mem_sbrk);
 	} 
 	size = (size+3)&(~0x3u);
 	void *temp = mem_sbrk;
