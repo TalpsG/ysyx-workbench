@@ -58,6 +58,4 @@ bool ioe_init() {
 
 void ioe_read (int reg, void *buf) { ((handler_t)lut[reg])(buf); }
 void ioe_write(int reg, void *buf) {
-	if(reg == AM_GPU_FBDRAW)
-		printf("iowrite:fbdram,y:%d\n",((AM_GPU_FBDRAW_T*)buf)->y);
 	((handler_t)lut[reg])(buf); }
