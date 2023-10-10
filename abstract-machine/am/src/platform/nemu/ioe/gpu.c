@@ -24,19 +24,17 @@ void __am_gpu_config(AM_GPU_CONFIG_T *cfg) {
 }
 
 void __am_gpu_fbdraw(AM_GPU_FBDRAW_T *ctl) {
-	//uint32_t *fb = (uint32_t *)(uintptr_t)FB_ADDR;
-	unsigned int vga_h = inl(VGACTL_ADDR)&0xffff;
-	
-	printf("x:%d,y:%d,w:%d,h:%d,vga_h:%d\n",ctl->x,ctl->y,ctl->w,ctl->h,vga_h);
-	//int w = ctl->w,h = ctl->h;
-	//int x = ctl->x,y=ctl->y;
-	//int pos = (y)*vga_w+x;
-	//printf("x:%d,y:%d,w:%d,h:%d,vga_w:%d,pos:%d\n",x,y,w,h,vga_w,pos);
-	//for (int i = 0; i < h; i++) {
-		//for (int j = 0; j < w; j++) {
-			//fb[pos+i*vga_w+j] = ((uint32_t*)ctl->pixels)[i*w+j];
-		//}
-	//}
+	uint32_t *fb = (uint32_t *)(uintptr_t)FB_ADDR;
+	signed int vga_w = inl(VGACTL_ADDR)>>16;
+	int w = ctl->w,h = ctl->h;
+	int x = ctl->x,y=ctl->y;
+	int pos = (y)*vga_w+x;
+	printf("x:%d,y:%d,w:%d,h:%d,vga_w:%d,pos:%d\n",x,y,w,h,vga_w,pos);
+	for (int i = 0; i < h; i++) {
+		for (int j = 0; j < w; j++) {
+			fb[pos+i*vga_w+j] = ((uint32_t*)ctl->pixels)[i*w+j];
+		}
+	}
   if (ctl->sync) {
     outl(SYNC_ADDR, 1);
   }
