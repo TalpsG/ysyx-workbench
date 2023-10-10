@@ -15,7 +15,7 @@
 
 #include <common.h>
 #include <device/map.h>
-#include "memory/"
+#include "memory/paddr.h"
 
 #define SCREEN_W (MUXDEF(CONFIG_VGA_SIZE_800x600, 800, 400))
 #define SCREEN_H (MUXDEF(CONFIG_VGA_SIZE_800x600, 600, 300))
