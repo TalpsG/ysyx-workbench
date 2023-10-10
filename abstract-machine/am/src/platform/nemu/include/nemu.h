@@ -2,7 +2,7 @@
 #define NEMU_H__
 
 #include <klib-macros.h>
-
+#include <klib.h>
 
 
 
