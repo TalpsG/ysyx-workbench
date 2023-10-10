@@ -1,5 +1,6 @@
 
 #include "utils.h"
+#include <bits/types/time_t.h>
 #include <cstdio>
 #include <cstring>
 #include "macro.h"

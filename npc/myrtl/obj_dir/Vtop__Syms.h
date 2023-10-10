@@ -29,9 +29,6 @@ class Vtop__Syms final : public VerilatedSyms {
     // MODULE INSTANCE STATE
     Vtop___024root                 TOP;
 
-    // SCOPE NAMES
-    VerilatedScope __Vscope_top__regfile;
-
     // CONSTRUCTORS
     Vtop__Syms(VerilatedContext* contextp, const char* namep, Vtop* modelp);
     ~Vtop__Syms();

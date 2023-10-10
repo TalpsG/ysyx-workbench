@@ -18,7 +18,7 @@ void print_ins() {
 				(uint8_t *)&top.ins,4);
 	sprintf(ringbuffer[buf_p],"pc:%8x,ins:%s",top.outpc,ins_buf);
 	buf_p = (buf_p+1)%200;
-	printf("pc:%8x,machinecode:%08x ,ins:%s\n",top.outpc,top.ins,ins_buf);
+	//printf("pc:%8x,machinecode:%08x ,ins:%s\n",top.outpc,top.ins,ins_buf);
 }
 void print_ringbuf() {
   for (int i=0; i < 200; i++) {
