@@ -11,8 +11,7 @@ void __am_input_keybrd(AM_INPUT_KEYBRD_T *kbd) {
 	if (code != 0) {
 		if (wait == 1) {
 			wait = 0;
-			kbd->keycode = AM_KEY_NONE;
-			kbd->keydown = false;
+			return;
 		}
 		else if ((kbd_reg & 0x8000)) {
 			putch('d');
