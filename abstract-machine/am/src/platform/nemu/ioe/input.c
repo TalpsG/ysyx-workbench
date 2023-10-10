@@ -9,7 +9,7 @@ void __am_input_keybrd(AM_INPUT_KEYBRD_T *kbd) {
 	unsigned int code = kbd_reg &0xff;
 	static int wait = 0;
 	if (code != 0) {
-		printf("keycode:%d",kbd_reg);
+		printf("keycode:%d\n",kbd_reg);
 		if (wait == 1) {
 			wait = 0;
 			return;
