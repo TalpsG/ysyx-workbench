@@ -76,8 +76,8 @@ void vga_update_screen() {
   // then zero out the sync register
 	int sync = paddr_read(CONFIG_VGA_CTL_MMIO+4, 4);
 	if (sync) {
-		undate_screen();
-		paddr_write(SYNC_ADDR, 4,1);
+		update_screen();
+		paddr_write(CONFIG_VGA_CTL_MMIO+4, 4,1);
 	}
 }
 
