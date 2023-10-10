@@ -29,7 +29,6 @@ void __am_gpu_fbdraw(AM_GPU_FBDRAW_T *ctl) {
 	vga_h+=1;
 	for (int i = 0; i < 100; i++) {
 		for (int j = 0; j < 100; j++) {
-			printf("pos:%d\n",i*vga_w+j);
 			fb[i*vga_w+j] = 0xffabcd12;
 		}
 	}
