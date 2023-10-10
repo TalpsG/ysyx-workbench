@@ -3,7 +3,6 @@
 
 
 #define KEYDOWN_MASK 0x8000
-
 static int wait = 0;
 void __am_input_keybrd(AM_INPUT_KEYBRD_T *kbd) {
 	unsigned int kbd_reg = inl(KBD_ADDR);
@@ -31,5 +30,6 @@ void __am_input_keybrd(AM_INPUT_KEYBRD_T *kbd) {
 	} else {
 		kbd->keycode = AM_KEY_NONE;
 		kbd->keydown = false;
+		wait = 0;
 	}
 }
