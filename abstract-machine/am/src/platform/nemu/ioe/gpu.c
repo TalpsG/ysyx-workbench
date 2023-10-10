@@ -7,11 +7,11 @@ void __am_gpu_init() {
 }
 
 void __am_gpu_config(AM_GPU_CONFIG_T *cfg) {
-	uint32_t vga_config_reg = inl(VGACTL_ADDR)
+	unsigned int vga_ctl= inl(VGACTL_ADDR);
   *cfg = (AM_GPU_CONFIG_T) {
     .present = true, .has_accel = false,
-    .width = vga_config_reg>>16, .height = vga_config_reg&0xff,
-    .vmemsz = (vga_config_reg>>16)*(vga_config-reg&0xff)*4 
+    .width = vga_ctl>>16, .height = vga_ctl&0xff,
+    .vmemsz = (vga_ctl>>16)*(vga_ctl&0xff)*4 
   };
 }
 
