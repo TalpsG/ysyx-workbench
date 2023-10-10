@@ -76,7 +76,7 @@ void vga_update_screen() {
   // then zero out the sync register
 	int sync = paddr_read(SYNC_ADDR, 4);
 	if (sync) {
-		undate_scree();
+		undate_screen();
 		paddr_write(SYNC_ADDR, 4,1);
 	}
 }
