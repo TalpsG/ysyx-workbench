@@ -36,7 +36,7 @@ paddr_t host_to_guest(uint8_t *haddr) { return haddr - pmem + CONFIG_MBASE; }
 
 static word_t pmem_read(paddr_t addr, int len) {
   word_t ret = host_read(guest_to_host(addr), len);
-  printf("write  ----> pc:%8x,addr:%8x,data:%8x,len:%2d\n",cpu.pc,addr,ret,len);
+  printf("read   <---- pc:%8x,addr:%8x,data:%8x,len:%2d\n",cpu.pc,addr,ret,len);
 #ifdef CONFIG_MTRACE
   char buf[100];
   sprintf(buf, "read   <---- pc:%8x,addr:%8x,data:%8x,len:%2d\n",cpu.pc,addr,ret,len);
