@@ -53,7 +53,7 @@ void check_call(Decode s){
       for(int j = 0;j<func_trace;j++){
         strcat(buf," ");
       }
-      char tail[200];
+      char tail[300];
       sprintf(tail,"call [%6s@0x%08x]\n",temp->name,temp->value);
       strcat(buf, tail);
       call_buff_p = (call_buff_p+1)%200;
@@ -68,7 +68,7 @@ void check_call(Decode s){
       for(int j = 0;j<func_trace;j++){
         strcat(buf," ");
       }
-      char tail[200];
+      char tail[300];
       sprintf(tail,"ret  [%6s]\n",temp->name);
       strcat(buf, tail);
       call_buff_p = (call_buff_p+1)%200;
