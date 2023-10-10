@@ -56,6 +56,7 @@ void __am_gpu_status(AM_GPU_STATUS_T *stat) {
 
 void __am_gpu_fbdraw(AM_GPU_FBDRAW_T *ctl) {
   int x = ctl->x, y = ctl->y, w = ctl->w, h = ctl->h;
+  printf("x:%d,y:%d,w:%d,h:%d\n",x,y,w,h);
   if (w == 0 || h == 0) return;
   feclearexcept(-1);
   SDL_Surface *s = SDL_CreateRGBSurfaceFrom(ctl->pixels, w, h, 32, w * sizeof(uint32_t),
