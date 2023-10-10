@@ -13,7 +13,7 @@ void __am_input_keybrd(AM_INPUT_KEYBRD_T *kbd) {
 			kbd->keydown = AM_KEY_NONE;
 			kbd->keydown = false;
 		}
-		else if ((code & KEYDOWN_MASK)) {
+		else if ((code )) {
 			kbd->keycode = code ;
 			kbd->keydown = true;
 		} else {
