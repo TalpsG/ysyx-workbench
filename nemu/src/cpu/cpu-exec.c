@@ -42,13 +42,13 @@ ringbuffer for log
 */
 
 #ifdef CONFIG_FTRACE
-extern char call_buff[200][500];
+extern char call_buff[200][1000];
 extern int call_buff_p;
 void check_call(Decode s){
   struct func_info *temp = func_head;
   while(temp!=NULL){
     if(s.dnpc ==  temp->value){
-      char buf[500]={'\0'};
+      char buf[1000]={'\0'};
       sprintf(buf,"%08x :",s.pc);
       for(int j = 0;j<func_trace;j++){
         strcat(buf," ");
@@ -64,7 +64,7 @@ void check_call(Decode s){
     }
     if((s.isa.inst.val ^ 0x00008067 )== 0 && temp->value <= s.pc && (temp->value+temp->size)>= s.pc){
       func_trace--;
-      char buf[500]={'\0'};
+      char buf[1000]={'\0'};
       sprintf(buf,"%08x :",s.pc);
       for(int j = 0;j<func_trace;j++){
         strcat(buf," ");
