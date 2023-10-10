@@ -26,10 +26,11 @@ void __am_gpu_config(AM_GPU_CONFIG_T *cfg) {
 void __am_gpu_fbdraw(AM_GPU_FBDRAW_T *ctl) {
 	uint32_t *fb = (uint32_t *)(uintptr_t)FB_ADDR;
 	unsigned int vga_w = inl(VGACTL_ADDR)>>16;
-	for (int i = 0; i < 100; i++) {
-		for (int j = 0; j < 100; j++) {
+	int w = ctl->w,h = ctl->h;
+	for (int i = 0; i < h; i++) {
+		for (int j = 0; j < w; j++) {
 			printf("pos:%d\n", i * vga_w + j);
-			fb[i*vga_w+j] = 0xffabcd12;
+			fb[i*vga_w+j] = ((uint32_t*)ctl->pixels)[i*w+j];
 		}
 	}
   if (ctl->sync) {
