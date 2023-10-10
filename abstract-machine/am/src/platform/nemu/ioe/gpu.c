@@ -24,6 +24,7 @@ void __am_gpu_config(AM_GPU_CONFIG_T *cfg) {
 
 void __am_gpu_fbdraw(AM_GPU_FBDRAW_T *ctl) {
   if (ctl->sync) {
+	printf("sync!\n");
 	int len = ctl->w*ctl->h;
 	int pos = ctl->x * ctl->y;
 	for (int i = 0; i < len; i++) {
