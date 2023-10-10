@@ -24,11 +24,13 @@ void __am_gpu_config(AM_GPU_CONFIG_T *cfg) {
 
 void __am_gpu_fbdraw(AM_GPU_FBDRAW_T *ctl) {
 	uint32_t *fb = (uint32_t *)(uintptr_t)FB_ADDR;
-	int len = ctl->w*ctl->h;
-	int pos = ctl->x*ctl->y;
-	printf("len %d , pos:%d\n",len,pos);
-	for (int i = 0; i < len; i++) 
-		fb[(pos<<2)+(i<<2)] =0xffabcd12; 
+	int vga_w = ctl->w,vga_h = ctl->h;
+	vga_h+=1;
+	for (int i = 0; i < 100; i++) {
+		for (int j = 0; j < 100; j++) {
+			fb[i*vga_w+j] = 0xffabcd12;
+		}
+	}
   if (ctl->sync) {
     outl(SYNC_ADDR, 1);
   }
