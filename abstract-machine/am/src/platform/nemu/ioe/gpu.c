@@ -28,7 +28,7 @@ void __am_gpu_fbdraw(AM_GPU_FBDRAW_T *ctl) {
 	unsigned int vga_w = inl(VGACTL_ADDR)>>16;
 	int w = ctl->w,h = ctl->h;
 	int x = ctl->x,y=ctl->y;
-	int pos = (y-1)*vga_w+x;
+	int pos = (y)*vga_w+x;
 	printf("x:%d,y:%d,w:%d,h:%d,vga_w:%d,pos:%d\n",x,y,w,h,vga_w,pos);
 	for (int i = 0; i < h; i++) {
 		for (int j = 0; j < w; j++) {
