@@ -40,6 +40,7 @@ static word_t pmem_read(paddr_t addr, int len) {
   char buf[100];
   sprintf(buf, "read   <---- pc:%8x,addr:%8x,data:%8x,len:%2d\n",cpu.pc,addr,ret,len);
   add_mtrace(buf);
+  printf("%s",buf);
 #endif
   return ret;
 }
@@ -48,6 +49,7 @@ static void pmem_write(paddr_t addr, int len, word_t data) {
 #ifdef CONFIG_MTRACE
 	char buf[100];
   sprintf(buf, "write  ----> pc:%8x,addr:%8x,data:%8x,len:%2d\n",cpu.pc,addr,data,len);
+  printf("%s",buf);
   add_mtrace(buf);
 #endif
   host_write(guest_to_host(addr), len, data);
