@@ -95,9 +95,6 @@ static void i8042_data_io_handler(uint32_t offset, int len, bool is_write) {
   i8042_data_port_base[0] = key_dequeue();
 #ifdef CONFIG_DTRACE
   char buf[100];
-  if (i8042_data_port_base[0] != 0) {
-    printf("keycode : %x\n",i8042_data_port_base[0]);
-  }
 	sprintf(buf,"device:%10s read  ----> addr:%8x ,len:%2d data:%8x\n", "kbd handle",CONFIG_I8042_DATA_MMIO,len,i8042_data_port_base[0]);
   add_dtrace(buf);
 #endif
