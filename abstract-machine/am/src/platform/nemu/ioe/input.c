@@ -13,11 +13,12 @@ void __am_input_keybrd(AM_INPUT_KEYBRD_T *kbd) {
 			wait = 0;
 			return;
 		}
-		else if ((kbd_reg & 0x8000)) {
+		else if ((kbd_reg & KEYDOWN_MASK)) {
 			putch('d');
 			putch('\n');
 			kbd->keycode = code ;
 			kbd->keydown = true;
+			wait = 0;
 		} else {
 			putch('u');
 			putch('\n');
