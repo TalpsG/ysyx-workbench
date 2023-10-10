@@ -11,6 +11,7 @@ void __am_input_keybrd(AM_INPUT_KEYBRD_T *kbd) {
 	if (code != 0) {
 		printf("keycode:%d\n",kbd_reg);
 		if (wait == 1) {
+			printf("wait\n");
 			wait = 0;
 			return;
 		}
