@@ -29,7 +29,7 @@ void __am_gpu_fbdraw(AM_GPU_FBDRAW_T *ctl) {
 	int len = ctl->w*ctl->h;
 	int pos = ctl->x*ctl->y;
 	for (int i = 0; i < len; i++) {
-          fb[pos+i] =0; 
+          fb[pos+i] =i; 
 	}
   }
 }
