@@ -62,9 +62,15 @@ void batch_mode() {
 char *cmd=NULL;
 void init(int argc,const char **argv) {
 	int img_size;
+#ifdef CONFIG_FTRACE
 	init_callbuff();
+#endif // DEBUG
+#ifdef CONFIG_MTRACE
 	init_mtrace();
+#endif // DEBUG
+#ifdef CONFIG_ITRACE
 	init_ringbuf();
+#endif // DEBUG
 	img_size = init_mem(argc,argv);
 #ifdef CONFIG_DIFFTEST
 	char ref_so_file[]="/home/talps/gitrepo/ysyx-workbench/npc/riscv32-nemu-interpreter-so";

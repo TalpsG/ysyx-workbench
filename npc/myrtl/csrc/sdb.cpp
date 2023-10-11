@@ -62,15 +62,27 @@ static int cmd_x (char *args){
 	return 0;
 }
 static int cmd_itrace (char *args){
+#ifdef CONFIG_FTRACE
 	print_ringbuf();
+#else
+	printf("undefined ITRACE\n");
+#endif
 	return 0;
 }
 static int cmd_ftrace(char *args){
+#ifdef CONFIG_FTRACE
 	print_callbuf();
+#else
+	printf("undefined FTRACE\n");
+#endif
 	return 0;
 }
 static int cmd_mtrace(char *args){
+#ifdef CONFIG_MTRACE
 	print_mtrace();
+#else
+	printf("undefined MTRACE\n");
+#endif
 	return 0;
 }
 static struct {

@@ -11,7 +11,7 @@
 #include "Vtop.h"
 extern Vtop top;
 struct func_info{
-  char name[32];
+  char name[100];
   uint32_t value;
   uint32_t size;
   struct func_info * next;
@@ -19,7 +19,7 @@ struct func_info{
 struct func_info *func_head;
 int func_trace= 0 ;
 char *elf = NULL;
-char call_buff[300][10000];
+char call_buff[300][1000];
 int call_buffp=-1;
 void init_callbuff() {
   for (int i = 0; i < 200; i++) {

@@ -16,8 +16,10 @@ void print_ins() {
 	char ins_buf[100];
 	disassemble(ins_buf, 50, top.outpc,
 				(uint8_t *)&top.ins,4);
+#ifdef CONFIG_ITRACE	
 	sprintf(ringbuffer[buf_p],"pc:%8x,ins:%s",top.outpc,ins_buf);
 	buf_p = (buf_p+1)%200;
+#endif 
 	//printf("pc:%8x,machinecode:%08x ,ins:%s\n",top.outpc,top.ins,ins_buf);
 }
 void print_ringbuf() {
