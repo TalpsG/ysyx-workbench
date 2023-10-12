@@ -3,6 +3,7 @@
 #include<iostream>
 #include<Vtop.h>
 #include "utils.h"
+#include "macro.h"
 
 extern "C" void ebreak(int i);
 extern Vtop top;

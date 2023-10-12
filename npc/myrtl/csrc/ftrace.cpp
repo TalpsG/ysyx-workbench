@@ -9,6 +9,7 @@
 #include "elf.h"
 #include "string.h"
 #include "Vtop.h"
+#include "macro.h"
 extern Vtop top;
 struct func_info{
   char name[100];

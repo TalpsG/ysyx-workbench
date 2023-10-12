@@ -4,6 +4,7 @@
 #include "verilated.h"
 #include <Vtop.h>
 #include "utils.h"
+#include "macro.h"
 
 state npc_state = RUNNING;
 void single_cycle();

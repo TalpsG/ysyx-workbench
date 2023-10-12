@@ -11,9 +11,9 @@ LIBS += $(shell llvm-config --libs)
 BIN=
 ELF=
 
-FTRACE=-CFLAGS -DCONFIG_FTRACE
-MTRACE=-CFLAGS -DCONFIG_MTRACE
-ITRACE=-CFLAGS -DCONFIG_ITRACE
+FTRACE=-CFLAGS -DCONFIG_FTRACE=1
+MTRACE=-CFLAGS -DCONFIG_MTRACE=1
+ITRACE=-CFLAGS -DCONFIG_ITRACE=1
 DIFFTEST=-CFLAGS -DCONFIG_DIFFTEST=1
 TRACE_CFLAGS=-CFLAGS -g  -CFLAGS -DTRACE=1 $(DIFFTEST)
 TRACE_FLAGS=--trace $(FLAGS)  --exe  --timing     
@@ -29,13 +29,13 @@ gdb:exe
 run:exe
 	./obj_dir/Vtop $(BIN) $(ELF) 
 exe:build $(CSRC)  obj_dir/disasm.o
-	$(CPL) $(EXE_FLAGS) $(VSRC) $(CSRC) $(EXE_CFLAGS) $(EXE_LDFLAGS) $(DIFFTEST) -j 4  
+	$(CPL) $(EXE_FLAGS) $(VSRC) $(CSRC) $(EXE_CFLAGS) $(EXE_LDFLAGS)  -j 4  
 build:$(VSRC) 
 	$(CPL) $(VSRC) $(FLAGS)
 clean:
 	-rm -rf  obj_dir
 trace:build $(CSRC)  obj_dir/disasm.o
-	$(CPL) $(TRACE_FLAGS) $(VSRC) $(CSRC) $(TRACE_CFLAGS) $(EXE_LDFLAGS) -j 4 
+	$(CPL) $(TRACE_FLAGS) $(VSRC) $(CSRC) $(TRACE_CFLAGS) $(EXE_LDFLAGS)   -j 4 
 
 obj_dir/disasm.o: csrc/disasm.cc
 	g++ -O2 -MMD -Wall  -O2  -Og -ggdb3  -DITRACE_COND=true -D__GUEST_ISA__=riscv32  -I/usr/lib/llvm-14/include -std=c++14   -fno-exceptions -D_GNU_SOURCE -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -fPIE -c -o ./obj_dir/disasm.o ./csrc/disasm.cc

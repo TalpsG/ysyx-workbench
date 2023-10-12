@@ -3,6 +3,7 @@
 #include <cstdint>
 #include <Vtop.h>
 #include <cstring>
+#include "macro.h"
 char ringbuffer[200][100]={""};
 int buf_p= 0;
 extern Vtop top;

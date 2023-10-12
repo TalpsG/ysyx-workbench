@@ -2,7 +2,7 @@
 #include "macro.h"
 #include <cstdio>
 #include <cstring>
-
+#include "macro.h"
 char mem_trace[200][100];
 int mtrace_p = -1;
 extern Vtop top;
