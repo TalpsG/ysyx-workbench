@@ -169,7 +169,7 @@ static void execute(uint64_t n)
 	}
     IFDEF(CONFIG_DEVICE, device_update());
     printf("pc:%8x  asm: %s \n",cpu.pc,s.logbuf);
-    isa_reg_display();
+    //isa_reg_display();
     printf("\n");
   }
 }
