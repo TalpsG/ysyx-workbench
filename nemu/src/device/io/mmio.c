@@ -59,18 +59,17 @@ void add_mmio_map(const char *name, paddr_t addr, void *space, uint32_t len, io_
 
 /* bus interface */
 word_t mmio_read(paddr_t addr, int len) {
-  char buf[300];
+  //char buf[300];
   IOMap* iop =  fetch_mmio_map(addr);
-  word_t res =map_read(addr, len,iop ); 
-  sprintf(buf,"pc:%8x, device:%10s read  ----> addr:%8x ,len:%2d data:%8x\n",cpu.pc, iop->name,addr,len,res);
-  add_dtrace(buf);
+  word_t res = map_read(addr, len,iop ); 
+  //sprintf(buf,"pc:%8x, device:%10s read  ----> addr:%8x ,len:%2d data:%8x\n",cpu.pc, iop->name,addr,len,res);
+  //add_dtrace(buf);
   return res;
 }
 
 void mmio_write(paddr_t addr, int len, word_t data) {
-	char buf[300];
-  IOMap* iop =  fetch_mmio_map(addr);
-  sprintf(buf,"pc:%8x, device:%10s write <---- addr:%8x ,len:%2d data:%8x\n", cpu.pc,iop->name,addr,len,data);
+	//char buf[300];
+  //sprintf(buf,"pc:%8x, device:%10s write <---- addr:%8x ,len:%2d data:%8x\n", cpu.pc,iop->name,addr,len,data);
   //add_dtrace(buf);
   map_write(addr, len, data, fetch_mmio_map(addr));
 }
