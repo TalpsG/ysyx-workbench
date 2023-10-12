@@ -14,6 +14,7 @@
 ***************************************************************************************/
 
 #include "common.h"
+#include "isa.h"
 #include <device/map.h>
 #include <memory/paddr.h>
 #include <stdio.h>
@@ -61,7 +62,7 @@ word_t mmio_read(paddr_t addr, int len) {
   char buf[100];
   IOMap* iop =  fetch_mmio_map(addr);
   word_t res =map_read(addr, len,iop ); 
-  sprintf(buf,"device:%10s read  ----> addr:%8x ,len:%2d data:%8x\n", iop->name,addr,len,res);
+  sprintf(buf,"pc:%8x, device:%10s read  ----> addr:%8x ,len:%2d data:%8x\n",cpu.pc, iop->name,addr,len,res);
   add_dtrace(buf);
   return res;
 }
@@ -69,7 +70,7 @@ word_t mmio_read(paddr_t addr, int len) {
 void mmio_write(paddr_t addr, int len, word_t data) {
 	char buf[100];
   IOMap* iop =  fetch_mmio_map(addr);
-  sprintf(buf,"device:%10s write <---- addr:%8x ,len:%2d data:%8x\n", iop->name,addr,len,data);
+  sprintf(buf,"pc:%8x, device:%10s write <---- addr:%8x ,len:%2d data:%8x\n", cpu.pc,iop->name,addr,len,data);
   add_dtrace(buf);
   map_write(addr, len, data, fetch_mmio_map(addr));
 }
