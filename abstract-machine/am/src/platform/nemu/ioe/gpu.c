@@ -22,7 +22,9 @@ void __am_gpu_fbdraw(AM_GPU_FBDRAW_T *ctl) {
 	int x = ctl->x,y=ctl->y;
 	int pos = (y)*vga_w+x;
 	for (int i = 0; i < h; i++) {
-		memcpy(fb+pos+i*vga_w,ctl->pixels,w);
+          for (int j = 0; j < w; j++) {
+            fb[pos+i*vga_w+j] = ((uint32_t*)ctl->pixels)[i*w+j];
+		}
 	}
   if (ctl->sync) {
     outl(SYNC_ADDR, 1);
