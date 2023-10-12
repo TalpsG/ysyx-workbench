@@ -54,7 +54,6 @@ word_t isa_raise_intr(word_t NO, vaddr_t epc) {
    */
   mcause = NO;
   mepc = epc;
-
   return mtvec;
 }
 
