@@ -71,6 +71,6 @@ void mmio_write(paddr_t addr, int len, word_t data) {
 	char buf[300];
   IOMap* iop =  fetch_mmio_map(addr);
   sprintf(buf,"pc:%8x, device:%10s write <---- addr:%8x ,len:%2d data:%8x\n", cpu.pc,iop->name,addr,len,data);
-  add_dtrace(buf);
+  //add_dtrace(buf);
   map_write(addr, len, data, fetch_mmio_map(addr));
 }
