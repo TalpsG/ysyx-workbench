@@ -12,15 +12,22 @@
  *
  * See the Mulan PSL v2 for more details.
  ***************************************************************************************/
-
 #include <isa.h>
 #include <cpu/cpu.h>
 #include <readline/readline.h>
 #include <readline/history.h>
 #include <memory/paddr.h>
+#include <trace/mtrace.h>
+#include <stdio.h>
+#include <string.h>
 #include "sdb.h"
+#include <debug.h>
+#include <trace/itrace.h>
+#include "trace/dtrace.h"
 static int is_batch_mode = false;
-
+#ifdef CONFIG_FTRACE
+extern char call_buff[200][500];
+#endif
 void init_regex();
 void init_wp_pool();
 /* We use the `readline' library to provide more flexibility to read from stdin. */
@@ -52,6 +59,11 @@ static int cmd_c(char *args)
 
 static int cmd_q(char *args)
 {
+  if (nemu_state.state == NEMU_STOP)
+  {
+    // 如果在断点处想要推出程序，就将nemu的state改为quit,这样程序的返回值为0
+    nemu_state.state = NEMU_QUIT;
+  }
   return -1;
 }
 
@@ -115,20 +127,27 @@ static int cmd_x(char *args)
   }
   // just for debug
 
-  char *n = strtok(args, " ");
-  char *addp = n + strlen(n) + 1;
-  if (addp == NULL)
+  int size = strlen(args);
+  int pos = -1;
+  for(int i=0;i<size;i++){
+    if(args[i]==' '){
+      pos = i;
+    }
+  }
+
+  if (pos == -1)
   {
     printf("u need to give a memory address\n");
     return 0;
   }
+  args[pos]='\0';
 
   // 取出要查看的内存长度
-  int size = atoi(n);
+  size = atoi(args+pos+1);
 
   // 内存地址起始位置
   bool success;
-  paddr_t add = expr(addp, &success);
+  paddr_t add = expr(args, &success);
   if (!success)
   {
     printf("bad address expression\n");
@@ -236,7 +255,52 @@ static int cmd_d(char *args)
 #endif
   return 0;
 }
+#ifdef CONFIG_FTRACE
+void print_call_buff(){
+  for (int i = 0; i < 200; i++) {
+    printf("%s",call_buff[i]);
+	}
+}
+#endif
+static int cmd_ftrace(char *args) {
+#ifdef CONFIG_FTRACE
+  print_call_buff();
+#endif // 
+  return 0;
+}
 
+static int cmd_sym(char *args){
+  struct func_info *p = func_head;
+  while(p!=NULL){
+    printf("name:%12s ,add:0x%08x ,size:%d\n",p->name,p->value,p->size);
+    p=p->next;
+  }
+  return 0;
+}
+static int cmd_mtrace(char *args){
+#ifdef CONFIG_MTRACE
+	print_mtrace();
+#else
+	printf("menuconfig tick MTRACE\n");
+#endif
+  return 0;
+}
+static int cmd_itrace(char *args){
+#ifdef CONFIG_ITRACE
+	print_itrace();
+#else
+	printf("menuconfig tick ITRACE\n");
+#endif
+  return 0;
+}
+static int cmd_dtrace(char *args){
+#ifdef CONFIG_DTRACE
+	print_dtrace();
+#else
+	printf("menuconfig tick DTRACE\n");
+#endif
+  return 0;
+}
 static int cmd_help(char *args);
 
 static struct
@@ -256,6 +320,11 @@ static struct
     {"p", "print the value of a expression", cmd_p},
     {"w", "set a watchpoint to a variable or register", cmd_w},
     {"d", "delete a watchpoint", cmd_d},
+    {"ftrace", "trace func stack", cmd_ftrace},
+    {"sym", "print func table", cmd_sym},
+    {"mtrace", "print mem trace", cmd_mtrace},
+    {"itrace", "print instructs trace", cmd_itrace},
+    {"dtrace", "print device trace", cmd_dtrace},
 
 };
 
@@ -354,5 +423,7 @@ void init_sdb()
   init_regex();
 
   /* Initialize the watchpoint pool. */
+#ifdef CONFIG_WATCHPOINT
   init_wp_pool();
+#endif
 }

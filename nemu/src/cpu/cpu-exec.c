@@ -13,10 +13,16 @@
  * See the Mulan PSL v2 for more details.
  ***************************************************************************************/
 
+#include "debug.h"
+#include "isa.h"
+#include "utils.h"
 #include <cpu/cpu.h>
 #include <cpu/decode.h>
 #include <cpu/difftest.h>
 #include <locale.h>
+#include <stdio.h>
+#include <string.h>
+#include <trace/itrace.h>
 
 /* The assembly code of instructions executed is only output to the screen
  * when the number of instructions executed is less than this value.
@@ -26,12 +32,53 @@
 // 为了能调用wp函数所以引用的头
 
 #define MAX_INST_TO_PRINT 10
-
 CPU_state cpu = {};
 uint64_t g_nr_guest_inst = 0;
 static uint64_t g_timer = 0; // unit: us
 static bool g_print_step = false;
 
+/*
+ringbuffer for log
+*/
+
+#ifdef CONFIG_FTRACE
+extern char call_buff[200][1000];
+extern int call_buff_p;
+void check_call(Decode s){
+  struct func_info *temp = func_head;
+  while(temp!=NULL){
+    if(s.dnpc ==  temp->value){
+      char buf[10000]={'\0'};
+      sprintf(buf,"%08x :",s.pc);
+      for(int j = 0;j<func_trace;j++){
+        strcat(buf," ");
+      }
+      char tail[300];
+      sprintf(tail,"call [%6s@0x%08x]\n",temp->name,temp->value);
+      strcat(buf, tail);
+      call_buff_p = (call_buff_p+1)%200;
+      strcpy(call_buff[call_buff_p], buf);
+      func_trace++;
+      break;
+    }
+    if((s.isa.inst.val ^ 0x00008067 )== 0 && temp->value <= s.pc && (temp->value+temp->size)>= s.pc){
+      func_trace--;
+      char buf[10000]={'\0'};
+      sprintf(buf,"%08x :",s.pc);
+      for(int j = 0;j<func_trace;j++){
+        strcat(buf," ");
+      }
+      char tail[300];
+      sprintf(tail,"ret  [%6s]\n",temp->name);
+      strcat(buf, tail);
+      call_buff_p = (call_buff_p+1)%200;
+      strcpy(call_buff[call_buff_p], buf);
+      break;
+    }
+    temp = temp->next;
+  }
+}
+#endif
 void device_update();
 
 static void trace_and_difftest(Decode *_this, vaddr_t dnpc)
@@ -41,6 +88,20 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc)
   {
     log_write("%s\n", _this->logbuf);
   }
+#endif
+#ifdef CONFIG_ITRACE
+    if(nemu_state.state == NEMU_ABORT||
+      (nemu_state.state == NEMU_END &&
+       nemu_state.halt_ret == 1)){
+		char buf[500];
+      sprintf(buf , " ---> %s\n",_this->logbuf) ;
+	  add_itrace(buf);
+	  print_itrace();
+    }else{
+		char buf[500];
+      sprintf(buf , " ---> %s\n",_this->logbuf) ;
+	  add_itrace(buf);
+    }
 #endif
   if (g_print_step)
   {
@@ -85,6 +146,10 @@ static void exec_once(Decode *s, vaddr_t pc)
   p[0] = '\0'; // the upstream llvm does not support loongarch32r
 #endif
 #endif
+
+#ifdef CONFIG_FTRACE
+  check_call(*s);
+#endif
 }
 
 static void execute(uint64_t n)
@@ -93,11 +158,19 @@ static void execute(uint64_t n)
   for (; n > 0; n--)
   {
     exec_once(&s, cpu.pc);
+
     g_nr_guest_inst++;
     trace_and_difftest(&s, cpu.pc);
-    if (nemu_state.state != NEMU_RUNNING)
+    if (nemu_state.state != NEMU_RUNNING) {
+#ifdef CONFIG_FTRACE
+		strcat(call_buff[call_buff_p], "----- ^^^^^ -----\n");
+#endif
       break;
+	}
     IFDEF(CONFIG_DEVICE, device_update());
+    //printf("asm: %s \n",s.logbuf);
+    //isa_reg_display();
+    //printf("\n");
   }
 }
 

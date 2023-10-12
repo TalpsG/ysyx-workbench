@@ -15,7 +15,83 @@
 
 #include <isa.h>
 #include <memory/paddr.h>
+#include <cpu/cpu.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <debug.h>
+#include <trace/itrace.h>
+#include <trace/mtrace.h>
+#include <trace/dtrace.h>
 
+//for elf
+static char *elf = NULL;
+struct func_info *func_head = NULL;
+int func_trace = 0;
+char call_buff[200][10000];
+int call_buff_p = -1;
+
+#include <stdio.h>  
+#ifdef CONFIG_FTRACE
+#include <unistd.h>  
+#include <fcntl.h>  
+#include <sys/types.h>  
+#include <sys/stat.h> 
+#include <sys/mman.h> //mmap函数的必要头文件
+#include "elf.h"
+void init_callbuff() {
+  for (int i = 0; i < 200; i++) {
+    call_buff[i][0] = '\0';
+  }
+}
+void new_func_info(char *name,Elf32_Addr add,uint32_t size){
+  struct func_info *temp = malloc(sizeof(struct func_info));
+  strcpy(temp->name, name);
+  temp->value = add;
+  temp->size = size;
+  temp->next = func_head;
+  func_head = temp;
+}
+Elf32_Shdr sp;
+static void load_elf(){
+  if(elf==NULL){
+    printf("no elf file\n");
+    return ;
+  }
+  printf("elf is %s\n",elf);
+  Elf32_Ehdr *p = (Elf32_Ehdr *)malloc(sizeof(Elf32_Ehdr));
+    int fd = open(elf,O_RDONLY);
+    struct stat fs;
+    fstat(fd, &fs);
+    char *elf = mmap(NULL, fs.st_size, PROT_READ  , MAP_PRIVATE, fd,0);
+    close(fd);
+    memcpy(p, elf, sizeof(Elf32_Ehdr));
+
+    for(int i=0;i<p->e_shnum;i++){
+        memcpy(&sp,elf+p->e_shoff+i*sizeof(Elf32_Shdr),sizeof(Elf32_Shdr));
+        if(sp.sh_type == SHT_STRTAB){
+            break;
+        }
+    }
+    char *strtab = (char *)(sp.sh_offset+elf);
+    for(int i=0;i<p->e_shnum;i++){
+        memcpy(&sp,elf+p->e_shoff+i*sizeof(Elf32_Shdr),sizeof(Elf32_Shdr));
+        if(sp.sh_type == SHT_SYMTAB){
+            int size = sp.sh_size/sp.sh_entsize;
+            char *table = elf+sp.sh_offset;
+            Elf32_Sym *sym = (Elf32_Sym*)malloc(sizeof(Elf32_Sym));
+            for(int i=0;i<size;i++){
+                memcpy(sym, table+i*sp.sh_entsize,sp.sh_entsize);
+                if(sym->st_info!=18) continue;
+				new_func_info(strtab+sym->st_name, sym->st_value, sym->st_size);
+
+            }
+            break;
+        }
+    }
+  free(p);
+}
+#endif
 void init_rand();
 void init_log(const char *log_file);
 void init_mem();
@@ -51,7 +127,7 @@ static long load_img() {
     Log("No image is given. Use the default build-in image.");
     return 4096; // built-in image size
   }
-
+	printf("img is %s\n",img_file);
   FILE *fp = fopen(img_file, "rb");
   Assert(fp, "Can not open '%s'", img_file);
 
@@ -75,22 +151,25 @@ static int parse_args(int argc, char *argv[]) {
     {"diff"     , required_argument, NULL, 'd'},
     {"port"     , required_argument, NULL, 'p'},
     {"help"     , no_argument      , NULL, 'h'},
+    {"readbin"  , required_argument, NULL, 'r'},
     {0          , 0                , NULL,  0 },
   };
   int o;
-  while ( (o = getopt_long(argc, argv, "-bhl:d:p:", table, NULL)) != -1) {
+  while ( (o = getopt_long(argc, argv, "-bhl:d:p:r:", table, NULL)) != -1) {
     switch (o) {
       case 'b': sdb_set_batch_mode(); break;
       case 'p': sscanf(optarg, "%d", &difftest_port); break;
       case 'l': log_file = optarg; break;
       case 'd': diff_so_file = optarg; break;
-      case 1: img_file = optarg; return 0;
+      case 'r': img_file= optarg; break;
+      case  1: elf = optarg; return 0;
       default:
         printf("Usage: %s [OPTION...] IMAGE [args]\n\n", argv[0]);
         printf("\t-b,--batch              run with batch mode\n");
         printf("\t-l,--log=FILE           output log to FILE\n");
         printf("\t-d,--diff=REF_SO        run DiffTest with reference REF_SO\n");
         printf("\t-p,--port=PORT          run DiffTest with port PORT\n");
+        printf("\t-r,--readelf=FILE       enable func trace\n");
         printf("\n");
         exit(0);
     }
@@ -101,9 +180,22 @@ static int parse_args(int argc, char *argv[]) {
 void init_monitor(int argc, char *argv[]) {
   /* Perform some global initialization. */
 
+  /* Init ring buffer of instructions  */
+#ifdef CONFIG_ITRACE
+  init_itrace();
+#endif
   /* Parse arguments. */
   parse_args(argc, argv);
-
+#ifdef CONFIG_FTRACE
+	init_callbuff() ;
+  load_elf();
+#endif
+#ifdef CONFIG_MTRACE
+  init_mtrace();
+#endif
+#ifdef CONFIG_DTRACE
+	init_dtrace();
+#endif
   /* Set random seed. */
   init_rand();
 

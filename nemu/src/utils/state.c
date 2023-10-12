@@ -18,6 +18,7 @@
 下面nemu_state的初值被talps修改为QUIT,目的是让程序直接q后的返回值为0
 */
 
+
 //NEMUState nemu_state = { .state = NEMU_STOP };
 NEMUState nemu_state = { .state = NEMU_QUIT};
 

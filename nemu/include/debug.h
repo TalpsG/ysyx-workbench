@@ -19,6 +19,7 @@
 #include <common.h>
 #include <stdio.h>
 #include <utils.h>
+#include <elf.h>
 
 #define Log(format, ...) \
     _Log(ANSI_FMT("[%s:%d %s] " format, ANSI_FG_BLUE) "\n", \
@@ -40,4 +41,13 @@
 
 #define TODO() panic("please implement me")
 
+// ftrace
+struct func_info{
+  char name[30];
+  uint32_t value;
+  uint32_t size;
+  struct func_info * next;
+};
+extern struct func_info *func_head;
+extern int func_trace;
 #endif
