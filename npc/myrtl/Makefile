@@ -29,7 +29,7 @@ gdb:exe
 run:exe
 	./obj_dir/Vtop $(BIN) $(ELF) 
 exe:build $(CSRC)  obj_dir/disasm.o
-	$(CPL) $(EXE_FLAGS) $(VSRC) $(CSRC) $(EXE_CFLAGS) $(EXE_LDFLAGS)  -j 4  
+	$(CPL) $(EXE_FLAGS) $(VSRC) $(CSRC) $(EXE_CFLAGS) $(EXE_LDFLAGS)   -j 4  
 build:$(VSRC) 
 	$(CPL) $(VSRC) $(FLAGS)
 clean:

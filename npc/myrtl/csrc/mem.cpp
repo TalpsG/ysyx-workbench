@@ -22,9 +22,10 @@ extern "C" void npc_mem_read(uint32_t raddr, uint32_t*rdata) {
   //printf("read,addr:%8x ",raddr);
   //printf("RTC_ADDR:%8x\n",RTC_ADDR);
   if(raddr == SERIAL_PORT) return;
+  static time_t t = 0;
   if (raddr == RTC_ADDR || raddr == RTC_ADDR+4) {
-	uint64_t t= clock();
 	if (raddr == RTC_ADDR) {
+		t = clock();
 		*rdata = (uint32_t)t;
 	} else {
 		*rdata = t>>32;
