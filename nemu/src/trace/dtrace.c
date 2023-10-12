@@ -1,6 +1,6 @@
 #include "trace/dtrace.h"
 #include <string.h>
-char dtrace_buff[500][100];
+char dtrace_buff[500][300];
 int dtrace_buffp = -1;
 void init_dtrace() {
   for (int i = 0; i < 500; i++) {
