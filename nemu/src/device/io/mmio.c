@@ -68,7 +68,7 @@ word_t mmio_read(paddr_t addr, int len) {
 }
 
 void mmio_write(paddr_t addr, int len, word_t data) {
-	char buf[100];
+	char buf[200];
   IOMap* iop =  fetch_mmio_map(addr);
   sprintf(buf,"pc:%8x, device:%10s write <---- addr:%8x ,len:%2d data:%8x\n", cpu.pc,iop->name,addr,len,data);
   add_dtrace(buf);
