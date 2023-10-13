@@ -23,7 +23,7 @@ word_t csr_read(word_t index) {
 	switch (index)
 	{
         case 0:
-			printf("read mstatus:%8x pc:%8x\n",mstatus,cpu.pc);
+			//printf("read mstatus:%8x pc:%8x\n",mstatus,cpu.pc);
 			return mstatus;
         case 1:
 			return mepc;
@@ -38,7 +38,7 @@ word_t csr_write(word_t index,word_t data) {
 	switch (index)
 	{
         case 0:
-			printf("read mstatus:%8x data:%8x\n",mstatus,data);
+			//printf("read mstatus:%8x data:%8x\n",mstatus,data);
           mstatus = data;break;
         case 1:
           mepc= data;break;
