@@ -22,7 +22,7 @@
 #include <debug.h>
 #include <trace/itrace.h>
 #include <trace/mtrace.h>
-//#include <trace/dtrace.h>
+#include <trace/dtrace.h>
 #include <trace/etrace.h>
 
 //for elf
