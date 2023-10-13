@@ -15,6 +15,7 @@
 
 #include <isa.h>
 #include <stdio.h>
+#include "trace/etrace.h"
 static uint32_t mcause=0;
 static uint32_t mtvec=0;
 static uint32_t mepc=0;
@@ -55,8 +56,11 @@ word_t isa_raise_intr(word_t NO, vaddr_t epc) {
    */
   mcause = NO;
   mepc = epc;
+#ifdef CONFIG_ETRACE
   char buf[100];
   sprintf(buf, "pc:%8x,mcause:%d,handler_addr:%8x\n",epc,mcause,mtvec);
+  add_etrace(buf);
+#endif
   return mtvec;
 }
 

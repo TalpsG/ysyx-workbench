@@ -7,7 +7,7 @@
 #include <stdlib.h>
 #include <string.h>
 void init_etrace() ;
-void edd_dtrace(char *str) ;
+void add_etrace(char *str) ;
 void print_etrace() ;
 #endif /* BA929B03_4F0D_4F48_B80B_C4E63BB6B99B */
 

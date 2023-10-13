@@ -177,6 +177,11 @@ config FTRACE
 config DTRACE
   bool "enable to trace device "
   default n
+config ETRACE
+  bool "enable to trace trap"
+  default n
+
+
 
 choice
   prompt "Reference design"

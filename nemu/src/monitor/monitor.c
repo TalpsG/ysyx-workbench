@@ -23,6 +23,7 @@
 #include <trace/itrace.h>
 #include <trace/mtrace.h>
 #include <trace/dtrace.h>
+#include <trace/etrace.h>
 
 //for elf
 static char *elf = NULL;
@@ -195,6 +196,9 @@ void init_monitor(int argc, char *argv[]) {
 #endif
 #ifdef CONFIG_DTRACE
 	init_dtrace();
+#endif
+#ifdef CONFIG_ETRACE
+	init_etrace();
 #endif
   /* Set random seed. */
   init_rand();
