@@ -34,7 +34,6 @@ word_t csr_read(word_t index) {
 	return 0;
 }
 word_t csr_write(word_t index,word_t data) {
-	printf("index:%d,data:%8x\n",index,data);
 	switch (index)
 	{
         case 0:
