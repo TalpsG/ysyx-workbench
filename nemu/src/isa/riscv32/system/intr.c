@@ -23,6 +23,7 @@ word_t csr_read(word_t index) {
 	switch (index)
 	{
         case 0:
+			printf("read mstatus:%8x\n",mstatus);
 			return mstatus;
         case 1:
 			return mepc;
