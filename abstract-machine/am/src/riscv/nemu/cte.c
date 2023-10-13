@@ -35,7 +35,7 @@ bool cte_init(Context*(*handler)(Event, Context*)) {
 // kstack 是线程栈，entry是线程的入口，args是参数
 Context *kcontext(Area kstack, void (*entry)(void *), void *arg) {
 	Context *p = kstack.end - sizeof(Context);
-	p->entry = entry;
+	p->mepc = (unsigned int)entry;
   return p;
 }
 
