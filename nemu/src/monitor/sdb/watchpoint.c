@@ -87,7 +87,8 @@ void print_WPs()
 WP *find_wp(int id)
 {
   // return the prev node of target node
-  WP t, *p;
+  WP t;
+   WP    *p;
   t.next = head;
   p = &t;
   while (p->next != NULL)
