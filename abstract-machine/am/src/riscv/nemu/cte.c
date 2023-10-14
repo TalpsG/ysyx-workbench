@@ -36,6 +36,7 @@ bool cte_init(Context*(*handler)(Event, Context*)) {
 Context *kcontext(Area kstack, void (*entry)(void *), void *arg) {
 	Context *p = kstack.end - sizeof(Context);
 	p->mepc = (unsigned int)entry;
+	printf("kontext %8x\n",p->mepc);
   return p;
 }
 
