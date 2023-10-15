@@ -16,7 +16,7 @@ Context* __am_irq_handle(Context *c) {
     if (c == NULL) {
       printf("NULL\n");
 	}
-    //assert(c != NULL);
+    assert(c != NULL);
   }
 
   return c;
