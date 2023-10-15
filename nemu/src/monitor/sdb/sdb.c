@@ -26,9 +26,6 @@
 #include "trace/dtrace.h"
 #include "trace/etrace.h"
 static int is_batch_mode = false;
-#ifdef CONFIG_FTRACE
-extern char call_buff[200][500];
-#endif
 void init_regex();
 void init_wp_pool();
 /* We use the `readline' library to provide more flexibility to read from stdin. */
@@ -258,9 +255,6 @@ static int cmd_d(char *args)
 }
 #ifdef CONFIG_FTRACE
 void print_call_buff(){
-  for (int i = 0; i < 200; i++) {
-    printf("%s",call_buff[i]);
-	}
 }
 #endif
 static int cmd_ftrace(char *args) {
