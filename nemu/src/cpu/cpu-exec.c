@@ -42,8 +42,6 @@ ringbuffer for log
 */
 
 #ifdef CONFIG_FTRACE
-extern char call_buff[200][1000];
-extern int call_buff_p;
 void check_call(Decode s){
   struct func_info *temp = func_head;
   while(temp!=NULL){
@@ -56,8 +54,7 @@ void check_call(Decode s){
       char tail[300];
       sprintf(tail,"call [%6s@0x%08x]\n",temp->name,temp->value);
       strcat(buf, tail);
-      call_buff_p = (call_buff_p+1)%200;
-      strcpy(call_buff[call_buff_p], buf);
+	  add_callbuf(buf);
       func_trace++;
       break;
     }
@@ -71,8 +68,7 @@ void check_call(Decode s){
       char tail[300];
       sprintf(tail,"ret  [%6s]\n",temp->name);
       strcat(buf, tail);
-      call_buff_p = (call_buff_p+1)%200;
-      strcpy(call_buff[call_buff_p], buf);
+	  add_callbuf(buf);
       break;
     }
     temp = temp->next;

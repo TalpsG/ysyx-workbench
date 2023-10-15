@@ -1,18 +1,17 @@
 #include "trace/etrace.h"
+#include <stdio.h>
 #include <string.h>
-char etrace_buff[500][300];
-int etrace_buffp = -1;
+#include <stdlib.h>
+static char *etrace_buf = "/home/talps/gitrepo/ysyx-workbench/nemu/build/etrace.txt";
+static FILE *f;
 void init_etrace() {
-  for (int i = 0; i < 500; i++) {
-    etrace_buff[i][0] = '\0';
-  }
+	f = fopen(etrace_buf,"w");
+	if (f == NULL) {
+		printf("etrace init fail");
+	}
 }
 void add_etrace(char *str) {
-	etrace_buffp= (etrace_buffp+1)%500;
-	strcpy(etrace_buff[etrace_buffp], str);
+	fprintf(f, "%s",str);
 }
 void print_etrace() {
-  for (int i = 0; i < 500; i++) {
-    printf("%s",etrace_buff[i]);
-  }
 }

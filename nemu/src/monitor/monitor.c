@@ -29,9 +29,6 @@
 static char *elf = NULL;
 struct func_info *func_head = NULL;
 int func_trace = 0;
-char call_buff[200][10000];
-int call_buff_p = -1;
-
 #include <stdio.h>  
 #ifdef CONFIG_FTRACE
 #include <unistd.h>  
@@ -40,10 +37,14 @@ int call_buff_p = -1;
 #include <sys/stat.h> 
 #include <sys/mman.h> //mmap函数的必要头文件
 #include "elf.h"
+static char *call_buff = "/home/talps/gitrepo/ysyx-workbench/nemu/build/ftrace.txt";
+static FILE *f;
 void init_callbuff() {
-  for (int i = 0; i < 200; i++) {
-    call_buff[i][0] = '\0';
-  }
+	f = fopen(call_buff,"w");
+	if(f == NULL) printf("callbuf init fail\n");
+}
+void add_callbuf(char *str) {
+	fprintf(f,"%s",str);
 }
 void new_func_info(char *name,Elf32_Addr add,uint32_t size){
   struct func_info *temp = malloc(sizeof(struct func_info));

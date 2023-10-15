@@ -3,7 +3,7 @@
 #include <string.h>
 #include <stdlib.h>
 static char *dtrace_buf = "/home/talps/gitrepo/ysyx-workbench/nemu/build/dtrace.txt";
-FILE *f;
+static FILE *f;
 void init_dtrace() {
 	f = fopen(dtrace_buf,"w");
 	if (f == NULL) {
