@@ -96,7 +96,7 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc)
 		char buf[500];
       sprintf(buf , " ---> %s\n",_this->logbuf) ;
 	  add_itrace(buf);
-	  print_itrace();
+	  //print_itrace();
     }else{
 		char buf[500];
       sprintf(buf , " ---> %s\n",_this->logbuf) ;
