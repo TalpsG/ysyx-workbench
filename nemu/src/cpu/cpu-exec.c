@@ -42,7 +42,7 @@ ringbuffer for log
 */
 
 #ifdef CONFIG_FTRACE
-extern add_callbuf(char *str);
+extern void add_callbuf(char *str);
 void check_call(Decode s){
   struct func_info *temp = func_head;
   while(temp!=NULL){
