@@ -1,18 +1,17 @@
 #include "trace/dtrace.h"
+#include <stdio.h>
 #include <string.h>
-char dtrace_buff[500][300];
-int dtrace_buffp = -1;
+#include <stdlib.h>
+static char *dtrace_buf = "/home/talps/gitrepo/ysyx-workbench/nemu/build/dtrace.txt";
+FILE *f;
 void init_dtrace() {
-  for (int i = 0; i < 500; i++) {
-    dtrace_buff[i][0] = '\0';
-  }
+	f = fopen(dtrace_buf,"w");
+	if (f == NULL) {
+		printf("dtrace init fail");
+	}
 }
 void add_dtrace(char *str) {
-	dtrace_buffp= (dtrace_buffp+1)%500;
-	strcpy(dtrace_buff[dtrace_buffp], str);
+	fprintf(f, "%s",str);
 }
 void print_dtrace() {
-  for (int i = 0; i < 500; i++) {
-    printf("%s",dtrace_buff[i]);
-  }
 }
