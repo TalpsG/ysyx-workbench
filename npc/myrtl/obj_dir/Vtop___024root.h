@@ -16,14 +16,19 @@ class Vtop___024root final : public VerilatedModule {
     // Anonymous structures to workaround compiler member-count bugs
     struct {
         VL_IN8(clk,0,0);
-        CData/*3:0*/ top__DOT__csr_addr;
+        CData/*5:0*/ top__DOT__fake_csr_wen;
+        CData/*5:0*/ top__DOT__csr_wen;
         CData/*3:0*/ top__DOT__extop;
         CData/*0:0*/ top__DOT__pc_write;
         CData/*0:0*/ top__DOT__select_num2;
         CData/*0:0*/ top__DOT__sub;
+        CData/*0:0*/ top__DOT__csr_write;
         CData/*1:0*/ top__DOT__select_num1;
         CData/*2:0*/ top__DOT__aluop;
         CData/*7:0*/ top__DOT__mem_mask;
+        CData/*2:0*/ top__DOT__csr_addr;
+        CData/*5:0*/ top__DOT__get_fake_csr_wen__DOT__i0__DOT__lut_out;
+        CData/*0:0*/ top__DOT__get_fake_csr_wen__DOT__i0__DOT__hit;
         CData/*0:0*/ top__DOT__idu__DOT__get_imm__DOT__imm_mux__DOT__i0__DOT__hit;
         CData/*3:0*/ top__DOT__idu__DOT__get_extop__DOT__gen_extop__DOT__i0__DOT__lut_out;
         CData/*0:0*/ top__DOT__idu__DOT__get_extop__DOT__gen_extop__DOT__i0__DOT__hit;
@@ -55,10 +60,11 @@ class Vtop___024root final : public VerilatedModule {
         IData/*31:0*/ top__DOT__imm;
         IData/*31:0*/ top__DOT__res;
         IData/*31:0*/ top__DOT__mem_rdata;
-        IData/*31:0*/ top__DOT__mem_wdata;
         IData/*31:0*/ top__DOT__fake_csr_wdata;
         IData/*31:0*/ top__DOT__csr_rdata;
         IData/*31:0*/ top__DOT__rs1_value;
+        IData/*31:0*/ top__DOT__rs2_value;
+        IData/*31:0*/ top__DOT____VdfgTmp_h9b1c84bc__0;
         IData/*31:0*/ top__DOT__get_csr_wdata__DOT__i0__DOT__lut_out;
         IData/*31:0*/ top__DOT__idu__DOT__get_imm__DOT__imm_mux__DOT__i0__DOT__lut_out;
         IData/*31:0*/ top__DOT__exu__DOT__num1;
@@ -73,21 +79,25 @@ class Vtop___024root final : public VerilatedModule {
         IData/*31:0*/ top__DOT__u_mem__DOT__get_rdata__DOT__i0__DOT__lut_out;
         IData/*31:0*/ __Vtask_top__DOT__u_mem__DOT__npc_mem_read__2__rdata;
         IData/*31:0*/ __VstlIterCount;
-        IData/*31:0*/ __VactIterCount;
-        VL_OUT(gpr[32],31,0);
-        VL_OUT(csr_reg[16],31,0);
-        VlUnpacked<IData/*31:0*/, 32> top__DOT____Vcellout__regfile__data;
-        VlUnpacked<IData/*31:0*/, 16> top__DOT____Vcellout__csr__data;
-        VlUnpacked<CData/*2:0*/, 2> top__DOT__get_csr_wdata__DOT__i0__DOT__key_list;
     };
     struct {
+        IData/*31:0*/ __VactIterCount;
+        VL_OUT(gpr[32],31,0);
+        VL_OUT(csr_reg[6],31,0);
+        VlUnpacked<IData/*31:0*/, 6> top__DOT__csr_wdata;
+        VlUnpacked<IData/*31:0*/, 32> top__DOT____Vcellout__regfile__data;
+        VlUnpacked<IData/*31:0*/, 6> top__DOT____Vcellout__csr__data;
+        VlUnpacked<IData/*31:0*/, 6> top__DOT____Vcellinp__csr__wdata;
+        VlUnpacked<CData/*2:0*/, 6> top__DOT__get_fake_csr_wen__DOT__i0__DOT__key_list;
+        VlUnpacked<CData/*5:0*/, 6> top__DOT__get_fake_csr_wen__DOT__i0__DOT__data_list;
+        VlUnpacked<CData/*2:0*/, 2> top__DOT__get_csr_wdata__DOT__i0__DOT__key_list;
         VlUnpacked<IData/*31:0*/, 2> top__DOT__get_csr_wdata__DOT__i0__DOT__data_list;
         VlUnpacked<CData/*3:0*/, 10> top__DOT__idu__DOT__get_imm__DOT__imm_mux__DOT__i0__DOT__key_list;
         VlUnpacked<IData/*31:0*/, 10> top__DOT__idu__DOT__get_imm__DOT__imm_mux__DOT__i0__DOT__data_list;
         VlUnpacked<CData/*6:0*/, 10> top__DOT__idu__DOT__get_extop__DOT__gen_extop__DOT__i0__DOT__key_list;
         VlUnpacked<CData/*3:0*/, 10> top__DOT__idu__DOT__get_extop__DOT__gen_extop__DOT__i0__DOT__data_list;
         VlUnpacked<IData/*31:0*/, 32> top__DOT__regfile__DOT__rf;
-        VlUnpacked<IData/*31:0*/, 16> top__DOT__csr__DOT__rf;
+        VlUnpacked<IData/*31:0*/, 6> top__DOT__csr__DOT__rf;
         VlUnpacked<CData/*2:0*/, 3> top__DOT__cu__DOT__get_mask__DOT__i0__DOT__key_list;
         VlUnpacked<CData/*7:0*/, 3> top__DOT__cu__DOT__get_mask__DOT__i0__DOT__data_list;
         VlUnpacked<CData/*3:0*/, 3> top__DOT__cu__DOT__get_selectnum1__DOT__i0__DOT__key_list;

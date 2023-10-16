@@ -31,7 +31,7 @@ class Vtop VL_NOT_FINAL : public VerilatedModel {
     VL_OUT(&out_snpc,31,0);
     VL_OUT(&ins,31,0);
     VL_OUT((&gpr)[32],31,0);
-    VL_OUT((&csr_reg)[16],31,0);
+    VL_OUT((&csr_reg)[6],31,0);
 
     // CELLS
     // Public to allow access to /* verilator public */ items.

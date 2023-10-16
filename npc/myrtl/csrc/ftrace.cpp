@@ -20,12 +20,11 @@ struct func_info{
 struct func_info *func_head;
 int func_trace= 0 ;
 char *elf = NULL;
-char call_buff[300][1000];
-int call_buffp=-1;
+static char call_buff[] = "/home/talps/gitrepo/ysyx-workbench/npc/trace/ftrace.txt";
+static FILE *f;
+
 void init_callbuff() {
-  for (int i = 0; i < 200; i++) {
-    call_buff[i][0]='\0';
-  }
+	f = fopen(call_buff, "w+");
 }
 void new_func_info(char *name,Elf32_Addr add,uint32_t size){
   struct func_info *temp;
@@ -48,8 +47,7 @@ void check_call(){
       char tail[100];
       sprintf(tail,"call [%6s@0x%08x]\n",temp->name,temp->value);
       strcat(buf, tail);
-	  call_buffp = (call_buffp+1)%300;
-	  strcpy(call_buff[call_buffp], buf);
+	  fprintf(f, "%s",buf);
       func_trace++;
       break;
     }
@@ -63,8 +61,7 @@ void check_call(){
       char tail[200];
       sprintf(tail,"ret  [%6s]\n",temp->name);
       strcat(buf, tail);
-	  call_buffp = (call_buffp+1)%300;
-	  strcpy(call_buff[call_buffp], buf);
+	  fprintf(f, "%s",buf);
       break;
     }
     temp = temp->next;
@@ -110,7 +107,4 @@ void load_elf(){
   free(p);
 }
 void print_callbuf() {
-	for (int i = 0; i < 300; i++) {
-		printf("%s",call_buff[i]);
-	}
 }
