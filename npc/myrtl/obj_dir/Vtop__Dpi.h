@@ -16,7 +16,7 @@ extern "C" {
 
 
     // DPI IMPORTS
-    // DPI import at /home/talps/gitrepo/ysyx-workbench/npc/myrtl/vsrc/IDU.sv:44:32
+    // DPI import at /home/talps/gitrepo/ysyx-workbench/npc/myrtl/vsrc/IDU.sv:45:32
     extern void ebreak(int ins);
     // DPI import at /home/talps/gitrepo/ysyx-workbench/npc/myrtl/vsrc/IFU.sv:14:32
     extern void fetch(int in, int* ins);
