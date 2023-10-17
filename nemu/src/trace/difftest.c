@@ -9,7 +9,7 @@ void init_difftest_for_npc() {
   f = fopen(difftest_file, "w+");
 }
 void add_record() {
-  char buf[200] = "";
+  char buf[400] = "";
   char temp[20];
   sprintf(temp, "%x ",cpu.pc);
   for (int i = 0; i < 32; i++) {
