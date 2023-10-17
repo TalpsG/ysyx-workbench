@@ -21,5 +21,5 @@ void add_record() {
   }
   fprintf(f, "%s\n",buf);
   fflush(f);
-  printf("%s\n",buf);
+  //printf("%s\n",buf);
 }
