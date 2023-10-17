@@ -5,6 +5,7 @@
 #include <cstring>
 #include "macro.h"
 #include <verilated_vcd_c.h>
+#include "record.h"
 int first_inst = 1;
 const char *regs[] = {
     "$0", "ra", "sp", "gp", "tp", "t0", "t1", "t2",
@@ -32,6 +33,7 @@ void single_cycle(){
 	m_trace.dump(sim_time);
 	sim_time++;
 #endif
+	check_record();
 	print_ins();
 #ifdef CONFIG_DIFFTEST
 	difftest_step(top.outpc,top.out_dnpc);
@@ -79,6 +81,7 @@ void init(int argc,const char **argv) {
 	if (argc == 4) {
 		batch=true;
 	}
+	init_record();
 	load_elf();
 	print_callbuf();	
 	init_disasm("riscv32");

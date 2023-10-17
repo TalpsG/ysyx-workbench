@@ -12,6 +12,7 @@ void add_record() {
   char buf[400] = "";
   char temp[20];
   sprintf(temp, "%x ",cpu.pc);
+  strcat(buf, temp);
   for (int i = 0; i < 32; i++) {
     sprintf(temp, "%x ",cpu.gpr[i]);
 	strcat(buf, temp);

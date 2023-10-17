@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <Vtop.h>
 extern Vtop top;
 static char difftest[] = "/home/talps/gitrepo/ysyx-workbench/nemu/build/difftest.txt";
 static FILE *f;

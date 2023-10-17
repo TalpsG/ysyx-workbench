@@ -57,6 +57,7 @@ VM_USER_CLASSES = \
 	itrace \
 	mem \
 	mtrace \
+	record \
 	sdb \
 	sim_main \
 
@@ -85,6 +86,8 @@ itrace.o: /home/talps/gitrepo/ysyx-workbench/npc/myrtl/csrc/itrace.cpp
 mem.o: /home/talps/gitrepo/ysyx-workbench/npc/myrtl/csrc/mem.cpp
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
 mtrace.o: /home/talps/gitrepo/ysyx-workbench/npc/myrtl/csrc/mtrace.cpp
+	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
+record.o: /home/talps/gitrepo/ysyx-workbench/npc/myrtl/csrc/record.cpp
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
 sdb.o: /home/talps/gitrepo/ysyx-workbench/npc/myrtl/csrc/sdb.cpp
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
