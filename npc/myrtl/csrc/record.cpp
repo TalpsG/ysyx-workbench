@@ -17,6 +17,7 @@ void check_record() {
 	char npc[400]="";
 	char temp[20];
 	sprintf(temp, "%x ",top.outpc);
+	strcat(npc, temp);
 	for (int i = 0; i < 32; i++) {
 		sprintf(temp, "%x ",top.gpr[i]);
 		strcat(npc, temp);
