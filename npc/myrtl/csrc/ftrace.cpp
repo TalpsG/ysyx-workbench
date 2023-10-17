@@ -48,6 +48,7 @@ void check_call(){
       sprintf(tail,"call [%6s@0x%08x]\n",temp->name,temp->value);
       strcat(buf, tail);
 	  fprintf(f, "%s",buf);
+		fflush(f);
       func_trace++;
       break;
     }
@@ -62,6 +63,7 @@ void check_call(){
       sprintf(tail,"ret  [%6s]\n",temp->name);
       strcat(buf, tail);
 	  fprintf(f, "%s",buf);
+		fflush(f);
       break;
     }
     temp = temp->next;

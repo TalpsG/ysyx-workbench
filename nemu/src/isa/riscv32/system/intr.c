@@ -32,6 +32,8 @@ word_t csr_read(word_t index) {
 			return mcause;
         case 5:
 			return mtvec;
+        default:
+          return 0;
 	}
 	return 0;
 }

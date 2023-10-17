@@ -7,6 +7,8 @@
 #include "macro.h"
 
 state npc_state = RUNNING;
+extern Vtop top;
+unsigned int watchpoint = 0;
 void single_cycle();
 void display_regs();
 void print_ringbuf();
@@ -15,6 +17,10 @@ extern char ringbuffer[200][100];
 static int is_batch_mode = false;
 static int cmd_c (char *args){
 	while (1) {
+		if (watchpoint == top.outpc) {
+			printf("catch watchpoint\n");
+            break;
+		}
 		if (npc_state == ENDING || npc_state == ABORT) {
 			printf(npc_state == ABORT?"npc is abort \n":"Program is executed successfully\n");
 			return 0;
@@ -34,10 +40,15 @@ static int cmd_si (char *args){
 	}
 	if (args == NULL) {
 		single_cycle();
+		print_ins();
 		return 0;
 	}
 	int steps = atoi(args);
 	for (int i = 0; i < steps; i++) {
+		if (watchpoint == top.outpc) {
+			printf("catch watchpoint\n");
+            break;
+		}
 		single_cycle();
 	}
 	return 0;
@@ -46,6 +57,7 @@ static int cmd_i (char *args){
 	if (args == NULL) {
 		printf("default display regs\n");
 		display_regs();
+		printf("pc: %8x\n",top.outpc);
 		return 0;
 	}
 	if (strcmp(args, "r")) {
@@ -83,6 +95,11 @@ static int cmd_mtrace(char *args){
 #endif
 	return 0;
 }
+static int cmd_w(char *args){
+	printf("%s\n",args);
+	sscanf(args, "%x",&watchpoint);
+	return 0;
+}
 static struct {
 	const char *name;
 	const char *description;
@@ -95,7 +112,8 @@ static struct {
     {"x","display mems",cmd_x},
     {"itrace","display ins",cmd_itrace},
     {"ftrace","display call",cmd_ftrace},
-    {"mtrace","display memtrace",cmd_mtrace}
+    {"mtrace","display memtrace",cmd_mtrace},
+    {"w","watchpoint",cmd_w},
 };
 #define NR_CMD (sizeof(cmd_table)/sizeof(cmd_table[0]))
 static char *rl_gets()

@@ -17,8 +17,9 @@ void print_ins() {
 				(uint8_t *)&top.ins,4);
 #ifdef CONFIG_ITRACE	
 	fprintf(f,"pc:%8x,machinecode:%08x ,ins:%s\n",top.outpc,top.ins,ins_buf);
+	fflush(f);
 #endif 
-	//printf("pc:%8x,machinecode:%08x ,ins:%s\n",top.outpc,top.ins,ins_buf);
+	printf("pc:%8x,machinecode:%08x ,ins:%s\n",top.outpc,top.ins,ins_buf);
 }
 void print_ringbuf() {
 }
