@@ -37,6 +37,7 @@ int func_trace = 0;
 #include <sys/stat.h> 
 #include <sys/mman.h> //mmap函数的必要头文件
 #include "elf.h"
+#include <trace/difftest.h>
 static char *call_buff = "/home/talps/gitrepo/ysyx-workbench/nemu/build/ftrace.txt";
 static FILE *f;
 void init_callbuff() {
@@ -183,6 +184,7 @@ void init_monitor(int argc, char *argv[]) {
   /* Perform some global initialization. */
 
   /* Init ring buffer of instructions  */
+	init_difftest_for_npc();
 #ifdef CONFIG_ITRACE
   init_itrace();
 #endif
