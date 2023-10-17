@@ -19,6 +19,7 @@ void add_record() {
   for (int i = 0; i < 6; i++) {
     unsigned int csr_reg = csr_read(i);
 	sprintf(temp, "%x ",csr_reg);
+	strcat(buf, temp);
   }
   fprintf(f, "%s\n",buf);
   fflush(f);
