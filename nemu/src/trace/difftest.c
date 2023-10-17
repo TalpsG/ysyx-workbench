@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-extern  CPU_STATE cpu;
+extern  CPU_state cpu;
 static char difftest_file[] = "/home/talps/gitrepo/ysyx-workbench/nemu/build/difftest.txt";
 static FILE *f;
 void init_difftest_for_npc() {
