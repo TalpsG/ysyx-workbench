@@ -11,13 +11,14 @@ void init_difftest_for_npc() {
 void add_record() {
   char buf[200] = "";
   char temp[20];
+  sprintf(temp, "%x ",cpu.pc);
   for (int i = 0; i < 32; i++) {
     sprintf(temp, "%x ",cpu.gpr[i]);
 	strcat(buf, temp);
   }
   for (int i = 0; i < 6; i++) {
     unsigned int csr_reg = csr_read(i);
-	sprintf(temp, "%x",csr_reg);
+	sprintf(temp, "%x ",csr_reg);
   }
   fprintf(f, "%s\n",buf);
   fflush(f);
