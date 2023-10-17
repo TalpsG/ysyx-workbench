@@ -151,6 +151,7 @@ VL_ATTR_COLD void Vtop___024root___eval_initial__TOP(Vtop___024root* vlSelf) {
     vlSelf->top__DOT__u_mem__DOT__get_rdata__DOT__i0__DOT__key_list[3U] = 1U;
     vlSelf->top__DOT__u_mem__DOT__get_rdata__DOT__i0__DOT__key_list[4U] = 0U;
     vlSelf->outpc = 0x7ffffffcU;
+    VL_WRITEF("%8x\n",32,vlSelf->outpc);
 }
 
 VL_ATTR_COLD void Vtop___024root___eval_final(Vtop___024root* vlSelf) {

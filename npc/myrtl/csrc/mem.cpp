@@ -33,7 +33,9 @@ extern "C" void npc_mem_read(uint32_t raddr, uint32_t*rdata) {
 	return ;
   }
   *rdata = *(uint32_t*)&mem[(raddr&(~0x3u))-MBASE];
+#ifdef CONFIG_MTRACE
   read_mtrace(raddr, *rdata);
+#endif
 }
 extern "C" void npc_mem_write(uint32_t waddr, uint32_t wdata, char wmask) {
   // 总是往地址为`waddr & ~0x3u`的4字节按写掩码`wmask`写入`wdata`
@@ -56,7 +58,9 @@ extern "C" void npc_mem_write(uint32_t waddr, uint32_t wdata, char wmask) {
   *p &= (~mask);
   *p |= (wdata & mask);
   //printf("wmask:%x\n",wmask);
+#ifdef CONFIG_MTRACE
   write_mtrace(waddr, wdata,mask_temp);
+#endif
 }
 extern "C" void fetch(uint32_t in, uint32_t *ins) {
 	npc_mem_read(in, ins);
