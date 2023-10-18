@@ -19,7 +19,7 @@ uint32_t instructions[] = {
 uint32_t *bin = NULL; 
 extern "C" void npc_mem_read(uint32_t raddr, uint32_t*rdata) {
   // 总是读取地址为`raddr & ~0x3u`的4字节返回给`rdata`
-  //printf("read,addr:%8x ",raddr);
+  //printf("read,addr:%8x \n",raddr);
   //printf("RTC_ADDR:%8x\n",RTC_ADDR);
   if(raddr == SERIAL_PORT) return;
   static time_t t = 0;
@@ -33,7 +33,9 @@ extern "C" void npc_mem_read(uint32_t raddr, uint32_t*rdata) {
 	return ;
   }
   *rdata = *(uint32_t*)&mem[(raddr&(~0x3u))-MBASE];
+#ifdef CONFIG_MTRACE
   read_mtrace(raddr, *rdata);
+#endif
 }
 extern "C" void npc_mem_write(uint32_t waddr, uint32_t wdata, char wmask) {
   // 总是往地址为`waddr & ~0x3u`的4字节按写掩码`wmask`写入`wdata`
@@ -42,6 +44,8 @@ extern "C" void npc_mem_write(uint32_t waddr, uint32_t wdata, char wmask) {
   //printf("waddr:%8x,SERIAL_PORT:%8x,EQUAL?:%s\n",waddr,SERIAL_PORT,waddr==SERIAL_PORT?"yes":"no");
   if (waddr == SERIAL_PORT) {
 	putchar(wdata);
+	fflush(stdout);
+
     return ;
   }
   uint32_t *p = (uint32_t *)&mem[waddr-MBASE];
@@ -56,7 +60,9 @@ extern "C" void npc_mem_write(uint32_t waddr, uint32_t wdata, char wmask) {
   *p &= (~mask);
   *p |= (wdata & mask);
   //printf("wmask:%x\n",wmask);
+#ifdef CONFIG_MTRACE
   write_mtrace(waddr, wdata,mask_temp);
+#endif
 }
 extern "C" void fetch(uint32_t in, uint32_t *ins) {
 	npc_mem_read(in, ins);

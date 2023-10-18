@@ -1,0 +1,5 @@
+#ifndef E848D7C4_8EFB_4677_8E12_34B50793CE31
+#define E848D7C4_8EFB_4677_8E12_34B50793CE31
+void init_difftest_for_npc();
+void add_record();
+#endif /* E848D7C4_8EFB_4677_8E12_34B50793CE31 */

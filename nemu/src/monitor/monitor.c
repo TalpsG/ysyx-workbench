@@ -23,14 +23,12 @@
 #include <trace/itrace.h>
 #include <trace/mtrace.h>
 #include <trace/dtrace.h>
+#include <trace/etrace.h>
 
 //for elf
 static char *elf = NULL;
 struct func_info *func_head = NULL;
 int func_trace = 0;
-char call_buff[200][10000];
-int call_buff_p = -1;
-
 #include <stdio.h>  
 #ifdef CONFIG_FTRACE
 #include <unistd.h>  
@@ -39,10 +37,15 @@ int call_buff_p = -1;
 #include <sys/stat.h> 
 #include <sys/mman.h> //mmap函数的必要头文件
 #include "elf.h"
+#include <trace/difftest.h>
+static char *call_buff = "/home/talps/gitrepo/ysyx-workbench/nemu/build/ftrace.txt";
+static FILE *f;
 void init_callbuff() {
-  for (int i = 0; i < 200; i++) {
-    call_buff[i][0] = '\0';
-  }
+	f = fopen(call_buff,"w");
+	if(f == NULL) printf("callbuf init fail\n");
+}
+void add_callbuf(char *str) {
+	fprintf(f,"%s",str);
 }
 void new_func_info(char *name,Elf32_Addr add,uint32_t size){
   struct func_info *temp = malloc(sizeof(struct func_info));
@@ -181,6 +184,7 @@ void init_monitor(int argc, char *argv[]) {
   /* Perform some global initialization. */
 
   /* Init ring buffer of instructions  */
+	init_difftest_for_npc();
 #ifdef CONFIG_ITRACE
   init_itrace();
 #endif
@@ -195,6 +199,9 @@ void init_monitor(int argc, char *argv[]) {
 #endif
 #ifdef CONFIG_DTRACE
 	init_dtrace();
+#endif
+#ifdef CONFIG_ETRACE
+	init_etrace();
 #endif
   /* Set random seed. */
   init_rand();

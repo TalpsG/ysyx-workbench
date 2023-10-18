@@ -43,7 +43,7 @@
 
 // ftrace
 struct func_info{
-  char name[30];
+  char name[100];
   uint32_t value;
   uint32_t size;
   struct func_info * next;

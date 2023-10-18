@@ -1,17 +1,18 @@
 #include "trace/mtrace.h"
-char mtrace_buff[500][100];
-int mtrace_buffp = -1;
+#include "trace/mtrace.h"
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+static char *mtrace_buf = "/home/talps/gitrepo/ysyx-workbench/nemu/build/mtrace.txt";
+static FILE *f;
 void init_mtrace() {
-  for (int i = 0; i < 500; i++) {
-    mtrace_buff[i][0] = '\0';
-  }
+	f = fopen(mtrace_buf,"w");
+	if (f == NULL) {
+		printf("mtrace init fail");
+	}
 }
 void add_mtrace(char *str) {
-	mtrace_buffp=(mtrace_buffp+1)%500;
-	strcpy(mtrace_buff[mtrace_buffp],str);
+	fprintf(f, "%s",str);
 }
 void print_mtrace() {
-  for (int i = 0; i < 500; i++) {
-    printf("%s",mtrace_buff[i]);
-  }
 }

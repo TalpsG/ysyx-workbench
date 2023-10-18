@@ -5,6 +5,7 @@
 #include <cstring>
 #include "macro.h"
 #include <verilated_vcd_c.h>
+#include "record.h"
 int first_inst = 1;
 const char *regs[] = {
     "$0", "ra", "sp", "gp", "tp", "t0", "t1", "t2",
@@ -32,9 +33,11 @@ void single_cycle(){
 	m_trace.dump(sim_time);
 	sim_time++;
 #endif
+
 	print_ins();
 #ifdef CONFIG_DIFFTEST
-	difftest_step(top.outpc,top.out_dnpc);
+	check_record();
+	//difftest_step(top.outpc,top.out_dnpc);
 #endif // DEBUG
 	//printf("-------->end \n\n");
 }
@@ -73,8 +76,9 @@ void init(int argc,const char **argv) {
 #endif // DEBUG
 	img_size = init_mem(argc,argv);
 #ifdef CONFIG_DIFFTEST
-	char ref_so_file[]="/home/talps/gitrepo/ysyx-workbench/npc/riscv32-nemu-interpreter-so";
-	init_difftest(ref_so_file, img_size, 1235);
+	//char ref_so_file[]="/home/talps/gitrepo/ysyx-workbench/npc/riscv32-nemu-interpreter-so";
+	//init_difftest(ref_so_file, img_size, 1235);
+	init_record();
 #endif // DEBUG
 	if (argc == 4) {
 		batch=true;
@@ -83,9 +87,6 @@ void init(int argc,const char **argv) {
 	print_callbuf();	
 	init_disasm("riscv32");
 	reset();
-#ifdef CONFIG_DIFFTEST
-	init_difftest(ref_so_file, img_size, 1235);
-#endif
 	top.outpc-=4;
 	top.eval();
 }

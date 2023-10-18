@@ -23,6 +23,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <trace/itrace.h>
+#include <trace/difftest.h>
 
 /* The assembly code of instructions executed is only output to the screen
  * when the number of instructions executed is less than this value.
@@ -42,8 +43,7 @@ ringbuffer for log
 */
 
 #ifdef CONFIG_FTRACE
-extern char call_buff[200][1000];
-extern int call_buff_p;
+extern void add_callbuf(char *str);
 void check_call(Decode s){
   struct func_info *temp = func_head;
   while(temp!=NULL){
@@ -56,8 +56,7 @@ void check_call(Decode s){
       char tail[300];
       sprintf(tail,"call [%6s@0x%08x]\n",temp->name,temp->value);
       strcat(buf, tail);
-      call_buff_p = (call_buff_p+1)%200;
-      strcpy(call_buff[call_buff_p], buf);
+	  add_callbuf(buf);
       func_trace++;
       break;
     }
@@ -71,8 +70,7 @@ void check_call(Decode s){
       char tail[300];
       sprintf(tail,"ret  [%6s]\n",temp->name);
       strcat(buf, tail);
-      call_buff_p = (call_buff_p+1)%200;
-      strcpy(call_buff[call_buff_p], buf);
+	  add_callbuf(buf);
       break;
     }
     temp = temp->next;
@@ -96,7 +94,7 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc)
 		char buf[500];
       sprintf(buf , " ---> %s\n",_this->logbuf) ;
 	  add_itrace(buf);
-	  print_itrace();
+	  //print_itrace();
     }else{
 		char buf[500];
       sprintf(buf , " ---> %s\n",_this->logbuf) ;
@@ -118,6 +116,7 @@ static void exec_once(Decode *s, vaddr_t pc)
 {
   s->pc = pc;
   s->snpc = pc;
+  add_record();
   isa_exec_once(s);
   cpu.pc = s->dnpc;
 #ifdef CONFIG_ITRACE
@@ -158,17 +157,13 @@ static void execute(uint64_t n)
   for (; n > 0; n--)
   {
     exec_once(&s, cpu.pc);
-
     g_nr_guest_inst++;
     trace_and_difftest(&s, cpu.pc);
     if (nemu_state.state != NEMU_RUNNING) {
-#ifdef CONFIG_FTRACE
-		strcat(call_buff[call_buff_p], "----- ^^^^^ -----\n");
-#endif
       break;
 	}
     IFDEF(CONFIG_DEVICE, device_update());
-    //printf("asm: %s \n",s.logbuf);
+    //printf("pc:%8x  asm: %s \n",cpu.pc,s.logbuf);
     //isa_reg_display();
     //printf("\n");
   }

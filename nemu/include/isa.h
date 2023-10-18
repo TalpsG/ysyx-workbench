@@ -17,6 +17,7 @@
 #define __ISA_H__
 
 // Located at src/isa/$(GUEST_ISA)/include/isa-def.h
+#include "common.h"
 #include <isa-def.h>
 
 // The macro `__GUEST_ISA__` is defined in $(CFLAGS).
@@ -47,6 +48,8 @@ int isa_mmu_check(vaddr_t vaddr, int len, int type);
 paddr_t isa_mmu_translate(vaddr_t vaddr, int len, int type);
 
 // interrupt/exception
+word_t csr_read(word_t index) ;
+word_t csr_write(word_t index,word_t data) ;
 vaddr_t isa_raise_intr(word_t NO, vaddr_t epc);
 #define INTR_EMPTY ((word_t)-1)
 word_t isa_query_intr();

@@ -1,11 +1,18 @@
 #ifndef ARCH_H__
 #define ARCH_H__
-
+#ifdef __riscv_e
 struct Context {
   // TODO: fix the order of these members to match trap.S
-  uintptr_t mepc, mcause, gpr[32], mstatus;
+  uintptr_t gpr[16], mcause, mstatus,mepc;
   void *pdir;
 };
+#else
+struct Context {
+  // TODO: fix the order of these members to match trap.S
+  uintptr_t gpr[32], mcause, mstatus,mepc;
+  void *pdir;
+};
+#endif
 
 #ifdef __riscv_e
 #define GPR1 gpr[15] // a5

@@ -24,10 +24,8 @@
 #include <debug.h>
 #include <trace/itrace.h>
 #include "trace/dtrace.h"
+#include "trace/etrace.h"
 static int is_batch_mode = false;
-#ifdef CONFIG_FTRACE
-extern char call_buff[200][500];
-#endif
 void init_regex();
 void init_wp_pool();
 /* We use the `readline' library to provide more flexibility to read from stdin. */
@@ -257,9 +255,6 @@ static int cmd_d(char *args)
 }
 #ifdef CONFIG_FTRACE
 void print_call_buff(){
-  for (int i = 0; i < 200; i++) {
-    printf("%s",call_buff[i]);
-	}
 }
 #endif
 static int cmd_ftrace(char *args) {
@@ -301,6 +296,14 @@ static int cmd_dtrace(char *args){
 #endif
   return 0;
 }
+static int cmd_etrace(char *args){
+#ifdef CONFIG_ETRACE
+	print_etrace();
+#else
+	printf("menuconfig tick ETRACE\n");
+#endif
+  return 0;
+}
 static int cmd_help(char *args);
 
 static struct
@@ -325,6 +328,7 @@ static struct
     {"mtrace", "print mem trace", cmd_mtrace},
     {"itrace", "print instructs trace", cmd_itrace},
     {"dtrace", "print device trace", cmd_dtrace},
+    {"etrace", "print trap trace", cmd_etrace},
 
 };
 

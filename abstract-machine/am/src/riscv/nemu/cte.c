@@ -8,7 +8,8 @@ Context* __am_irq_handle(Context *c) {
   if (user_handler) {
     Event ev = {0};
     switch (c->mcause) {
-      default: ev.event = EVENT_ERROR; break;
+		case 1: ev.event = EVENT_YIELD;break;
+      default: printf("mcause:%d\n",c->mcause);ev.event = EVENT_ERROR; break;
     }
 
     c = user_handler(ev, c);
@@ -30,8 +31,13 @@ bool cte_init(Context*(*handler)(Event, Context*)) {
   return true;
 }
 
+
+// kstack 是线程栈，entry是线程的入口，args是参数
 Context *kcontext(Area kstack, void (*entry)(void *), void *arg) {
-  return NULL;
+	Context *p = kstack.end - sizeof(Context);
+	p->mepc = (unsigned int)entry;
+	p->gpr[10] = (unsigned int)arg;
+  return p;
 }
 
 void yield() {

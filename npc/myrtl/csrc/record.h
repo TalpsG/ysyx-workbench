@@ -1,0 +1,6 @@
+#ifndef A512CCFE_B56C_4175_8A0C_76F57045CC2E
+#define A512CCFE_B56C_4175_8A0C_76F57045CC2E
+
+void init_record() ;
+void check_record();
+#endif /* A512CCFE_B56C_4175_8A0C_76F57045CC2E */

@@ -40,7 +40,7 @@ void *malloc(size_t size) {
 
   //panic("Not implemented");
 #endif
-	size = (size+3)&(~0x3u);
+	size = (size+7)&(~0x3u);
 	void *temp = mem_sbrk;
 	mem_sbrk += size;
   return temp;

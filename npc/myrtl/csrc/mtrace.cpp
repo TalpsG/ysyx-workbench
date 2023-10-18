@@ -3,31 +3,28 @@
 #include <cstdio>
 #include <cstring>
 #include "macro.h"
-char mem_trace[200][100];
-int mtrace_p = -1;
+char mem_trace[] = "/home/talps/gitrepo/ysyx-workbench/npc/trace/mtrace.txt";
+FILE *f;
 extern Vtop top;
 
 void init_mtrace() {
-  for (int i = 0; i < 200; i++) {
-    mem_trace[i][0]='\0';
-  }
+	f = fopen(mem_trace,"w+");
+	if(f == NULL) printf("mtrace init fail\n");
 }
 
 void write_mtrace(uint32_t addr,uint32_t data ,int len) {
-  char buf[100];
-  sprintf(buf, "write -> pc : %8x ,addr: %8x, data:%8x  ,len:%d\n",top.outpc,addr,data,len);
-  mtrace_p = (mtrace_p +1)%200;
-  strcpy(mem_trace[mtrace_p], buf);
+  fprintf(f, "write -> pc : %8x ,addr: %8x, data:%8x  ,len:%d\n",top.outpc,addr,data,len);
+  fflush(f);
+  //printf( "write -> pc : %8x ,addr: %8x, data:%8x  ,len:%d\n",top.outpc,addr,data,len);
 }
 
 void read_mtrace(uint32_t addr,uint32_t data ) {
-  char buf[100];
-  sprintf(buf, "read  <- pc : %8x ,addr: %8x, data:%8x\n",top.outpc,addr,data);
-  mtrace_p = (mtrace_p +1)%200;
-  strcpy(mem_trace[mtrace_p], buf);
+  fprintf(f, "read  <- pc : %8x ,addr: %8x, data:%8x\n",top.outpc,addr,data);
+  //printf( "read  <- pc : %8x ,addr: %8x, data:%8x\n",top.outpc,addr,data);
+  fflush(f);
 }
 void print_mtrace() {
-	for (int i = 0; i < 200; i++) {
-		printf("%s",mem_trace[i]);
-	}
+	//char cmd[50] ;
+	//sprintf(cmd, "cat %s",mem_trace);
+	//system(cmd);
 }

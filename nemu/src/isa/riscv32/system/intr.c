@@ -14,13 +14,56 @@
 ***************************************************************************************/
 
 #include <isa.h>
-
+#include <stdio.h>
+#include "trace/etrace.h"
+static uint32_t mcause=0;
+static uint32_t mtvec=0;
+static uint32_t mepc=0;
+static uint32_t mstatus=0;
+word_t csr_read(word_t index) {
+	switch (index)
+	{
+        case 0:
+			//printf("read mstatus:%8x pc:%8x\n",mstatus,cpu.pc);
+			return mstatus;
+        case 1:
+			return mepc;
+        case 2:
+			return mcause;
+        case 5:
+			return mtvec;
+        default:
+          return 0;
+	}
+	return 0;
+}
+word_t csr_write(word_t index,word_t data) {
+	switch (index)
+	{
+        case 0:
+			//printf("read mstatus:%8x data:%8x\n",mstatus,data);
+          mstatus = data;break;
+        case 1:
+          mepc= data;break;
+        case 2:
+          mcause = data;break;
+        case 5:
+          mtvec = data;break;
+	}
+	return 0;
+}
 word_t isa_raise_intr(word_t NO, vaddr_t epc) {
   /* TODO: Trigger an interrupt/exception with ``NO''.
    * Then return the address of the interrupt/exception vector.
    */
-
-  return 0;
+  mcause = NO;
+  mepc = NO==1?epc+4:epc;
+#ifdef CONFIG_ETRACE
+  char buf[100];
+  sprintf(buf, "pc:%8x,mcause:%d,handler_addr:%8x\n",epc,mcause,mtvec);
+  add_etrace(buf);
+#endif
+  return mtvec;
 }
 
 word_t isa_query_intr() {
