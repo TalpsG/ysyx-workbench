@@ -44,6 +44,8 @@ extern "C" void npc_mem_write(uint32_t waddr, uint32_t wdata, char wmask) {
   //printf("waddr:%8x,SERIAL_PORT:%8x,EQUAL?:%s\n",waddr,SERIAL_PORT,waddr==SERIAL_PORT?"yes":"no");
   if (waddr == SERIAL_PORT) {
 	putchar(wdata);
+	fflush(stdout);
+
     return ;
   }
   uint32_t *p = (uint32_t *)&mem[waddr-MBASE];

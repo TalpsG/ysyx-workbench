@@ -27,13 +27,15 @@ void check_record() {
 		strcat(npc, temp);
 	}
 	strcat(npc, "\n");
-	char *p = fgets(nemu, 200, f);
+	char *p = fgets(nemu, 400, f);
 	if (p == NULL) {
 		printf("none record");
 		exit(0);
 	}
 	if (strcmp(nemu, npc) != 0) {
 		printf("pc:%8x , reg is diff\n",top.outpc);
+		printf("nemu: \n%s\n",nemu);
+		printf("npc: \n%s\n",npc);
 		exit(1);
 	}
 }

@@ -1184,7 +1184,7 @@ VL_ATTR_COLD void Vtop___024root___stl_sequent__TOP__0(Vtop___024root* vlSelf) {
         vlSelf->top__DOT__csr_wen = 0U;
         vlSelf->out_dnpc = vlSelf->csr_reg[1U];
     } else if ((0x73U == vlSelf->ins)) {
-        vlSelf->top__DOT__csr_wen = 7U;
+        vlSelf->top__DOT__csr_wen = 6U;
         vlSelf->out_dnpc = vlSelf->top__DOT__csr_rdata;
     } else {
         vlSelf->top__DOT__csr_wen = vlSelf->top__DOT__fake_csr_wen;
