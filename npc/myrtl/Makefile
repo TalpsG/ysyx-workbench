@@ -1,5 +1,5 @@
 CSRC=$(shell find $(abspath ./csrc) -name "*.c" -or -name "*.cpp")
-VSRC=$(shell find $(abspath ./vsrc) -name "*.sv")
+VSRC=$(shell find $(abspath ./vsrc_multicycle) -name "*.sv")
 
 CPL=verilator
 FLAGS=--build --cc --top-module top --sv --x-initial 0 -CFLAGS -g 

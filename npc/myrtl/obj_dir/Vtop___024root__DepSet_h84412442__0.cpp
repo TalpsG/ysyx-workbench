@@ -22,8 +22,8 @@ VL_INLINE_OPT void Vtop___024root____Vdpiimwrap_top__DOT__u_IFU__DOT__fetch_TOP(
 
 extern "C" void ebreak(int ins);
 
-VL_INLINE_OPT void Vtop___024root____Vdpiimwrap_top__DOT__idu__DOT__ebreak_TOP(IData/*31:0*/ ins) {
-    VL_DEBUG_IF(VL_DBG_MSGF("+    Vtop___024root____Vdpiimwrap_top__DOT__idu__DOT__ebreak_TOP\n"); );
+VL_INLINE_OPT void Vtop___024root____Vdpiimwrap_top__DOT__u_IDU__DOT__ebreak_TOP(IData/*31:0*/ ins) {
+    VL_DEBUG_IF(VL_DBG_MSGF("+    Vtop___024root____Vdpiimwrap_top__DOT__u_IDU__DOT__ebreak_TOP\n"); );
     // Body
     int ins__Vcvt;
     for (size_t ins__Vidx = 0; ins__Vidx < 1; ++ins__Vidx) ins__Vcvt = ins;

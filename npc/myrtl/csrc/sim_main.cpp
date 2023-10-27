@@ -37,8 +37,10 @@ void single_cycle(){
 	print_ins();
 #ifdef CONFIG_DIFFTEST
 	check_record();
-	//difftest_step(top.outpc,top.out_dnpc);
 #endif // DEBUG
+#ifdef NEMU_DIFFTEST
+	difftest_step(top.outpc,top.out_dnpc);
+#endif // 
 	//printf("-------->end \n\n");
 }
 void reset() {
@@ -47,6 +49,13 @@ void reset() {
   while (i--)
     ;
   top.eval();
+
+  top.rst = 1;
+	top.clk = 1;
+	top.eval();
+	top.clk = 0;
+	top.eval();
+	top.rst = 0;
 }
 void display_regs() {
   for (int i = 0; i < 32; i++) {
@@ -76,10 +85,12 @@ void init(int argc,const char **argv) {
 #endif // DEBUG
 	img_size = init_mem(argc,argv);
 #ifdef CONFIG_DIFFTEST
-	//char ref_so_file[]="/home/talps/gitrepo/ysyx-workbench/npc/riscv32-nemu-interpreter-so";
-	//init_difftest(ref_so_file, img_size, 1235);
 	init_record();
 #endif // DEBUG
+#ifdef NEMU_DIFFTEST
+	char ref_so_file[]="/home/talps/gitrepo/ysyx-workbench/npc/riscv32-nemu-interpreter-so";
+	init_difftest(ref_so_file, img_size, 1235);
+#endif
 	if (argc == 4) {
 		batch=true;
 	}
