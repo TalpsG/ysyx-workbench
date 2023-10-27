@@ -19,6 +19,7 @@ class Vtop___024root final : public VerilatedModule {
         VL_IN8(rst,0,0);
         CData/*2:0*/ top__DOT__select_oprand1;
         CData/*2:0*/ top__DOT__select_oprand2;
+        CData/*0:0*/ top__DOT__is_csr;
         CData/*7:0*/ top__DOT__mem_wmask;
         CData/*2:0*/ top__DOT__u_IDU__DOT__get_select_oprand1__DOT__i0__DOT__lut_out;
         CData/*2:0*/ top__DOT__u_IDU__DOT__get_select_oprand2__DOT__i0__DOT__lut_out;
@@ -68,8 +69,8 @@ class Vtop___024root final : public VerilatedModule {
         VlUnpacked<CData/*2:0*/, 9> top__DOT__u_IDU__DOT__get_select_oprand1__DOT__i0__DOT__data_list;
         VlUnpacked<CData/*6:0*/, 9> top__DOT__u_IDU__DOT__get_select_oprand2__DOT__i0__DOT__key_list;
         VlUnpacked<CData/*2:0*/, 9> top__DOT__u_IDU__DOT__get_select_oprand2__DOT__i0__DOT__data_list;
-        VlUnpacked<CData/*6:0*/, 7> top__DOT__get_reg_wdata__DOT__i0__DOT__key_list;
-        VlUnpacked<IData/*31:0*/, 7> top__DOT__get_reg_wdata__DOT__i0__DOT__data_list;
+        VlUnpacked<CData/*6:0*/, 8> top__DOT__get_reg_wdata__DOT__i0__DOT__key_list;
+        VlUnpacked<IData/*31:0*/, 8> top__DOT__get_reg_wdata__DOT__i0__DOT__data_list;
         VlUnpacked<IData/*31:0*/, 32> top__DOT__u_RegisterFile__DOT__rf;
         VlUnpacked<CData/*2:0*/, 3> top__DOT__get_oprand1__DOT__i0__DOT__key_list;
         VlUnpacked<IData/*31:0*/, 3> top__DOT__get_oprand1__DOT__i0__DOT__data_list;
@@ -78,9 +79,9 @@ class Vtop___024root final : public VerilatedModule {
         VlUnpacked<CData/*3:0*/, 11> top__DOT__u_EXU__DOT__u_ALU__DOT__get_res__DOT__i0__DOT__key_list;
         VlUnpacked<IData/*31:0*/, 11> top__DOT__u_EXU__DOT__u_ALU__DOT__get_res__DOT__i0__DOT__data_list;
         VlUnpacked<CData/*2:0*/, 6> top__DOT__u_EXU__DOT__get_B_aluop__DOT__i0__DOT__key_list;
-        VlUnpacked<CData/*3:0*/, 6> top__DOT__u_EXU__DOT__get_B_aluop__DOT__i0__DOT__data_list;
     };
     struct {
+        VlUnpacked<CData/*3:0*/, 6> top__DOT__u_EXU__DOT__get_B_aluop__DOT__i0__DOT__data_list;
         VlUnpacked<CData/*2:0*/, 8> top__DOT__u_EXU__DOT__get_IR_aluop__DOT__i0__DOT__key_list;
         VlUnpacked<CData/*3:0*/, 8> top__DOT__u_EXU__DOT__get_IR_aluop__DOT__i0__DOT__data_list;
         VlUnpacked<CData/*6:0*/, 3> top__DOT__u_EXU__DOT__get_aluop__DOT__i0__DOT__key_list;
