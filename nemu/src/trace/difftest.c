@@ -4,7 +4,7 @@
 #include <string.h>
 extern  CPU_state cpu;
 extern  char *img_file ;
-static char difftest_file[100] = "/home/talps/gitrepo/ysyx-workbench/nemu/build/trace/";
+static char difftest_file[100] = "/home/talps/gitrepo/ysyx-workbench/nemu/trace/";
 static FILE *f;
 void init_difftest_for_npc() {
 	char *filename = strrchr(img_file, '/')+1;
