@@ -24,10 +24,9 @@ image: $(IMAGE).elf
 
 run: $(IMAGE).bin $(IMAGE).elf
 	make -C $(NPC_HOME)/myrtl run BIN=$(abspath $(IMAGE).bin) ELF=$(abspath $(IMAGE).elf) 
-run-m: $(IMAGE).bin $(IMAGE).elf
-	make -C ~/gitrepo/npc/myrtl run BIN=$(abspath $(IMAGE).bin) ELF=$(abspath $(IMAGE).elf) 
-gdb-m: $(IMAGE).bin $(IMAGE).elf
+
+gdb: $(IMAGE).bin $(IMAGE).elf
 	echo $(IMAGE)
-	make -C ~/gitrepo/npc/myrtl gdb BIN=$(abspath $(IMAGE).bin) ELF=$(abspath $(IMAGE).elf)
+	make -C $(NPC_HOME)/myrtl gdb BIN=$(abspath $(IMAGE).bin) ELF=$(abspath $(IMAGE).elf)
     
     
