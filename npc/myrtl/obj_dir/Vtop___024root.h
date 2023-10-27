@@ -56,6 +56,7 @@ class Vtop___024root final : public VerilatedModule {
         IData/*31:0*/ top__DOT__u_EXU__DOT__u_ALU__DOT__get_res__DOT__i0__DOT__lut_out;
         IData/*31:0*/ top__DOT__u_mem__DOT__rdata_w;
         IData/*31:0*/ top__DOT__u_mem__DOT__get_rdata__DOT__i0__DOT__lut_out;
+        IData/*31:0*/ __Vtask_top__DOT__u_mem__DOT__npc_mem_read__2__rdata;
         IData/*31:0*/ __VstlIterCount;
         IData/*31:0*/ __VactIterCount;
         VL_OUT(gpr[32],31,0);
@@ -78,9 +79,9 @@ class Vtop___024root final : public VerilatedModule {
         VlUnpacked<IData/*31:0*/, 11> top__DOT__u_EXU__DOT__u_ALU__DOT__get_res__DOT__i0__DOT__data_list;
         VlUnpacked<CData/*2:0*/, 6> top__DOT__u_EXU__DOT__get_B_aluop__DOT__i0__DOT__key_list;
         VlUnpacked<CData/*3:0*/, 6> top__DOT__u_EXU__DOT__get_B_aluop__DOT__i0__DOT__data_list;
-        VlUnpacked<CData/*2:0*/, 8> top__DOT__u_EXU__DOT__get_IR_aluop__DOT__i0__DOT__key_list;
     };
     struct {
+        VlUnpacked<CData/*2:0*/, 8> top__DOT__u_EXU__DOT__get_IR_aluop__DOT__i0__DOT__key_list;
         VlUnpacked<CData/*3:0*/, 8> top__DOT__u_EXU__DOT__get_IR_aluop__DOT__i0__DOT__data_list;
         VlUnpacked<CData/*6:0*/, 3> top__DOT__u_EXU__DOT__get_aluop__DOT__i0__DOT__key_list;
         VlUnpacked<CData/*3:0*/, 3> top__DOT__u_EXU__DOT__get_aluop__DOT__i0__DOT__data_list;
