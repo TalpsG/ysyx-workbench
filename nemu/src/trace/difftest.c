@@ -4,11 +4,12 @@
 #include <string.h>
 extern  CPU_state cpu;
 extern  char *img_file ;
-static char difftest_file[100] = "/home/talps/gitrepo/ysyx-workbench/nemu/build/";
+static char difftest_file[100] = "/home/talps/gitrepo/ysyx-workbench/nemu/build/trace/";
 static FILE *f;
 void init_difftest_for_npc() {
 	char *filename = strrchr(img_file, '/')+1;
 	strcat(difftest_file, filename);
+	strcat(difftest_file, ".txt");
 	printf("\n%s\n",difftest_file);
   f = fopen(difftest_file, "w+");
 }
