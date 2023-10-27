@@ -33,16 +33,6 @@ VL_INLINE_OPT void Vtop___024root___nba_sequent__TOP__0(Vtop___024root* vlSelf) 
     __Vdlyvset__top__DOT__u_RegisterFile__DOT__rf__v0 = 0;
     // Body
     Vtop___024root____Vdpiimwrap_top__DOT__u_IDU__DOT__ebreak_TOP(vlSelf->ins);
-    VL_WRITEF("aluop:%2#,oprand1:%8x,oprand2:%8x\njump_flag:%1#,exu_res:%8x,branch_flag:%1#,branch_pc:%8x\n",
-              4,vlSelf->top__DOT__u_EXU__DOT__aluop,
-              32,vlSelf->top__DOT__oprand1,32,vlSelf->top__DOT__oprand2,
-              1,((0x6fU == (0x7fU & vlSelf->ins)) | 
-                 (0x67U == (0x7fU & vlSelf->ins))),
-              32,vlSelf->top__DOT__exu_res,1,((0x63U 
-                                               == (0x7fU 
-                                                   & vlSelf->ins)) 
-                                              & vlSelf->top__DOT__exu_res),
-              32,(vlSelf->top__DOT__imm + vlSelf->top__DOT__u_IFU__DOT__pc));
     __Vdlyvset__top__DOT__u_RegisterFile__DOT__rf__v0 = 0U;
     if (((0x37U == (0x7fU & vlSelf->ins)) | ((0x17U 
                                               == (0x7fU 
