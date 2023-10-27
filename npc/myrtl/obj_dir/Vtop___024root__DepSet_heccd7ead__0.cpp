@@ -33,7 +33,9 @@ VL_INLINE_OPT void Vtop___024root___nba_sequent__TOP__0(Vtop___024root* vlSelf) 
     __Vdlyvset__top__DOT__u_RegisterFile__DOT__rf__v0 = 0;
     // Body
     Vtop___024root____Vdpiimwrap_top__DOT__u_IDU__DOT__ebreak_TOP(vlSelf->ins);
-    VL_WRITEF("jump_flag:%1#,exu_res:%8x,branch_flag:%1#,branch_pc:%8x\n",
+    VL_WRITEF("aluop:%2#,oprand1:%8x,oprand2:%8x\njump_flag:%1#,exu_res:%8x,branch_flag:%1#,branch_pc:%8x\n",
+              4,vlSelf->top__DOT__u_EXU__DOT__aluop,
+              32,vlSelf->top__DOT__oprand1,32,vlSelf->top__DOT__oprand2,
               1,((0x6fU == (0x7fU & vlSelf->ins)) | 
                  (0x67U == (0x7fU & vlSelf->ins))),
               32,vlSelf->top__DOT__exu_res,1,((0x63U 
@@ -628,19 +630,15 @@ VL_INLINE_OPT void Vtop___024root___nba_sequent__TOP__0(Vtop___024root* vlSelf) 
     vlSelf->top__DOT__u_EXU__DOT__u_ALU__DOT__get_res__DOT__i0__DOT__data_list[1U] 
         = ((vlSelf->top__DOT__oprand1 < vlSelf->top__DOT__oprand2)
             ? 1U : 0U);
-    if ((0x1fU >= vlSelf->top__DOT__oprand2)) {
-        vlSelf->top__DOT__u_EXU__DOT__u_ALU__DOT__get_res__DOT__i0__DOT__data_list[2U] 
-            = (vlSelf->top__DOT__oprand1 >> vlSelf->top__DOT__oprand2);
-        vlSelf->top__DOT__u_EXU__DOT__u_ALU__DOT__get_res__DOT__i0__DOT__data_list[3U] 
-            = VL_SHIFTRS_III(32,32,32, vlSelf->top__DOT__oprand1, vlSelf->top__DOT__oprand2);
-        vlSelf->top__DOT__u_EXU__DOT__u_ALU__DOT__get_res__DOT__i0__DOT__data_list[4U] 
-            = (vlSelf->top__DOT__oprand1 << vlSelf->top__DOT__oprand2);
-    } else {
-        vlSelf->top__DOT__u_EXU__DOT__u_ALU__DOT__get_res__DOT__i0__DOT__data_list[2U] = 0U;
-        vlSelf->top__DOT__u_EXU__DOT__u_ALU__DOT__get_res__DOT__i0__DOT__data_list[3U] 
-            = (- (vlSelf->top__DOT__oprand1 >> 0x1fU));
-        vlSelf->top__DOT__u_EXU__DOT__u_ALU__DOT__get_res__DOT__i0__DOT__data_list[4U] = 0U;
-    }
+    vlSelf->top__DOT__u_EXU__DOT__u_ALU__DOT__get_res__DOT__i0__DOT__data_list[2U] 
+        = (vlSelf->top__DOT__oprand1 >> (0x1fU & vlSelf->top__DOT__oprand2));
+    vlSelf->top__DOT__u_EXU__DOT__u_ALU__DOT__get_res__DOT__i0__DOT__data_list[3U] 
+        = VL_SHIFTRS_III(32,32,5, vlSelf->top__DOT__oprand1, 
+                         (0x1fU & vlSelf->top__DOT__oprand2));
+    vlSelf->top__DOT__u_EXU__DOT__u_ALU__DOT__get_res__DOT__i0__DOT__data_list[4U] 
+        = ((0x1fU >= vlSelf->top__DOT__oprand2) ? (vlSelf->top__DOT__oprand1 
+                                                   << vlSelf->top__DOT__oprand2)
+            : 0U);
     vlSelf->top__DOT__u_EXU__DOT__u_ALU__DOT__get_res__DOT__i0__DOT__data_list[5U] 
         = (VL_LTS_III(32, vlSelf->top__DOT__oprand1, vlSelf->top__DOT__oprand2)
             ? 1U : 0U);
