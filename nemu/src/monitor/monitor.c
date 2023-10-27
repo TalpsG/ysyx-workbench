@@ -184,7 +184,6 @@ void init_monitor(int argc, char *argv[]) {
   /* Perform some global initialization. */
 
   /* Init ring buffer of instructions  */
-	init_difftest_for_npc();
 #ifdef CONFIG_ITRACE
   init_itrace();
 #endif
@@ -223,7 +222,7 @@ void init_monitor(int argc, char *argv[]) {
 
   /* Initialize differential testing. */
   init_difftest(diff_so_file, img_size, difftest_port);
-
+init_difftest_for_npc();
   /* Initialize the simple debugger. */
   init_sdb();
 
