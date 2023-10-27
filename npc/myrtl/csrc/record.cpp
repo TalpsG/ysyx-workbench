@@ -4,9 +4,13 @@
 #include <string.h>
 #include <Vtop.h>
 extern Vtop top;
-static char difftest[] = "/home/talps/gitrepo/ysyx-workbench/nemu/build/difftest.txt";
+extern const char *program;
+static char difftest[100] = "/home/talps/gitrepo/ysyx-workbench/nemu/trace/";
 static FILE *f;
 void init_record() {
+  const char *filename = strrchr(program,'/')+1;
+  strcat(difftest,filename);
+  strcat(difftest,".txt");
 	f = fopen(difftest,"r");
 	if (f == NULL) {
 		printf("difftest with nemu fail\n");
