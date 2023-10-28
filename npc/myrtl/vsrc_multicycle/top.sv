@@ -7,9 +7,16 @@ module top (
     out_snpc,
     output [31:0] ins,
     output [31:0] gpr[31:0],
-    output [31:0] csr_reg[5:0]
+    output [31:0] csr_reg[5:0],
+    output valid
 );
+
+
+  assign valid = ifu_valid;
+
   wire [31:0] dnpc, snpc;
+  wire idu_ready;
+  wire ifu_valid;
   assign out_snpc = snpc;
   assign out_dnpc = dnpc;
   assign snpc = outpc + 4;
@@ -24,9 +31,11 @@ module top (
   ) u_IFU (
       .clk(clk),
       .rst(rst),
-      .in (dnpc),
+      .in(dnpc),
       .out(outpc),
-      .ins(ins)
+      .ins(ins),
+      .valid(ifu_valid),
+      .ready(idu_ready)
   );
 
   wire [4:0] rs1, rs2, rd;
@@ -43,7 +52,7 @@ module top (
   wire [2:0] csr_waddr;
   IDU u_IDU (
       .clk           (clk),
-      .ins           (ins),
+      .real_ins      (ins),
       .rs1           (rs1),
       .rs2           (rs2),
       .rd            (rd),
@@ -60,7 +69,9 @@ module top (
       .is_ecall      (is_ecall),
       .is_mret       (is_mret),
       .csr_waddr     (csr_waddr),
-      .is_csr        (is_csr)
+      .is_csr        (is_csr),
+      .ready         (idu_ready),
+      .valid         (ifu_valid)
   );
   wire [31:0] reg_wdata;
   wire [31:0] reg_rdata1;

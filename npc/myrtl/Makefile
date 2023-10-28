@@ -38,3 +38,7 @@ obj_dir/disasm.o: csrc/disasm.cc
 
 batch:exe
 	./obj_dir/Vtop $(BIN) $(ELF) b
+
+wave:trace
+	make trace 
+	gtkwave waveform.vcd

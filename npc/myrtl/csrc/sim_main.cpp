@@ -35,8 +35,17 @@ void single_cycle(){
 	sim_time++;
 #endif
 
-	print_ins();
 	cycles++;
+}
+void step_i() {
+	int i=0;
+	do
+	{
+		single_cycle();
+		i++;
+	} while(top.valid ==1 );
+	printf("%d cycles\n",i);
+	print_ins();
 #ifdef CONFIG_DIFFTEST
 	check_record();
 #endif // DEBUG

@@ -14,6 +14,7 @@ void init_record() {
 	f = fopen(difftest,"r");
 	if (f == NULL) {
 		printf("difftest with nemu fail\n");
+		exit(1);
 	}
 }
 void check_record() {
