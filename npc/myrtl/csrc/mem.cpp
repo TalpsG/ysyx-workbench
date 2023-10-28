@@ -9,6 +9,7 @@
 #include <time.h>
 uint8_t mem[0x8000000];
 extern const char * elf;
+const char *program;
 uint32_t instructions[] = {
     0x00000297,  // auipc t0,0                                              
 	0x00028823,  // sb  zero,16(t0)
@@ -72,6 +73,7 @@ int init_mem(int argc,const char **argv) {
   if(argc>=3){
 		elf = argv[2];
 		printf("loading bin: %s\n",argv[1]);
+		program = argv[1];
 		int fd = open(argv[1],O_RDONLY);
 		struct stat sb;
 		fstat(fd,&sb);

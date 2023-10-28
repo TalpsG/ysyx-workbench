@@ -12,4 +12,6 @@
 //#define CONFIG_FTRACE 1
 //#define CONFIG_MTRACE 1
 //#define CONFIG_DIFFTEST 1
+#define TRACE 1
+//#define NEMU_DIFFTEST 1
 #endif /* BC9F3B59_BC7A_4966_9ECC_42E94E580B93 */
