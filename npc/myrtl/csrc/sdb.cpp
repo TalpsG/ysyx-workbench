@@ -10,10 +10,12 @@ state npc_state = RUNNING;
 extern Vtop top;
 unsigned int watchpoint = 0;
 void single_cycle();
+void step_i();
 void display_regs();
 void print_ringbuf();
 void print_callbuf();
 extern char ringbuffer[200][100];
+extern long long cycles;
 static int is_batch_mode = false;
 static int cmd_c (char *args){
 	while (1) {
@@ -25,11 +27,12 @@ static int cmd_c (char *args){
 			printf(npc_state == ABORT?"npc is abort \n":"Program is executed successfully\n");
 			return 0;
 		}
-		single_cycle();
+		step_i();
 	}
 	return 0;
 }
 static int cmd_q (char *args){
+	printf("cycles:%lld\n",cycles);
 	if(npc_state == ABORT) std::exit(1);
 	std::exit(0);
 }
@@ -39,7 +42,7 @@ static int cmd_si (char *args){
 		return 0;
 	}
 	if (args == NULL) {
-		single_cycle();
+		step_i();
 		print_ins();
 		return 0;
 	}
@@ -49,7 +52,7 @@ static int cmd_si (char *args){
 			printf("catch watchpoint\n");
             break;
 		}
-		single_cycle();
+		step_i();
 	}
 	return 0;
 }

@@ -27,6 +27,7 @@ class Vtop VL_NOT_FINAL : public VerilatedModel {
     // propagate new values into/out from the Verilated model.
     VL_IN8(&clk,0,0);
     VL_IN8(&rst,0,0);
+    VL_OUT8(&valid,0,0);
     VL_OUT(&outpc,31,0);
     VL_OUT(&out_dnpc,31,0);
     VL_OUT(&out_snpc,31,0);
