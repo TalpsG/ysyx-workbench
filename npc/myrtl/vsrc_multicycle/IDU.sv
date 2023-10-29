@@ -68,7 +68,7 @@ module IDU (
   assign mem_write = (opcode === `OPCODE_STORE);
   assign is_ecall = (ins === `OPCODE_ECALL);
   assign is_mret = (ins === `OPCODE_MRET);
-  assign mem_access = mem_read | mem_write;
+  assign mem_access = !mem_finish & (mem_read | mem_write);
 
   assign csr_waddr = ins[22:20];
 

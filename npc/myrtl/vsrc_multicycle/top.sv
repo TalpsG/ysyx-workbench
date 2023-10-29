@@ -11,7 +11,11 @@ module top (
     output valid
 );
 
+  always @(posedge clk) begin
+    //$display("\npc:%8x,waddr:%d,wdata:%8x,ins:%8x", outpc, reg_waddr, reg_wdata, ins);
+    //$display("reg_write:%d,exu_res:%8x,mem_rdata:%8x,opcode:%x\n", reg_write, exu_res, mem_rdata, opcode);
 
+  end
   assign valid = ifu_valid;
 
   wire [31:0] dnpc, snpc;

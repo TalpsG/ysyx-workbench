@@ -46,7 +46,10 @@ class Vtop___024root final : public VerilatedModule {
         CData/*3:0*/ top__DOT__u_EXU__DOT__get_aluop__DOT__i0__DOT__lut_out;
         CData/*0:0*/ top__DOT__u_EXU__DOT__get_aluop__DOT__i0__DOT__hit;
         CData/*7:0*/ top__DOT__get_wmask__DOT__i0__DOT__lut_out;
+        CData/*1:0*/ top__DOT__u_mem__DOT__pos;
         CData/*7:0*/ top__DOT__u_mem__DOT__rdata_b;
+        CData/*0:0*/ top__DOT__u_mem__DOT__delay_write;
+        CData/*7:0*/ top__DOT__u_mem__DOT__delay_wmask;
         CData/*7:0*/ top__DOT__u_mem__DOT__get_rdata_b__DOT__i0__DOT__lut_out;
         CData/*5:0*/ top__DOT__u_WBU__DOT__fake_csr_write;
         CData/*5:0*/ top__DOT__u_WBU__DOT__get_fake_csr_write__DOT__i0__DOT__lut_out;
@@ -76,17 +79,19 @@ class Vtop___024root final : public VerilatedModule {
         IData/*31:0*/ top__DOT__csr_rdata;
         IData/*31:0*/ top__DOT__u_IFU__DOT__pc;
         IData/*31:0*/ top__DOT__u_IFU__DOT__ins_reg;
+    };
+    struct {
         IData/*31:0*/ top__DOT__u_IFU__DOT__ins_temp;
         IData/*31:0*/ top__DOT__u_IDU__DOT__ins;
         IData/*31:0*/ top__DOT__u_IDU__DOT__u_MuxKey__DOT__i0__DOT__lut_out;
-    };
-    struct {
         IData/*31:0*/ top__DOT__get_reg_wdata__DOT__i0__DOT__lut_out;
         IData/*31:0*/ top__DOT__get_oprand1__DOT__i0__DOT__lut_out;
         IData/*31:0*/ top__DOT__get_oprand2__DOT__i0__DOT__lut_out;
         IData/*31:0*/ top__DOT__u_EXU__DOT__alu_res;
         IData/*31:0*/ top__DOT__u_EXU__DOT__u_ALU__DOT__get_res__DOT__i0__DOT__lut_out;
         IData/*31:0*/ top__DOT__u_mem__DOT__rdata_w;
+        IData/*31:0*/ top__DOT__u_mem__DOT__delay_waddr;
+        IData/*31:0*/ top__DOT__u_mem__DOT__delay_wdata;
         IData/*31:0*/ top__DOT__u_mem__DOT__get_rdata__DOT__i0__DOT__lut_out;
         IData/*31:0*/ top__DOT__get_fake_csr_wdata__DOT__i0__DOT__lut_out;
         IData/*31:0*/ top__DOT__get_csr_rdata__DOT__i0__DOT__lut_out;
