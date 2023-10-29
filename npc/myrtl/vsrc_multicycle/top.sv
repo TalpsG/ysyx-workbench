@@ -11,7 +11,11 @@ module top (
     output valid
 );
 
+  always @(posedge clk) begin
+    //$display("\npc:%8x,waddr:%d,wdata:%8x,ins:%8x", outpc, reg_waddr, reg_wdata, ins);
+    //$display("reg_write:%d,exu_res:%8x,mem_rdata:%8x,opcode:%x\n", reg_write, exu_res, mem_rdata, opcode);
 
+  end
   assign valid = ifu_valid;
 
   wire [31:0] dnpc, snpc;
@@ -47,9 +51,10 @@ module top (
   wire reg_write;
   wire pc_write;
   wire mem_write;
-  wire mem_valid;
+  wire mem_read;
   wire is_csr;
   wire [2:0] csr_waddr;
+  wire mem_access;
   IDU u_IDU (
       .clk           (clk),
       .real_ins      (ins),
@@ -64,14 +69,16 @@ module top (
       .select_oprand2(select_oprand2),
       .reg_write     (reg_write),
       .pc_write      (pc_write),
-      .mem_valid     (mem_valid),
+      .mem_read      (mem_read),
       .mem_write     (mem_write),
       .is_ecall      (is_ecall),
       .is_mret       (is_mret),
       .csr_waddr     (csr_waddr),
       .is_csr        (is_csr),
-      .ready         (idu_ready),
-      .valid         (ifu_valid)
+      .idu_ready     (idu_ready),
+      .ifu_valid     (ifu_valid),
+      .mem_access    (mem_access),
+      .mem_finish    (mem_finish)
   );
   wire [31:0] reg_wdata;
   wire [31:0] reg_rdata1;
@@ -178,16 +185,17 @@ module top (
       .lut({3'b000, 8'h01, 3'b001, 8'h03, 3'b010, 8'h0f})
   );
 
-  mem u_mem (
+  MEM u_mem (
       .clk   (clk),
-      .valid (mem_valid),
+      .read (mem_read),
       .wen   (mem_write),
       .readop(mem_readop),
       .wmask (mem_wmask),
       .raddr (mem_raddr),
       .waddr (mem_waddr),
       .wdata (mem_wdata),
-      .rdata (mem_rdata)
+      .rdata (mem_rdata),
+      .mem_access(mem_access)
   );
 
   wire [31:0] branch_pc;
@@ -206,7 +214,7 @@ module top (
       .key(func3),
       .lut({3'b010, csr_rdata | reg_rdata1, 3'b001, reg_rdata1})
   );
-
+  wire mem_finish;
   WBU u_WBU (
       .clk           (clk),
       .opcode        (opcode),
@@ -230,7 +238,9 @@ module top (
       .csr_wdata4    (csr_wdata4),
       .csr_wdata5    (csr_wdata5),
       .csr_write     (csr_write),
-      .fake_csr_wdata(fake_csr_wdata)
+      .fake_csr_wdata(fake_csr_wdata),
+      .mem_access    (mem_access),
+      .mem_finish    (mem_finish)
   );
 
 

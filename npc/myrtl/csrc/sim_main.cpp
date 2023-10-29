@@ -38,6 +38,10 @@ void single_cycle(){
 	cycles++;
 }
 void step_i() {
+	if (npc_state == ENDING || npc_state == ABORT) {
+		printf(npc_state == ABORT?"npc is abort \n":"npc is ending\n");
+		return ;
+	}
 	int i=0;
 	do
 	{
@@ -47,7 +51,7 @@ void step_i() {
 	printf("%d cycles\n",i);
 	print_ins();
 #ifdef CONFIG_DIFFTEST
-	check_record();
+	if(npc_state == RUNNING) check_record();
 #endif // DEBUG
 #ifdef NEMU_DIFFTEST
 	difftest_step(top.outpc,top.out_dnpc);

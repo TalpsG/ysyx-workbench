@@ -3,7 +3,8 @@
 module IDU (
     input clk,
     input [31:0] real_ins,
-    input valid,
+    input ifu_valid,
+    mem_finish,
     output [4:0] rs1,
     rs2,
     rd,
@@ -16,24 +17,28 @@ module IDU (
     output reg_write,
     output pc_write,
     // 0 写exu_res,1 写pc+imm
-    output mem_valid,
+    output mem_read,
     output mem_write,
+    mem_access,
     is_ecall,
     is_mret,
     is_csr,
-    output reg ready,
+    output reg idu_ready,
     output [2:0] csr_waddr
 );
   wire [31:0] ins;
-  assign ins = !ready ? real_ins : 32'h0;
+  assign ins = !idu_ready ? real_ins : 32'h0;
   import "DPI-C" function void ebreak(int ins);
   always @(posedge clk) begin
     ebreak(ins);
   end
 
   always @(posedge clk) begin
-    if (valid) ready <= 0;
-    else ready <= 1;
+    if (ifu_valid & idu_ready) idu_ready <= 0;
+    else if (mem_access) begin
+      if (!mem_finish) idu_ready <= 0;
+      else idu_ready <= 1;
+    end else idu_ready <= 1;
   end
   wire [31:0] immI, immU, immB, immS, immJ;
 
@@ -59,11 +64,11 @@ module IDU (
   is_csr;
 
   assign pc_write = (opcode === `OPCODE_JAL) | (opcode === `OPCODE_JALR)|(opcode === `OPCODE_BRANCH);
-  assign mem_valid = (opcode === `OPCODE_LOAD);
+  assign mem_read = (opcode === `OPCODE_LOAD);
   assign mem_write = (opcode === `OPCODE_STORE);
   assign is_ecall = (ins === `OPCODE_ECALL);
   assign is_mret = (ins === `OPCODE_MRET);
-
+  assign mem_access = !mem_finish & (mem_read | mem_write);
 
   assign csr_waddr = ins[22:20];
 

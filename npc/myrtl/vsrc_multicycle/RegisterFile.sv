@@ -16,6 +16,7 @@ module RegisterFile (
   assign data = rf;
   always @(posedge clk) begin
     if (wen) begin
+      //$display("waddr:%d wdata:%8x", waddr, wdata);
       rf[waddr] <= wdata;
     end
     rf[0] <= 32'h0;

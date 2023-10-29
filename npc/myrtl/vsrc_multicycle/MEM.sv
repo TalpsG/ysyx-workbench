@@ -1,7 +1,8 @@
-module mem (
+module MEM (
     input clk,
-    input valid,
+    input read,
     input wen,
+    input mem_access,
     input [2:0] readop,
     input [7:0] wmask,
     input [31:0] raddr,
@@ -9,11 +10,14 @@ module mem (
     wdata,
     output [31:0] rdata
 );
-  wire [ 1:0] pos;
+  reg  [ 1:0] pos;
   reg  [31:0] rdata_w;
   wire [ 7:0] rdata_b;
   wire [15:0] rdata_h;
-  assign pos = raddr[1:0];
+  always @(posedge clk) begin
+    if (mem_access) pos <= raddr[1:0];
+    else pos <= 0;
+  end
 
 
   import "DPI-C" function void npc_mem_read(
@@ -25,14 +29,16 @@ module mem (
     input int  wdata,
     input byte wmask
   );
-  always @(*) begin
-    if (valid) begin  // 有读写请求时
-      npc_mem_read(raddr, rdata_w);
-    end else if (wen) begin  // 有写请求时
-      npc_mem_write(waddr, wdata, wmask);
-      rdata_w = 0;
-    end else begin
-      rdata_w = 0;
+  always @(posedge clk) begin
+    if (mem_access) begin
+      if (read) begin  // 有读写请求时
+        npc_mem_read(raddr, rdata_w);
+      end else if (wen) begin  // 有写请求时
+        npc_mem_write(waddr, wdata, wmask);
+        rdata_w = 0;
+      end else begin
+        rdata_w = 0;
+      end
     end
   end
   MuxKey #(

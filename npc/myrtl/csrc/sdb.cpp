@@ -103,6 +103,10 @@ static int cmd_w(char *args){
 	sscanf(args, "%x",&watchpoint);
 	return 0;
 }
+static int cmd_sc(char *args){
+	single_cycle();
+	return 0;
+}
 static struct {
 	const char *name;
 	const char *description;
@@ -117,6 +121,7 @@ static struct {
     {"ftrace","display call",cmd_ftrace},
     {"mtrace","display memtrace",cmd_mtrace},
     {"w","watchpoint",cmd_w},
+	{"sc","single_cycle",cmd_sc},
 };
 #define NR_CMD (sizeof(cmd_table)/sizeof(cmd_table[0]))
 static char *rl_gets()

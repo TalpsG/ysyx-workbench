@@ -7,6 +7,7 @@ module WBU (
     input [31:0] outpc,
     input [31:0] fake_csr_wdata,
     input is_ecall,
+    mem_access,
     is_mret,
     is_csr,
     input [2:0] csr_waddr,
@@ -16,6 +17,7 @@ module WBU (
     mem_wdata,
     output jump_flag,
     branch_flag,
+    output reg mem_finish,
     output [31:0] csr_wdata0,
     csr_wdata1,
     csr_wdata2,
@@ -48,6 +50,8 @@ module WBU (
 
   always @(posedge clk) begin
     //$display("csr_write:%x,is_mret:%d,is_ecall:%d,is_csr:%d,fake_csr_write:%x,fake_csr_wdata:%x", csr_write, is_mret, is_ecall, is_csr, fake_csr_write, fake_csr_wdata);
+    if (mem_access) mem_finish <= mem_access;
+    else mem_finish <= 0;
   end
   wire [5:0] fake_csr_write;
 

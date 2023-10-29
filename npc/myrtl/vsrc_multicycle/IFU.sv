@@ -22,16 +22,19 @@ module IFU #(
     if (rst) begin
       pc <= 32'h80000000 - 32'h4;
       //$display("rst");
-    end else if (!valid) begin
+    end else if ((~valid)) begin
+      valid <= 1;
       pc <= in;
       fetch(in, ins_temp);
-      valid <= 1;
     end
   end
   always @(posedge clk) begin
-    if (valid) begin
+    if (valid & ready) begin
       ins_reg <= ins_temp;
-      if (ready) valid <= 0;
+      valid   <= 0;
+    end else begin
+      valid   <= valid;
+      ins_reg <= ins_reg;
     end
   end
 
