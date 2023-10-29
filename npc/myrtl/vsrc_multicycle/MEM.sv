@@ -29,18 +29,56 @@ module MEM (
     input int  wdata,
     input byte wmask
   );
+  reg delay_read;
+  reg delay_write;
+  reg [31:0] delay_waddr;
+  reg [31:0] delay_wdata;
+  reg [31:0] delay_raddr;
+  reg [31:0] delay_rdata;
+  reg [7:0] delay_wmask;
   always @(posedge clk) begin
     if (mem_access) begin
       if (read) begin  // 有读写请求时
+        delay_raddr <= raddr;
         npc_mem_read(raddr, rdata_w);
+        delay_rdata <= rdata_w;
+        delay_read  <= 1;
       end else if (wen) begin  // 有写请求时
-        npc_mem_write(waddr, wdata, wmask);
+        delay_waddr <= waddr;
+        delay_wdata <= wdata;
+        delay_wmask <= wmask;
+        delay_rdata <= 0;
         rdata_w = 0;
+        delay_write <= 1;
       end else begin
+        delay_waddr <= 0;
+        delay_wdata <= 0;
+        delay_wmask <= 0;
+        delay_rdata <= 0;
         rdata_w = 0;
+        delay_read  <= 0;
+        delay_write <= 0;
       end
     end
   end
+  always @(posedge clk) begin
+    if (delay_write) begin
+      npc_mem_write(delay_waddr, delay_wdata, delay_wmask);
+      delay_write <= 0;
+    end
+  end
+  //always @(posedge clk) begin
+  //if (mem_access) begin
+  //if (read) begin  // 有读写请求时
+  //npc_mem_read(raddr, rdata_w);
+  //end else if (wen) begin  // 有写请求时
+  //npc_mem_write(waddr, wdata, wmask);
+  //rdata_w = 0;
+  //end else begin
+  //rdata_w = 0;
+  //end
+  //end
+  //end
   MuxKey #(
       .NR_KEY  (4),
       .KEY_LEN (2),

@@ -12,9 +12,9 @@ extern const char * elf;
 const char *program;
 uint32_t instructions[] = {
     0x00000297,  // auipc t0,0                                              
-	0x00028823,  // sb  zero,16(t0)
-	0x0102c503,  // lbu a0,16(t0)
-	//0x0102a783,  // lw a5,16(t0)
+    0x00000597,  // auipc a1,0                                              
+	0x00b2aa23,  // sw  a1,20(t0)
+	0x0142c583,  // lbu a1,20(t0)
 	0x00100073,  // ebreak (used as nemu_trap)
 	0xdeadbeef,  // some data
 };
