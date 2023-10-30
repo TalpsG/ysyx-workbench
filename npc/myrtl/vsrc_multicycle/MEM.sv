@@ -86,7 +86,16 @@ module MEM (
   ) get_rdata_b (
       .out(rdata_b),
       .key(pos),
-      .lut({2'h0, rdata_w[7:0], 2'h1, rdata_w[15:8], 2'h2, rdata_w[23:16], 2'h3, rdata_w[31:24]})
+      .lut({
+        2'h0,
+        delay_rdata[7:0],
+        2'h1,
+        delay_rdata[15:8],
+        2'h2,
+        delay_rdata[23:16],
+        2'h3,
+        delay_rdata[31:24]
+      })
   );
   MuxKey #(
       .NR_KEY  (3),
@@ -95,7 +104,7 @@ module MEM (
   ) get_rdata_h (
       .out(rdata_h),
       .key(pos),
-      .lut({2'h0, rdata_w[15:0], 2'h1, rdata_w[23:8], 2'h2, rdata_w[31:16]})
+      .lut({2'h0, delay_rdata[15:0], 2'h1, delay_rdata[23:8], 2'h2, delay_rdata[31:16]})
   );
   MuxKey #(
       .NR_KEY  (5),
