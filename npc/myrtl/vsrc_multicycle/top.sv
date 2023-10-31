@@ -21,6 +21,7 @@ module top (
   wire [31:0] dnpc, snpc;
   wire idu_ready;
   wire ifu_valid;
+  wire axi_valid;
   assign out_snpc = snpc;
   assign out_dnpc = dnpc;
   assign snpc = outpc + 4;
@@ -39,6 +40,7 @@ module top (
       .out(outpc),
       .ins(ins),
       .valid(ifu_valid),
+      .axi_valid(axi_valid),
       .ready(idu_ready)
   );
 
