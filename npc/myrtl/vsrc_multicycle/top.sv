@@ -8,7 +8,8 @@ module top (
     output [31:0] ins,
     output [31:0] gpr[31:0],
     output [31:0] csr_reg[5:0],
-    output valid
+    output valid,
+    output ready
 );
 
   always @(posedge clk) begin
@@ -17,6 +18,7 @@ module top (
 
   end
   assign valid = ifu_valid;
+  assign ready = idu_ready;
 
   wire [31:0] dnpc, snpc;
   wire idu_ready;
@@ -57,6 +59,7 @@ module top (
   wire mem_access;
   IDU u_IDU (
       .clk           (clk),
+      .rst           (rst),
       .real_ins      (ins),
       .rs1           (rs1),
       .rs2           (rs2),

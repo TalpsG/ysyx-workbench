@@ -9,7 +9,7 @@ module DNPC (
     snpc,
     mtvec,
     mepc,
-    output [31:0] dnpc
+    output reg [31:0] dnpc
 );
   always @(posedge clk) begin
     //$display("jump_flag:%d,exu_res:%8x,branch_flag:%d,branch_pc:%8x", jump_flag, exu_res, branch_flag, branch_pc);

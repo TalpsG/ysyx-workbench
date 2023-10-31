@@ -47,7 +47,7 @@ void step_i() {
 	{
 		single_cycle();
 		i++;
-	} while(top.valid ==1 );
+	} while(!(top.valid ==0  && top.ready == 1));
 	printf("%d cycles\n",i);
 	print_ins();
 #ifdef CONFIG_DIFFTEST

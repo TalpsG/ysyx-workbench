@@ -2,6 +2,7 @@
 
 module IDU (
     input clk,
+    input rst,
     input [31:0] real_ins,
     input ifu_valid,
     mem_finish,
@@ -27,7 +28,7 @@ module IDU (
     output [2:0] csr_waddr
 );
   wire [31:0] ins;
-  assign ins = !idu_ready ? real_ins : 32'h0;
+  assign ins = ifu_valid ? real_ins : 32'h0;
   import "DPI-C" function void ebreak(int ins);
   always @(posedge clk) begin
     ebreak(ins);
