@@ -85,7 +85,7 @@ module INS_MEM (
   always @(posedge clk) begin
     if (rst) begin
       arready <= 1;
-    end else if (arready && arvalid && rready) begin
+    end else if (arready & arvalid) begin
       arready <= 0;
     end else begin
       arready <= 1;
@@ -93,24 +93,24 @@ module INS_MEM (
   end
   //raddr 
   always @(posedge clk) begin
-    if (rst) araddr_reg <= 0;
-    else if (~rvalid && arready && arvalid && rready) begin
-      npc_mem_read(araddr, rdata);
+    if (rst) araddr_reg <= 1;
+    else if (arready && arvalid) begin
+      araddr_reg <= araddr;
     end
   end
-
-  //rdata valid
+  //rdata 
   always @(posedge clk) begin
-    if (rst) begin
-      rresp  <= 0;
-      rvalid <= 0;
-    end else if (~rvalid && arready && arvalid && rready) begin
-      rresp  <= 0;
+    if (rst) rdata = 0;
+    else if (~rvalid && arvalid && arready) begin
+      npc_mem_read(araddr, rdata);
       rvalid <= 1;
-    end else begin
+      rresp  <= 0;
+    end else if (rvalid) begin
       rvalid <= 0;
+      rresp  <= 0;
     end
   end
+  //rdata valid
 
   import "DPI-C" function void npc_mem_read(
     input  int raddr,
