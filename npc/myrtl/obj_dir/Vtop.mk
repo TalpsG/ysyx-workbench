@@ -37,7 +37,7 @@ VM_MODPREFIX = Vtop
 VM_USER_CFLAGS = \
 	-g \
 	-g \
-	-DMAINARGS="" \
+	-DTRACE=1 \
 
 # User LDLIBS (from -LDFLAGS on Verilator command line)
 VM_USER_LDLIBS = \
