@@ -222,7 +222,9 @@ void init_monitor(int argc, char *argv[]) {
 
   /* Initialize differential testing. */
   init_difftest(diff_so_file, img_size, difftest_port);
+#ifdef DIFFTEST_FOR_NPC
 init_difftest_for_npc();
+#endif
   /* Initialize the simple debugger. */
   init_sdb();
 
