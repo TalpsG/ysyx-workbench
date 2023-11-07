@@ -35,6 +35,7 @@ extern "C" void npc_mem_read(uint32_t raddr, uint32_t*rdata) {
 	return ;
   }
   *rdata = *(uint32_t*)&mem[(raddr&(~0x3u))-MBASE];
+  //printf("rdata:%x\n",*rdata);
 #ifdef CONFIG_MTRACE
   read_mtrace(raddr, *rdata);
 #endif

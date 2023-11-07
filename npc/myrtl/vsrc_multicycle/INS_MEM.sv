@@ -28,10 +28,12 @@ module INS_MEM (
     output reg bvalid,
     input bready
 );
-  reg  [31:0] awaddr_reg;
-  reg  [31:0] wdata_reg;
-  reg  [31:0] araddr_reg;
-  wire [31:0] rdata_temp;
+  reg [31:0] awaddr_reg;
+  reg [31:0] wdata_reg;
+  reg [31:0] araddr_reg;
+  reg [31:0] rdata_reg;
+  reg flag;
+  reg [31:0] delay, now;
   //raddr ready
   always @(posedge clk) begin
     if (rst) begin
@@ -51,17 +53,40 @@ module INS_MEM (
   end
   //rdata 
   always @(posedge clk) begin
-    if (rst) rdata = 0;
-    else if (~rvalid && arvalid && arready) begin
-      npc_mem_read(araddr, rdata);
-      rvalid <= 1;
-      rresp  <= 0;
+    if (rst) begin
+      rdata <= 0;
+      flag  <= 0;
+      delay <= $random & 32'h0000001f;
+      now   <= 0;
+    end else if (~rvalid && arvalid && arready) begin
+      npc_mem_read(araddr, rdata_reg);
+      flag  <= 1;
+      rresp <= 0;
     end else if (rvalid && rready) begin
       rvalid <= 0;
-      rresp  <= 0;
+      rresp <= 0;
+      now <= 0;
+      flag <= 0;
     end
   end
-  //rdata valid
+
+
+  always @(posedge clk) begin
+    if (flag) begin
+      if (now == delay) begin
+        now <= 0;
+        rvalid <= 1;
+        rdata <= rdata_reg;
+      end else begin
+        now   <= now + 1;
+        rdata <= 0;
+      end
+    end else begin
+      now   <= 0;
+      rdata <= 0;
+    end
+
+  end
 
   import "DPI-C" function void npc_mem_read(
     input  int raddr,

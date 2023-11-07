@@ -8,7 +8,8 @@ module top (
     output [31:0] ins,
     output [31:0] gpr[31:0],
     output [31:0] csr_reg[5:0],
-    output valid
+    output valid,
+    output ready
 );
 
   always @(posedge clk) begin
@@ -17,6 +18,7 @@ module top (
 
   end
   assign valid = ifu_valid;
+  assign ready = idu_ready;
 
   wire [31:0] dnpc, snpc;
   wire idu_ready;
@@ -55,8 +57,10 @@ module top (
   wire is_csr;
   wire [2:0] csr_waddr;
   wire mem_access;
+  wire is_branch;
   IDU u_IDU (
       .clk           (clk),
+      .rst           (rst),
       .real_ins      (ins),
       .rs1           (rs1),
       .rs2           (rs2),
@@ -76,9 +80,12 @@ module top (
       .csr_waddr     (csr_waddr),
       .is_csr        (is_csr),
       .idu_ready     (idu_ready),
+      .is_branch     (is_branch),
       .ifu_valid     (ifu_valid),
       .mem_finish    (mem_finish),
-      .mem_access    (mem_access)
+      .mem_access    (mem_access),
+      .jump_flag     (idu_jump_flag)
+
   );
   wire [31:0] reg_wdata;
   wire [31:0] reg_rdata1;
@@ -230,7 +237,6 @@ module top (
   wire [31:0] branch_pc;
   wire [31:0] fake_csr_wdata;
   wire branch_flag;
-  wire jump_flag;
   wire is_mret;
   wire is_ecall;
 
@@ -244,7 +250,8 @@ module top (
       .lut({3'b010, csr_rdata | reg_rdata1, 3'b001, reg_rdata1})
   );
   wire mem_finish;
-
+  wire idu_jump_flag;
+  wire wbu_jump_flag;
   WBU u_WBU (
       .clk           (clk),
       .rst           (rst),
@@ -258,9 +265,11 @@ module top (
       .mem_write     (mem_write),
       .is_mret       (is_mret),
       .is_csr        (is_csr),
+      .is_branch     (is_branch),
       .csr_waddr     (csr_waddr),
       .branch_pc     (branch_pc),
-      .jump_flag     (jump_flag),
+      .idu_jump_flag (idu_jump_flag),
+      .wbu_jump_flag (wbu_jump_flag),
       .branch_flag   (branch_flag),
       .mem_finish    (mem_finish),
       .csr_wdata0    (csr_wdata0),
@@ -293,7 +302,10 @@ module top (
 
   DNPC u_DNPC (
       .clk        (clk),
-      .jump_flag  (jump_flag),
+      .rst        (rst),
+      .valid      (ifu_valid),
+      .ready      (idu_ready),
+      .jump_flag  (wbu_jump_flag),
       .branch_flag(branch_flag),
       .is_mret    (is_mret),
       .branch_pc  (branch_pc),

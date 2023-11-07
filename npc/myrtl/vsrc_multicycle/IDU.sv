@@ -2,6 +2,7 @@
 
 module IDU (
     input clk,
+    input rst,
     input [31:0] real_ins,
     input ifu_valid,
     input mem_finish,
@@ -23,22 +24,33 @@ module IDU (
     output is_ecall,
     output is_mret,
     output is_csr,
+    output jump_flag,
+    output is_branch,
     output reg idu_ready,
     output [2:0] csr_waddr
 );
   wire [31:0] ins;
-  assign ins = !idu_ready ? real_ins : 32'h0;
+  assign ins = (ifu_valid && ~mem_finish && ~idu_ready) ? real_ins : 0;
+
   import "DPI-C" function void ebreak(int ins);
   always @(posedge clk) begin
     ebreak(ins);
   end
 
   always @(posedge clk) begin
-    if (ifu_valid & idu_ready) idu_ready <= 0;
+    if (rst) idu_ready <= 0;
     else if (mem_access) begin
-      if (!mem_finish) idu_ready <= 0;
-      else idu_ready <= 1;
-    end else idu_ready <= 1;
+      if (~mem_finish) begin
+        idu_ready <= 0;
+      end else if (ifu_valid) begin
+        idu_ready <= 1;
+      end
+    end else if (ifu_valid) begin
+      idu_ready <= 1;
+    end else begin
+      idu_ready <= 0;
+    end
+
   end
   wire [31:0] immI, immU, immB, immS, immJ;
 
@@ -71,6 +83,8 @@ module IDU (
   assign mem_access = !mem_finish & (mem_read | mem_write);
 
   assign csr_waddr = ins[22:20];
+  assign jump_flag = (opcode == `OPCODE_JAL) | (opcode == `OPCODE_JALR);
+  assign is_branch = (opcode == `OPCODE_BRANCH);
 
   MuxKey #(
       .NR_KEY  (8),

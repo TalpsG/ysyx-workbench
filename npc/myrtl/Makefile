@@ -21,7 +21,7 @@ EXE_LDFLAGS=-LDFLAGS -lreadline -LDFLAGS -lLLVM-14 -LDFLAGS -pie -LDFLAGS -ldl  
 
 
 gdb:exe
-	gdb --args ./obj_dir/Vtop $(BIN)  $(ELF) 
+	gdb --args ./obj_dir/Vtop $(BIN)  $(ELF)  
 run:exe
 	./obj_dir/Vtop $(BIN) $(ELF) b
 exe:build $(CSRC)  obj_dir/disasm.o

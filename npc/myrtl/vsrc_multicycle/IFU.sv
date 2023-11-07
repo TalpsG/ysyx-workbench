@@ -6,12 +6,11 @@ module IFU #(
     input [WIDTH-1:0] in,
     input ready,
     output [WIDTH-1:0] out,
-    output [31:0] ins,
+    output reg [31:0] ins,
     output reg valid
 
 );
   reg [31:0] pc;
-  assign ins = rdata;
   assign out = pc;
   import "DPI-C" function void fetch(
     input  int in,
@@ -27,6 +26,9 @@ module IFU #(
   wire [1:0] rresp;
   reg rready;
 
+  always @(posedge clk) begin
+    if (rvalid) ins <= rdata;
+  end
   /*
   *
   * 读事务依赖
@@ -50,19 +52,23 @@ module IFU #(
       fetch_flag <= 0;
       arvalid <= 0;
       rready <= 0;
-    end else if (~rvalid && ~fetch_flag) begin
+      valid <= 0;
+    end else if (~valid && ~rvalid && ~fetch_flag) begin
       pc <= in;
       araddr <= in;
       fetch_flag <= 1;
       arvalid <= 1;
       rready <= 1;
-      valid <= 1;
-    end else if (rvalid) begin
-      fetch_flag <= 0;
+    end else if (rvalid && fetch_flag) begin
       arvalid <= 0;
       rready <= 0;
+      valid <= 1;
+      fetch_flag <= 0;
+    end else if (valid && ready) begin
+      valid <= 0;
     end
   end
+
   // valid
   //always @(posedge clk) begin
   //if (rvalid) begin

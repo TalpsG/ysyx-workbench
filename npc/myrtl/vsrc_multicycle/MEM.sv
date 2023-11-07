@@ -33,12 +33,10 @@ module MEM (
 );
   reg  [ 1:0] pos;
   reg  [31:0] rdata_w;
+  reg  [31:0] mem_araddr_reg;
+  reg  [31:0] rdata_reg;
   wire [ 7:0] rdata_b;
   wire [15:0] rdata_h;
-  always @(posedge clk) begin
-    if (read || wen) pos <= mem_araddr[1:0];
-    else pos <= 0;
-  end
 
 
   import "DPI-C" function void npc_mem_read(
@@ -64,11 +62,13 @@ module MEM (
   *
   */
 
-
+  reg write_flag;
+  reg [31:0] write_now, write_delay;
   //mem_awready
   always @(posedge clk) begin
     if (rst) begin
       mem_awready <= 1;
+      write_flag  <= 0;
     end else if (mem_awready && mem_awvalid) begin
       mem_awready <= 0;
     end else begin
@@ -80,30 +80,43 @@ module MEM (
   always @(posedge clk) begin
     if (rst) begin
       mem_wready <= 1;
-    end else if (~mem_wready && mem_wvalid) begin
+    end else if (mem_wready && mem_wvalid) begin
       mem_wready <= 0;
     end else begin
       mem_wready <= 1;
     end
   end
   //wdata 
-  always @(posedge clk) begin
-    if (mem_wvalid && mem_wready && mem_awready && mem_awvalid) begin
-      npc_mem_write(mem_awaddr, mem_wdata, mem_wstrb);
-    end
-  end
+  //always @(posedge clk) begin
+  //if (~write_flag && mem_wvalid && mem_wready && mem_awready && mem_awvalid) begin
+  //npc_mem_write(mem_awaddr, mem_wdata, mem_wstrb);
+  //end
+  //end
   //bvalid bresp
   always @(posedge clk) begin
     if (rst) begin
       mem_bresp  <= 0;
       mem_bvalid <= 0;
-    end else if (mem_bready && mem_wvalid && mem_wready) begin
-      mem_bvalid <= 1;
-      mem_bresp  <= 0;
-    end else begin
-      mem_bvalid <= 0;
+    end else if (~write_flag && mem_bready && mem_wvalid && mem_wready && mem_awvalid && mem_awready) begin
+      npc_mem_write(mem_awaddr, mem_wdata, mem_wstrb);
+      write_flag <= 1;
       mem_bresp  <= 0;
     end
+  end
+  always @(posedge clk) begin
+    if (rst) begin
+      write_delay <= $random & 32'h0000001f;
+      write_now   <= 0;
+    end else if (write_flag) begin
+      if (write_now == write_delay) begin
+        mem_bvalid <= 1;
+        write_flag <= 0;
+        write_now  <= 0;
+      end else begin
+        write_now <= write_now + 1;
+      end
+    end
+
   end
   //raddr ready
   always @(posedge clk) begin
@@ -117,19 +130,41 @@ module MEM (
   end
   //raddr 
   //rdata 
+  reg read_flag;
   always @(posedge clk) begin
-    if (rst) rdata_w = 0;
-    else if (~mem_rvalid && mem_arvalid && mem_arready) begin
-      npc_mem_read(mem_araddr, rdata_w);
-      mem_rvalid <= 1;
-      mem_rresp  <= 0;
+    if (rst) begin
+      rdata_w <= 0;
+      rdata_reg = 0;
+      read_flag  <= 0;
+      read_delay <= $random & 32'h0000001f;
+    end else if (~read_flag && ~mem_rvalid && mem_arvalid && mem_arready) begin
+      npc_mem_read(mem_araddr, rdata_reg);
+      mem_araddr_reg <= mem_araddr;
+      pos <= mem_araddr[1:0];
+      read_flag <= 1;
+      mem_rresp <= 0;
     end else if (mem_rvalid) begin
       mem_rvalid <= 0;
-      mem_rresp  <= 0;
+      mem_rresp <= 0;
+      read_flag <= 0;
+      read_now <= 0;
+      rdata_w <= 0;
     end
   end
 
-
+  reg [31:0] read_now, read_delay;
+  always @(posedge clk) begin
+    if (read_flag) begin
+      if (read_now == read_delay) begin
+        read_now <= 0;
+        mem_rvalid <= 1;
+        rdata_w <= rdata_reg;
+      end else begin
+        read_now <= read_now + 1;
+        rdata_w  <= 0;
+      end
+    end
+  end
   MuxKey #(
       .NR_KEY  (4),
       .KEY_LEN (2),
