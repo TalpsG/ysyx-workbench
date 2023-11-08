@@ -8,7 +8,7 @@ module RegisterFile (
     ren1,
     ren2,
     output [32-1:0] data[32-1:0],
-    output reg [31:0] rdata1,
+    output [31:0] rdata1,
     rdata2
 
 );
@@ -21,14 +21,6 @@ module RegisterFile (
     end
     rf[0] <= 32'h0;
   end
-  always @(*) begin
-    if (ren1) begin
-      rdata1 = rf[raddr1];
-    end else rdata1 = 32'h0;
-  end
-  always @(*) begin
-    if (ren2) begin
-      rdata2 = rf[raddr2];
-    end else rdata2 = 32'h0;
-  end
+  assign rdata1 = ren1 ? rf[raddr1] : 32'h0;
+  assign rdata2 = ren2 ? rf[raddr2] : 32'h0;
 endmodule

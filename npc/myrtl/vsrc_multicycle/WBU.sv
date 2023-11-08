@@ -1,36 +1,63 @@
 `include "/home/talps/gitrepo/ysyx-workbench/npc/myrtl/vsrc_multicycle/utils.sv"
 module WBU (
     input clk,
+    input rst,
     input [6:0] opcode,
     input [31:0] exu_res,
     input [31:0] imm,
     input [31:0] outpc,
     input [31:0] fake_csr_wdata,
     input is_ecall,
-    mem_access,
-    is_mret,
-    is_csr,
+    input mem_access,
+    input mem_read,
+    input mem_write,
+    input is_mret,
+    input is_csr,
+    input idu_jump_flag,
+    input is_branch,
     input [2:0] csr_waddr,
-    output [31:0] mem_raddr,
-    branch_pc,
-    mem_waddr,
-    mem_wdata,
-    output jump_flag,
-    branch_flag,
+    input [31:0] idu_mem_wdata,
+    output [31:0] branch_pc,
+    output wbu_jump_flag,
+    output branch_flag,
     output reg mem_finish,
     output [31:0] csr_wdata0,
-    csr_wdata1,
-    csr_wdata2,
-    csr_wdata3,
-    csr_wdata4,
-    csr_wdata5,
-    output [5:0] csr_write
+    output [31:0] csr_wdata1,
+    output [31:0] csr_wdata2,
+    output [31:0] csr_wdata3,
+    output [31:0] csr_wdata4,
+    output [31:0] csr_wdata5,
+    output [5:0] csr_write,
+
+
+    output reg mem_arvalid,
+    input mem_arready,
+    output reg [31:0] mem_araddr,
+
+
+    output reg mem_rready,
+    input mem_rvalid,
+    input [31:0] mem_rdata,
+    input [1:0] mem_rresp,
+
+    output reg mem_wvalid,
+    input mem_wready,
+    output reg [31:0] mem_wdata,
+    output reg [7:0] mem_wstrb,
+
+    output reg mem_awvalid,
+    input mem_awready,
+    output reg [31:0] mem_awaddr,
+
+    input mem_bvalid,
+    output reg mem_bready,
+    input [1:0] mem_bresp
+
+
 );
-  assign mem_raddr   = exu_res;
-  assign mem_waddr   = exu_res;
-  assign branch_pc   = outpc + imm;
-  assign jump_flag   = (opcode == `OPCODE_JAL) | (opcode == `OPCODE_JALR);
-  assign branch_flag = (opcode == `OPCODE_BRANCH) & exu_res[0];
+  assign wbu_jump_flag = idu_jump_flag;
+  assign branch_pc = outpc + imm;
+  assign branch_flag = is_branch && exu_res[0];
   //assign reg_write =
   //(opcode == `OPCODE_LUI) 
   //| (opcode == `OPCODE_AUIPC)
@@ -40,20 +67,92 @@ module WBU (
   //| (opcode == `OPCODE_ARITH)
   //| (opcode == `OPCODE_R)
   //| ((opcode == `OPCODE_CSR)&(func3 != 3'b0));
-  assign csr_write   = is_mret ? 6'h0 : (is_ecall ? 6'h6 : (is_csr ? fake_csr_write : 6'h0));
-  assign csr_wdata0  = fake_csr_wdata;
-  assign csr_wdata1  = is_ecall ? (outpc + 4) : fake_csr_wdata;
-  assign csr_wdata2  = is_ecall ? 32'h1 : fake_csr_wdata;
-  assign csr_wdata3  = fake_csr_wdata;
-  assign csr_wdata4  = fake_csr_wdata;
-  assign csr_wdata5  = fake_csr_wdata;
+  assign csr_write = is_mret ? 6'h0 : (is_ecall ? 6'h6 : (is_csr ? fake_csr_write : 6'h0));
+  assign csr_wdata0 = fake_csr_wdata;
+  assign csr_wdata1 = is_ecall ? (outpc + 4) : fake_csr_wdata;
+  assign csr_wdata2 = is_ecall ? 32'h1 : fake_csr_wdata;
+  assign csr_wdata3 = fake_csr_wdata;
+  assign csr_wdata4 = fake_csr_wdata;
+  assign csr_wdata5 = fake_csr_wdata;
+
+
+  reg [31:0] mem_wdata_reg;
+  always @(posedge clk) begin
+    if (rst) begin
+      read_delay = $random & 32'h0000001f;
+      read_now <= 0;
+      mem_araddr <= 0;
+      mem_arvalid <= 0;
+      mem_rready <= 0;
+    end else if (mem_read) begin
+      if (read_now == read_delay) begin
+        mem_araddr <= exu_res;
+        mem_arvalid <= 1;
+        mem_rready <= 1;
+        read_now <= 0;
+      end else begin
+        read_now <= read_now + 1;
+      end
+    end else begin
+      mem_araddr  <= 0;
+      mem_arvalid <= 0;
+      mem_rready  <= 0;
+    end
+
+  end
+
+
+
 
   always @(posedge clk) begin
-    //$display("csr_write:%x,is_mret:%d,is_ecall:%d,is_csr:%d,fake_csr_write:%x,fake_csr_wdata:%x", csr_write, is_mret, is_ecall, is_csr, fake_csr_write, fake_csr_wdata);
-    if (mem_access) mem_finish <= mem_access;
-    else mem_finish <= 0;
+    if (rst) begin
+      write_delay <= $random & 32'h0000001f;
+    end
+    if (mem_write) begin
+      mem_awvalid <= 1;
+      mem_awaddr  <= exu_res;
+      mem_wdata   <= idu_mem_wdata;
+      mem_bready  <= 1;
+      mem_wvalid  <= 1;
+    end else begin
+      mem_awvalid <= 0;
+      mem_awaddr  <= 0;
+      mem_wdata   <= 0;
+      mem_bready  <= 0;
+      mem_wvalid  <= 0;
+    end
   end
   wire [5:0] fake_csr_write;
+
+
+  reg [31:0] read_delay, read_now;
+  reg [31:0] write_delay, write_now;
+
+
+
+  always @(posedge clk) begin
+    if (rst) begin
+    end else if (mem_access) begin
+      if (mem_read) begin
+        if (mem_read) begin
+          if (mem_rvalid && mem_rready) begin
+            mem_finish <= 1;
+          end
+        end
+      end else if (mem_write) begin
+        //write 
+        if (mem_bvalid) begin
+          mem_finish <= 1;
+        end
+      end
+    end
+  end
+
+  always @(posedge clk) begin
+    if (mem_finish) begin
+      mem_finish <= 0;
+    end
+  end
 
   MuxKey #(
       .NR_KEY  (6),

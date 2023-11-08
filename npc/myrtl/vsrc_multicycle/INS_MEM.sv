@@ -28,59 +28,12 @@ module INS_MEM (
     output reg bvalid,
     input bready
 );
-  reg  [31:0] awaddr_reg;
-  reg  [31:0] wdata_reg;
-  reg  [31:0] araddr_reg;
-  wire [31:0] rdata_temp;
-  // 写地址ready
-  always @(posedge clk) begin
-    if (rst) awready <= 1'b0;
-    else if (bvalid && bready)
-      awready <= 1'b0;  //写响应了，写操作结束，不需要awready了
-    else if (~awready && awvalid && wvalid)
-      awready <= 1;  //写地址和写数据都有效，需要ready
-    else awready <= 1;
-  end
-
-
-  // 写地址
-  always @(posedge clk) begin
-    if (rst) awaddr_reg <= 32'b0;
-    else if (~awready && awvalid && wvalid)
-      awaddr_reg <= awaddr;  // 此时awready也会被拉高，waddr也会被存下来
-  end
-
-
-  // 写数据 ready
-  always @(posedge clk) begin
-    if (rst) wready <= 1'b0;
-    else if (bvalid && bready) wready <= 1'b0;
-    else if (~wready && awvalid && wvalid) wready <= 1'b1;
-    else wready <= 1'b0;
-  end
-
-  //写数据
-  always @(posedge clk) begin
-    if (rst) begin
-      wdata_reg <= '0;
-    end else if (awvalid && wvalid && awready && wready) begin
-    end
-  end
-
-  //写响应
-  always @(posedge clk) begin
-    if (rst) begin
-      bvalid <= 1'b0;
-      bresp  <= 2'b00;
-    end else begin
-      if (~bvalid && awvalid && awready && wvalid && wready) begin
-        bvalid <= 1'b1;
-        bresp  <= 2'b00;
-      end else if (bready && bvalid) bvalid <= 1'b0;
-    end
-  end
-
-
+  reg [31:0] awaddr_reg;
+  reg [31:0] wdata_reg;
+  reg [31:0] araddr_reg;
+  reg [31:0] rdata_reg;
+  reg flag;
+  reg [31:0] delay, now;
   //raddr ready
   always @(posedge clk) begin
     if (rst) begin
@@ -100,17 +53,40 @@ module INS_MEM (
   end
   //rdata 
   always @(posedge clk) begin
-    if (rst) rdata = 0;
-    else if (~rvalid && arvalid && arready) begin
-      npc_mem_read(araddr, rdata);
-      rvalid <= 1;
-      rresp  <= 0;
-    end else if (rvalid) begin
+    if (rst) begin
+      rdata <= 0;
+      flag  <= 0;
+      delay <= $random & 32'h0000001f;
+      now   <= 0;
+    end else if (~flag && ~rvalid && arvalid && arready) begin
+      npc_mem_read(araddr, rdata_reg);
+      flag  <= 1;
+      rresp <= 0;
+    end else if (rvalid && rready) begin
       rvalid <= 0;
-      rresp  <= 0;
+      rresp <= 0;
+      now <= 0;
+      flag <= 0;
     end
   end
-  //rdata valid
+
+
+  always @(posedge clk) begin
+    if (flag) begin
+      if (now == delay) begin
+        now <= 0;
+        rvalid <= 1;
+        rdata <= rdata_reg;
+      end else begin
+        now   <= now + 1;
+        rdata <= 0;
+      end
+    end else begin
+      now   <= 0;
+      rdata <= 0;
+    end
+
+  end
 
   import "DPI-C" function void npc_mem_read(
     input  int raddr,

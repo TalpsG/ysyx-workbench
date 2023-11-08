@@ -6,14 +6,12 @@ module IFU #(
     input [WIDTH-1:0] in,
     input ready,
     output [WIDTH-1:0] out,
-    output [31:0] ins,
-    output valid
+    output reg [31:0] ins,
+    output reg valid
 
 );
   reg [31:0] pc;
-  assign ins   = rdata;
-  assign out   = pc;
-  assign valid = rvalid;
+  assign out = pc;
   import "DPI-C" function void fetch(
     input  int in,
     output int ins
@@ -28,6 +26,9 @@ module IFU #(
   wire [1:0] rresp;
   reg rready;
 
+  always @(posedge clk) begin
+    if (rvalid) ins <= rdata;
+  end
   /*
   *
   * 读事务依赖
@@ -45,22 +46,44 @@ module IFU #(
 
   //araddr 
   reg fetch_flag;
+  reg [31:0] delay, now;
+  reg read_flag;
   always @(posedge clk) begin
     if (rst) begin
       pc <= 32'h80000000 - 32'h4;
       fetch_flag <= 0;
       arvalid <= 0;
       rready <= 0;
-    end else if (~rvalid && ~fetch_flag) begin
+      valid <= 0;
+      delay <= $random & 32'h0000001f;
+      now <= 0;
+      read_flag <= 0;
+    end else if (~valid && ~rvalid && ~fetch_flag) begin
       pc <= in;
-      araddr <= in;
+      read_flag <= 1;
       fetch_flag <= 1;
-      arvalid <= 1;
-      rready <= 1;
-    end else if (rvalid) begin
-      fetch_flag <= 0;
+    end else if (rvalid && fetch_flag) begin
       arvalid <= 0;
       rready <= 0;
+      valid <= 1;
+      fetch_flag <= 0;
+      read_flag <= 0;
+    end else if (valid && ready) begin
+      valid <= 0;
+    end
+  end
+  always @(posedge clk) begin
+    if (read_flag) begin
+      if (now == delay) begin
+        araddr <= in;
+        arvalid <= 1;
+        rready <= 1;
+        now <= 0;
+      end else begin
+        now <= now + 1;
+      end
+    end else begin
+      now <= 0;
     end
   end
   // valid

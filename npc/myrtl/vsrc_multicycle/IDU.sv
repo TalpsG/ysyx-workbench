@@ -2,8 +2,10 @@
 
 module IDU (
     input clk,
+    input rst,
     input [31:0] real_ins,
     input ifu_valid,
+    input mem_rvalid,
     input mem_finish,
     output [4:0] rs1,
     output [4:0] rs2,
@@ -23,22 +25,34 @@ module IDU (
     output is_ecall,
     output is_mret,
     output is_csr,
+    output jump_flag,
+    output is_branch,
     output reg idu_ready,
     output [2:0] csr_waddr
 );
+  wire fake_reg_write;
   wire [31:0] ins;
-  assign ins = !idu_ready ? real_ins : 32'h0;
+  assign ins = (ifu_valid && ~mem_finish && ~idu_ready) ? real_ins : 0;
+
   import "DPI-C" function void ebreak(int ins);
   always @(posedge clk) begin
     ebreak(ins);
   end
 
   always @(posedge clk) begin
-    if (ifu_valid & idu_ready) idu_ready <= 0;
+    if (rst) idu_ready <= 0;
     else if (mem_access) begin
-      if (!mem_finish) idu_ready <= 0;
-      else idu_ready <= 1;
-    end else idu_ready <= 1;
+      if (~mem_finish) begin
+        idu_ready <= 0;
+      end else if (ifu_valid) begin
+        idu_ready <= 1;
+      end
+    end else if (ifu_valid) begin
+      idu_ready <= 1;
+    end else begin
+      idu_ready <= 0;
+    end
+
   end
   wire [31:0] immI, immU, immB, immS, immJ;
 
@@ -54,7 +68,7 @@ module IDU (
   assign immB = {{20{ins[31]}}, ins[7], ins[30:25], ins[11:8], 1'b0};
   assign immJ = {{12{ins[31]}}, ins[19:12], ins[20], ins[30:21], 1'b0};
   assign is_csr = ((opcode === `OPCODE_CSR) & (func3 != 3'b0));
-  assign reg_write = (opcode === `OPCODE_LUI ) |
+  assign fake_reg_write = (opcode === `OPCODE_LUI ) |
   (opcode === `OPCODE_AUIPC) |
   (opcode === `OPCODE_JAL) |
   (opcode === `OPCODE_JALR) |
@@ -62,6 +76,8 @@ module IDU (
   (opcode === `OPCODE_ARITH) |
   (opcode === `OPCODE_R) |
   is_csr;
+  //assign reg_write = fake_reg_write;
+  assign reg_write = mem_access ? (mem_rvalid ? fake_reg_write : 0) : fake_reg_write;
 
   assign pc_write = (opcode === `OPCODE_JAL) | (opcode === `OPCODE_JALR)|(opcode === `OPCODE_BRANCH);
   assign mem_read = (opcode === `OPCODE_LOAD);
@@ -71,6 +87,8 @@ module IDU (
   assign mem_access = !mem_finish & (mem_read | mem_write);
 
   assign csr_waddr = ins[22:20];
+  assign jump_flag = (opcode == `OPCODE_JAL) | (opcode == `OPCODE_JALR);
+  assign is_branch = (opcode == `OPCODE_BRANCH);
 
   MuxKey #(
       .NR_KEY  (8),

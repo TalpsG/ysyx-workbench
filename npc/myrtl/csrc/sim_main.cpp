@@ -43,16 +43,20 @@ void step_i() {
 		return ;
 	}
 	int i=0;
+	int flag = 0;
 	do
 	{
 		single_cycle();
 		i++;
-	} while(top.valid ==1 );
-	printf("%d cycles\n",i);
-	print_ins();
 #ifdef CONFIG_DIFFTEST
-	if(npc_state == RUNNING) check_record();
-#endif // DEBUG
+		if (flag == 0&& top.valid == 1 && top.ready == 0) {
+			check_record();
+			flag = 1;
+		}
+#endif 
+	} while(!(top.valid ==0 && top.ready == 1));
+	//printf("%d cycles\n",i);
+	//print_ins();
 #ifdef NEMU_DIFFTEST
 	difftest_step(top.outpc,top.out_dnpc);
 #endif // 
@@ -83,7 +87,7 @@ void display_regs() {
 bool batch=false;
 void batch_mode() {
   while (npc_state == RUNNING  ) {
-    single_cycle();
+	step_i();
   }
 }
 char *cmd=NULL;

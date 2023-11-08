@@ -180,7 +180,9 @@ config DTRACE
 config ETRACE
   bool "enable to trace trap"
   default n
-
+config DIFFTEST_FOR_NPC
+  bool "enable to record for npc"
+  default n
 
 
 choice

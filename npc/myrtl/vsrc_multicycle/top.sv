@@ -8,7 +8,8 @@ module top (
     output [31:0] ins,
     output [31:0] gpr[31:0],
     output [31:0] csr_reg[5:0],
-    output valid
+    output valid,
+    output ready
 );
 
   always @(posedge clk) begin
@@ -17,6 +18,7 @@ module top (
 
   end
   assign valid = ifu_valid;
+  assign ready = idu_ready;
 
   wire [31:0] dnpc, snpc;
   wire idu_ready;
@@ -55,8 +57,11 @@ module top (
   wire is_csr;
   wire [2:0] csr_waddr;
   wire mem_access;
+  wire is_branch;
   IDU u_IDU (
       .clk           (clk),
+      .mem_rvalid    (mem_rvalid),
+      .rst           (rst),
       .real_ins      (ins),
       .rs1           (rs1),
       .rs2           (rs2),
@@ -76,11 +81,14 @@ module top (
       .csr_waddr     (csr_waddr),
       .is_csr        (is_csr),
       .idu_ready     (idu_ready),
+      .is_branch     (is_branch),
       .ifu_valid     (ifu_valid),
+      .mem_finish    (mem_finish),
       .mem_access    (mem_access),
-      .mem_finish    (mem_finish)
+      .jump_flag     (idu_jump_flag)
+
   );
-  wire [31:0] reg_wdata;
+  reg [31:0] reg_wdata;
   wire [31:0] reg_rdata1;
   wire [31:0] reg_rdata2;
   wire [4:0] reg_waddr = rd;
@@ -118,6 +126,9 @@ module top (
       })
   );
 
+  always @(posedge clk) begin
+
+  end
 
   RegisterFile u_RegisterFile (
       .clk   (clk),
@@ -171,7 +182,6 @@ module top (
   wire [2:0] mem_readop = func3;
   wire [31:0] mem_raddr;
   wire [31:0] mem_rdata;
-  wire [31:0] mem_wdata = reg_rdata2;
   wire [31:0] mem_waddr;
   wire [7:0] mem_wmask;
 
@@ -184,24 +194,54 @@ module top (
       .key(func3),
       .lut({3'b000, 8'h01, 3'b001, 8'h03, 3'b010, 8'h0f})
   );
+  wire mem_awvalid;
+  wire mem_awready;
+  wire [31:0] mem_awaddr;
+  wire mem_wvalid;
+  wire [7:0] mem_wstrb = mem_wmask;
+  wire [31:0] idu_mem_wdata = reg_rdata2;
+  wire [31:0] mem_wdata;
+  wire mem_wready;
+  wire mem_bready;
+  wire mem_bvalid;
+  wire [1:0] mem_bresp;
+  wire mem_arvalid;
+  wire mem_arready;
+  wire [31:0] mem_araddr;
+  wire mem_rvalid;
+  wire mem_rready;
+  wire [1:0] mem_rresp;
 
-  MEM u_mem (
-      .clk   (clk),
-      .read (mem_read),
-      .wen   (mem_write),
-      .readop(mem_readop),
-      .wmask (mem_wmask),
-      .raddr (mem_raddr),
-      .waddr (mem_waddr),
-      .wdata (mem_wdata),
-      .rdata (mem_rdata),
-      .mem_access(mem_access)
+
+
+  MEM u_MEM (
+      .clk        (clk),
+      .rst        (rst),
+      .read       (mem_read),
+      .wen        (mem_write),
+      .readop     (mem_readop),
+      .mem_awvalid(mem_awvalid),
+      .mem_awready(mem_awready),
+      .mem_awaddr (mem_awaddr),
+      .mem_wvalid (mem_wvalid),
+      .mem_wstrb  (mem_wstrb),
+      .mem_wdata  (mem_wdata),
+      .mem_wready (mem_wready),
+      .mem_bvalid (mem_bvalid),
+      .mem_bready (mem_bready),
+      .mem_bresp  (mem_bresp),
+      .mem_arvalid(mem_arvalid),
+      .mem_arready(mem_arready),
+      .mem_araddr (mem_araddr),
+      .mem_rvalid (mem_rvalid),
+      .mem_rready (mem_rready),
+      .mem_rresp  (mem_rresp),
+      .mem_rdata  (mem_rdata)
   );
 
   wire [31:0] branch_pc;
   wire [31:0] fake_csr_wdata;
   wire branch_flag;
-  wire jump_flag;
   wire is_mret;
   wire is_ecall;
 
@@ -215,22 +255,28 @@ module top (
       .lut({3'b010, csr_rdata | reg_rdata1, 3'b001, reg_rdata1})
   );
   wire mem_finish;
+  wire idu_jump_flag;
+  wire wbu_jump_flag;
   WBU u_WBU (
       .clk           (clk),
+      .rst           (rst),
       .opcode        (opcode),
       .exu_res       (exu_res),
       .imm           (imm),
       .outpc         (outpc),
-      .mem_raddr     (mem_raddr),
-      .branch_pc     (branch_pc),
-      .mem_waddr     (mem_waddr),
-      .mem_wdata     (mem_wdata),
-      .jump_flag     (jump_flag),
-      .branch_flag   (branch_flag),
+      .fake_csr_wdata(fake_csr_wdata),
       .is_ecall      (is_ecall),
+      .mem_read      (mem_read),
+      .mem_write     (mem_write),
       .is_mret       (is_mret),
       .is_csr        (is_csr),
+      .is_branch     (is_branch),
       .csr_waddr     (csr_waddr),
+      .branch_pc     (branch_pc),
+      .idu_jump_flag (idu_jump_flag),
+      .wbu_jump_flag (wbu_jump_flag),
+      .branch_flag   (branch_flag),
+      .mem_finish    (mem_finish),
       .csr_wdata0    (csr_wdata0),
       .csr_wdata1    (csr_wdata1),
       .csr_wdata2    (csr_wdata2),
@@ -238,15 +284,34 @@ module top (
       .csr_wdata4    (csr_wdata4),
       .csr_wdata5    (csr_wdata5),
       .csr_write     (csr_write),
-      .fake_csr_wdata(fake_csr_wdata),
-      .mem_access    (mem_access),
-      .mem_finish    (mem_finish)
+      .mem_arvalid   (mem_arvalid),
+      .mem_arready   (mem_arready),
+      .mem_araddr    (mem_araddr),
+      .mem_rready    (mem_rready),
+      .mem_rvalid    (mem_rvalid),
+      .mem_rdata     (mem_rdata),
+      .mem_rresp     (mem_rresp),
+      .mem_wvalid    (mem_wvalid),
+      .mem_wready    (mem_wready),
+      .idu_mem_wdata (idu_mem_wdata),
+      .mem_wdata     (mem_wdata),
+      .mem_wstrb     (mem_wstrb),
+      .mem_awvalid   (mem_awvalid),
+      .mem_awready   (mem_awready),
+      .mem_awaddr    (mem_awaddr),
+      .mem_bvalid    (mem_bvalid),
+      .mem_bready    (mem_bready),
+      .mem_bresp     (mem_bresp),
+      .mem_access    (mem_access)
   );
 
 
   DNPC u_DNPC (
       .clk        (clk),
-      .jump_flag  (jump_flag),
+      .rst        (rst),
+      .valid      (ifu_valid),
+      .ready      (idu_ready),
+      .jump_flag  (wbu_jump_flag),
       .branch_flag(branch_flag),
       .is_mret    (is_mret),
       .branch_pc  (branch_pc),
