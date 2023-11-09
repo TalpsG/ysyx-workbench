@@ -8,7 +8,6 @@
 `define OPCODE_ARITH 7'b0010011
 `define OPCODE_R 7'b0110011
 `define OPCODE_CSR 7'b1110011
-
 `define OPCODE_ECALL 32'h00000073
 `define OPCODE_MRET 32'h30200073
 
@@ -30,3 +29,15 @@
 `define CSR_MCAUSE 6'b000100
 `define CSR_MTVEC 6'b100000
 
+
+`define IFU_FETCH 2'b00
+`define IFU_WAIT 2'b01
+
+
+`define IDU_READY 2'b00
+`define IDU_WAIT_EXU 2'b01
+`define IDU_WAIT_MEM 2'b10
+
+
+`define DNPC_READY 2'b00
+`define DNPC_WAIT 2'b01

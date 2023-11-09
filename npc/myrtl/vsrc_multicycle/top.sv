@@ -73,7 +73,6 @@ module top (
       .select_oprand1(select_oprand1),
       .select_oprand2(select_oprand2),
       .reg_write     (reg_write),
-      .pc_write      (pc_write),
       .mem_read      (mem_read),
       .mem_write     (mem_write),
       .is_ecall      (is_ecall),
@@ -301,8 +300,7 @@ module top (
       .mem_awaddr    (mem_awaddr),
       .mem_bvalid    (mem_bvalid),
       .mem_bready    (mem_bready),
-      .mem_bresp     (mem_bresp),
-      .mem_access    (mem_access)
+      .mem_bresp     (mem_bresp)
   );
 
 

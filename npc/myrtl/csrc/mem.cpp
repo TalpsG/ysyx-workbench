@@ -23,9 +23,6 @@ extern "C" void npc_mem_read(uint32_t raddr, uint32_t*rdata) {
   // 总是读取地址为`raddr & ~0x3u`的4字节返回给`rdata`
   //printf("read,addr:%8x \n",raddr);
   //printf("RTC_ADDR:%8x\n",RTC_ADDR);
-  if (raddr == 0) {
-    return;
-  }
   if(raddr == SERIAL_PORT) return;
   static time_t t = 0;
   if (raddr == RTC_ADDR || raddr == RTC_ADDR+4) {
@@ -48,6 +45,7 @@ extern "C" void npc_mem_write(uint32_t waddr, uint32_t wdata, char wmask) {
   // `wmask`中每比特表示`wdata`中1个字节的掩码,
   // 如`wmask = 0x3`代表只写入最低2个字节, 内存中的其它字节保持不变
   //printf("waddr:%8x,SERIAL_PORT:%8x,EQUAL?:%s\n",waddr,SERIAL_PORT,waddr==SERIAL_PORT?"yes":"no");
+  if(waddr == 0) return;
   if (waddr == SERIAL_PORT) {
 	putchar(wdata);
 	fflush(stdout);

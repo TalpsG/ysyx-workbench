@@ -8,7 +8,6 @@ module WBU (
     input [31:0] outpc,
     input [31:0] fake_csr_wdata,
     input is_ecall,
-    input mem_access,
     input mem_read,
     input mem_write,
     input is_mret,
@@ -77,6 +76,27 @@ module WBU (
 
 
   reg [31:0] mem_wdata_reg;
+  reg read_state;
+  reg write_state;
+  reg mem_access;
+  // state 在read或write脉冲来的时候变为1,表示要进行读取或写入操作 读写完毕后置为0
+  always @(posedge clk) begin
+    if (rst) begin
+      read_state  <= 0;
+      write_state <= 0;
+      mem_access  <= 0;
+    end else begin
+      if (mem_write) begin
+        write_state <= 1;
+        mem_access  <= 1;
+      end
+      if (mem_read) begin
+        read_state <= 1;
+        mem_access <= 1;
+      end
+    end
+
+  end
   always @(posedge clk) begin
     if (rst) begin
       read_delay = $random & 32'h0000001f;
@@ -84,7 +104,7 @@ module WBU (
       mem_araddr <= 0;
       mem_arvalid <= 0;
       mem_rready <= 0;
-    end else if (mem_read) begin
+    end else if (read_state) begin
       if (read_now == read_delay) begin
         mem_araddr <= exu_res;
         mem_arvalid <= 1;
@@ -107,13 +127,22 @@ module WBU (
   always @(posedge clk) begin
     if (rst) begin
       write_delay <= $random & 32'h0000001f;
+      mem_awvalid <= 0;
+      mem_awaddr  <= 0;
+      mem_wdata   <= 0;
+      mem_bready  <= 0;
+      mem_wvalid  <= 0;
     end
-    if (mem_write) begin
-      mem_awvalid <= 1;
-      mem_awaddr  <= exu_res;
-      mem_wdata   <= idu_mem_wdata;
-      mem_bready  <= 1;
-      mem_wvalid  <= 1;
+    if (write_state) begin
+      if (write_now == write_delay) begin
+        mem_awvalid <= 1;
+        mem_awaddr  <= exu_res;
+        mem_wdata   <= idu_mem_wdata;
+        mem_bready  <= 1;
+        mem_wvalid  <= 1;
+      end else begin
+        write_now <= write_now + 1;
+      end
     end else begin
       mem_awvalid <= 0;
       mem_awaddr  <= 0;
@@ -133,16 +162,16 @@ module WBU (
   always @(posedge clk) begin
     if (rst) begin
     end else if (mem_access) begin
-      if (mem_read) begin
-        if (mem_read) begin
-          if (mem_rvalid && mem_rready) begin
-            mem_finish <= 1;
-          end
+      if (read_state) begin
+        if (mem_rvalid && mem_rready) begin
+          mem_finish <= 1;
+          read_state <= 0;
         end
-      end else if (mem_write) begin
+      end else if (write_state) begin
         //write 
         if (mem_bvalid) begin
-          mem_finish <= 1;
+          mem_finish  <= 1;
+          write_state <= 0;
         end
       end
     end
