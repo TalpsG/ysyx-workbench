@@ -34,7 +34,6 @@ module MEM (
   reg  [ 1:0] pos;
   reg  [31:0] rdata_w;
   reg  [31:0] mem_araddr_reg;
-  reg  [31:0] rdata_reg;
   wire [ 7:0] rdata_b;
   wire [15:0] rdata_h;
 
@@ -69,7 +68,7 @@ module MEM (
     if (rst) begin
       mem_awready <= 1;
       write_flag  <= 0;
-    end else if (mem_awready && mem_awvalid) begin
+    end else if (mem_bvalid && mem_awready && mem_awvalid) begin
       mem_awready <= 0;
     end else begin
       mem_awready <= 1;
@@ -80,7 +79,7 @@ module MEM (
   always @(posedge clk) begin
     if (rst) begin
       mem_wready <= 1;
-    end else if (mem_wready && mem_wvalid) begin
+    end else if (mem_bvalid && mem_wready && mem_wvalid) begin
       mem_wready <= 0;
     end else begin
       mem_wready <= 1;
@@ -101,6 +100,8 @@ module MEM (
     end else if (~mem_bvalid && mem_bready && mem_wvalid && mem_wready && mem_awvalid && mem_awready) begin
       write_flag <= 1;
       mem_bresp  <= 0;
+    end else begin
+      write_flag <= 0;
     end
   end
   always @(posedge clk) begin
@@ -110,9 +111,10 @@ module MEM (
     end else if (write_flag) begin
       if (write_now == write_delay) begin
         npc_mem_write(mem_awaddr, mem_wdata, mem_wstrb);
-        mem_bvalid <= 1;
-        write_now  <= 0;
-        write_flag <= 0;
+        write_delay <= $random & 32'h0000001f;
+        mem_bvalid  <= 1;
+        write_now   <= 0;
+        write_flag  <= 0;
       end else begin
         write_now <= write_now + 1;
       end
@@ -136,12 +138,10 @@ module MEM (
   reg read_flag;
   always @(posedge clk) begin
     if (rst) begin
-      rdata_w <= 0;
-      rdata_reg = 0;
+      rdata_w = 0;
       read_flag  <= 0;
       read_delay <= $random & 32'h0000001f;
     end else if (~read_flag && ~mem_rvalid && mem_arvalid && mem_arready) begin
-      npc_mem_read(mem_araddr, rdata_reg);
       mem_araddr_reg <= mem_araddr;
       pos <= mem_araddr[1:0];
       read_flag <= 1;
@@ -158,9 +158,10 @@ module MEM (
   always @(posedge clk) begin
     if (read_flag) begin
       if (read_now == read_delay) begin
-        read_now <= 0;
+        npc_mem_read(mem_araddr, rdata_w);
+        read_now   <= 0;
         mem_rvalid <= 1;
-        rdata_w <= rdata_reg;
+        read_delay <= $random & 32'h0000001f;
       end else begin
         read_now <= read_now + 1;
       end

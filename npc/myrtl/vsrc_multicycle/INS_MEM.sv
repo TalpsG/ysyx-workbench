@@ -77,6 +77,7 @@ module INS_MEM (
         now <= 0;
         rvalid <= 1;
         rdata <= rdata_reg;
+        delay <= $random & 32'h0000001f;
       end else begin
         now   <= now + 1;
         rdata <= 0;

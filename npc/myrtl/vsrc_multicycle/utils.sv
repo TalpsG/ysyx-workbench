@@ -41,3 +41,7 @@
 
 `define DNPC_READY 2'b00
 `define DNPC_WAIT 2'b01
+
+`define MEM_BUSY 2'b00
+`define MEM_WAIT_RES 2'b01
+`define MEM_WAIT_REQ 2'b10

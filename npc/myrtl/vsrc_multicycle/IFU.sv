@@ -82,6 +82,7 @@ module IFU #(
   always @(posedge clk) begin
     if (fetch_flag) begin
       if (now == delay) begin
+        delay <= $random & 32'h0000001f;
         araddr <= in;
         arvalid <= 1;
         rready <= 1;
