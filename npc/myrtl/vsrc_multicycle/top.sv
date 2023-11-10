@@ -13,8 +13,6 @@ module top (
 );
 
   always @(posedge clk) begin
-    //$display("\npc:%8x,waddr:%d,wdata:%8x,ins:%8x", outpc, reg_waddr, reg_wdata, ins);
-    //$display("reg_write:%d,exu_res:%8x,mem_rdata:%8x,opcode:%x\n", reg_write, exu_res, mem_rdata, opcode);
 
   end
   assign valid = ifu_valid;
@@ -115,7 +113,7 @@ module top (
         `OPCODE_JALR,
         snpc,
         `OPCODE_LOAD,
-        mem_rdata,
+        mem_rdata_final,
         `OPCODE_ARITH,
         exu_res,
         `OPCODE_R,
@@ -288,7 +286,6 @@ module top (
       .mem_araddr    (mem_araddr),
       .mem_rready    (mem_rready),
       .mem_rvalid    (mem_rvalid),
-      .mem_rdata     (mem_rdata),
       .mem_rresp     (mem_rresp),
       .mem_wvalid    (mem_wvalid),
       .mem_wready    (mem_wready),
@@ -300,7 +297,10 @@ module top (
       .mem_awaddr    (mem_awaddr),
       .mem_bvalid    (mem_bvalid),
       .mem_bready    (mem_bready),
-      .mem_bresp     (mem_bresp)
+      .mem_bresp     (mem_bresp),
+      .mem_readop    (mem_readop),
+      .mem_pos       (mem_pos)
+
   );
 
 
@@ -368,6 +368,15 @@ module top (
 
 
 
+  wire [ 1:0] mem_pos;
+  wire [31:0] mem_rdata_final;
+
+  RDATA RDATA (
+      .mem_pos        (mem_pos),
+      .mem_readop     (mem_readop),
+      .mem_rdata      (mem_rdata),
+      .mem_rdata_final(mem_rdata_final)
+  );
 
 
 

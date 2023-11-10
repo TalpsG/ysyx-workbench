@@ -27,6 +27,8 @@ module WBU (
     output [31:0] csr_wdata4,
     output [31:0] csr_wdata5,
     output [5:0] csr_write,
+    output [2:0] mem_readop,
+    output reg [1:0] mem_pos,
 
 
     output reg mem_arvalid,
@@ -36,7 +38,6 @@ module WBU (
 
     output reg mem_rready,
     input mem_rvalid,
-    input [31:0] mem_rdata,
     input [1:0] mem_rresp,
 
     output reg mem_wvalid,
@@ -102,6 +103,7 @@ module WBU (
       mem_wdata <= 0;
       mem_awaddr <= 0;
       mem_wvalid <= 0;
+      mem_pos <= 0;
     end else begin
       case (read_state)
         `MEM_WAIT_REQ: begin
@@ -113,6 +115,7 @@ module WBU (
           if (read_now == read_delay) begin
             read_delay = $random & 32'h0000001f;
             mem_araddr <= exu_res;
+            mem_pos <= exu_res[1:0];
             mem_arvalid <= 1;
             mem_rready <= 1;
             read_now <= 0;
@@ -171,14 +174,6 @@ module WBU (
 
   end
 
-
-
-
-
-
-
-
-
   MuxKey #(
       .NR_KEY  (6),
       .KEY_LEN (3),
@@ -201,8 +196,5 @@ module WBU (
         6'b100000
       })
   );
-
-
-
 
 endmodule

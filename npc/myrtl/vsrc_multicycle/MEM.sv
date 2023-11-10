@@ -27,17 +27,13 @@ module MEM (
     output reg mem_rvalid,
     input mem_rready,
     output reg [1:0] mem_rresp,
-    output [31:0] mem_rdata
+    output reg [31:0] mem_rdata
 
 
 
 );
-  reg  [ 1:0] pos;
-  reg  [ 7:0] mem_wstrb_reg;
-  reg  [31:0] rdata_w;
-  reg  [31:0] mem_araddr_reg;
-  wire [ 7:0] rdata_b;
-  wire [15:0] rdata_h;
+  reg [ 7:0] mem_wstrb_reg;
+  reg [31:0] mem_araddr_reg;
 
 
   import "DPI-C" function void npc_mem_read(
@@ -81,7 +77,7 @@ module MEM (
       mem_rresp   <= 0;
       mem_bvalid  <= 0;
       mem_bresp   <= 0;
-      rdata_w = 0;
+      mem_rdata = 0;
 
       write_now <= 0;
       write_delay <= 0;
@@ -97,7 +93,6 @@ module MEM (
         `MEM_WAIT_REQ: begin
           if (~mem_rvalid && mem_arvalid && mem_arready && mem_rready) begin
             mem_araddr_reg <= mem_araddr;
-            pos <= mem_araddr[1:0];
             read_state <= `MEM_WAIT_RES;
 
             //读取的时候把ready都置为0
@@ -110,7 +105,7 @@ module MEM (
           if (read_delay == read_now) begin
             read_now   <= 0;
             read_delay <= $random & 32'h0000001f;
-            npc_mem_read(mem_araddr_reg, rdata_w);
+            npc_mem_read(mem_araddr_reg, mem_rdata);
             mem_rvalid  <= 1;
             mem_arready <= 1;
             mem_rresp   <= 0;
@@ -169,43 +164,6 @@ module MEM (
 
 
 
-  MuxKey #(
-      .NR_KEY  (4),
-      .KEY_LEN (2),
-      .DATA_LEN(8)
-  ) get_rdata_b (
-      .out(rdata_b),
-      .key(pos),
-      .lut({2'h0, rdata_w[7:0], 2'h1, rdata_w[15:8], 2'h2, rdata_w[23:16], 2'h3, rdata_w[31:24]})
-  );
-  MuxKey #(
-      .NR_KEY  (3),
-      .KEY_LEN (2),
-      .DATA_LEN(16)
-  ) get_rdata_h (
-      .out(rdata_h),
-      .key(pos),
-      .lut({2'h0, rdata_w[15:0], 2'h1, rdata_w[23:8], 2'h2, rdata_w[31:16]})
-  );
-  MuxKey #(
-      .NR_KEY  (5),
-      .KEY_LEN (3),
-      .DATA_LEN(32)
-  ) get_rdata (
-      .out(mem_rdata),
-      .key(readop),
-      .lut({
-        3'h0,
-        {{24{rdata_b[7]}}, rdata_b},
-        3'h1,
-        {{16{rdata_h[15]}}, rdata_h},
-        3'h2,
-        rdata_w,
-        3'h4,
-        {{24{1'b0}}, rdata_b},
-        3'h5,
-        {{16{1'b0}}, rdata_h}
-      })
-  );
+
 
 endmodule
