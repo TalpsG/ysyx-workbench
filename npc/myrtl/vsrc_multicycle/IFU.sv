@@ -33,7 +33,6 @@ module IFU #(
   end
 
 
-  reg [1:0] state;
   /*
   *
   * 读事务依赖
@@ -48,62 +47,56 @@ module IFU #(
   *
   */
 
-  //araddr 
-  reg fetch_flag;
+  reg [1:0] state;
   reg [31:0] delay, now;
-  reg read_flag;
   always @(posedge clk) begin
     if (rst) begin
       pc <= 32'h80000000 - 32'h4;
-      fetch_flag <= 0;
       arvalid <= 0;
       rready <= 0;
       valid <= 0;
       delay <= $random & 32'h0000001f;
       now <= 0;
-      read_flag <= 0;
       state <= `IFU_FETCH;
-    end else if (state == `IFU_FETCH && ~rvalid && ~fetch_flag) begin
-      pc <= in;
-      fetch_flag <= 1;
-    end else if (rvalid && fetch_flag) begin
-      arvalid <= 0;
-      rready <= 0;
-      fetch_flag <= 0;
-      valid <= 1;
-      state <= `IFU_WAIT;
-    end else if (state == `IFU_WAIT && ready) begin
-      state <= `IFU_FETCH;
+    end else begin
+      case (state)
+        `IFU_FETCH: begin
+          pc <= in;
+          delay <= $random & 32'h0000001f;
+          araddr <= in;
+          now <= 0;
+          state <= `IFU_WAIT_DELAY;
+        end
+        `IFU_WAIT_DELAY: begin
+          if (delay == now) begin
+            arvalid <= 1;
+            rready <= 1;
+            state <= `IFU_WAIT_MEM;
+            now <= 0;
+          end else begin
+            now <= now + 1;
+          end
+        end
+        `IFU_WAIT_MEM: begin
+          if (rvalid) begin
+            ins <= rdata;
+            arvalid <= 0;
+            rready <= 0;
+            araddr <= 0;
+            valid <= 1;
+            state <= `IFU_WAIT_MEM;
+          end
+          if (ready) begin
+            state <= `IFU_FETCH;
+          end
+        end
+        default: state <= `IFU_FETCH;
+      endcase
     end
   end
   always @(posedge clk) begin
     if (valid) valid <= 0;
   end
-  always @(posedge clk) begin
-    if (fetch_flag) begin
-      if (now == delay) begin
-        delay <= $random & 32'h0000001f;
-        araddr <= in;
-        arvalid <= 1;
-        rready <= 1;
-        now <= 0;
-      end else begin
-        now <= now + 1;
-      end
-    end else begin
-      now <= 0;
-    end
-  end
-  // valid
-  //always @(posedge clk) begin
-  //if (rvalid) begin
-  //valid <= 1;
-  //end else if (valid && ready) begin
-  //valid <= 0;
-  //end
-  //end
-
-
 
 
   INS_MEM u_INS_MEM (

@@ -75,11 +75,9 @@ module WBU (
   assign csr_wdata5 = fake_csr_wdata;
 
 
-  reg [31:0] mem_wdata_reg;
-  reg [1:0] read_state;
-  reg [1:0] write_state;
-  reg mem_access;
   wire [5:0] fake_csr_write;
+  reg  [1:0] read_state;
+  reg  [1:0] write_state;
   reg [31:0] read_delay, read_now;
   reg [31:0] write_delay, write_now;
 

@@ -31,7 +31,8 @@
 
 
 `define IFU_FETCH 2'b00
-`define IFU_WAIT 2'b01
+`define IFU_WAIT_DELAY 2'b01
+`define IFU_WAIT_MEM 2'b10
 
 
 `define IDU_READY 2'b00
@@ -45,3 +46,7 @@
 `define MEM_BUSY 2'b00
 `define MEM_WAIT_RES 2'b01
 `define MEM_WAIT_REQ 2'b10
+
+`define ARBITER_IDLE 2'b00
+`define ARBITER_MULTI_BUSY 2'b01
+`define ARBITER_SINGLE_BUSY 2'b10

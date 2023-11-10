@@ -38,35 +38,49 @@ module IDU (
 
 	内存读写发出单脉冲请求，而非电平
   */
-  always @(posedge clk) begin
-    if (rst) begin
-      mem_read   <= 0;
-      mem_write  <= 0;
-      read_flag  <= 0;
-      write_flag <= 0;
-    end else begin
-      if (~read_flag && opcode == `OPCODE_LOAD) begin
-        mem_read  <= 1;
-        read_flag <= 1;
-      end else begin
-        mem_read <= 0;
-      end
-      if (~write_flag && opcode == `OPCODE_STORE) begin
-        write_flag <= 1;
-        mem_write  <= 1;
-      end else begin
-        mem_write <= 0;
-      end
-    end
-  end
+
+  wire pre_mem_access;
+  wire [6:0] pre_opcode;
   always @(posedge clk) begin
     if (rst) begin
       idu_ready <= 0;
       ins <= 0;
-      state <= 0;
-    end else if (state == `IDU_READY && ifu_valid) begin
-      ins   <= real_ins;
-      state <= `IDU_WAIT_EXU;
+      state <= `IDU_READY;
+      read_flag <= 0;
+      write_flag <= 0;
+    end else begin
+      case (state)
+        `IDU_READY: begin
+          idu_ready <= 0;
+          if (ifu_valid) begin
+            ins <= real_ins;
+            state <= pre_mem_access ? `IDU_WAIT_MEM : `IDU_WAIT_EXU;
+            mem_write <= pre_opcode == `OPCODE_STORE;
+            mem_read <= pre_opcode == `OPCODE_LOAD;
+          end
+        end
+        `IDU_WAIT_EXU: begin
+          idu_ready <= 1;
+          ins <= 0;
+          state <= `IDU_READY;
+        end
+        `IDU_WAIT_MEM: begin
+          if (~mem_finish) begin
+            if (mem_read) begin
+              mem_read <= 0;
+            end
+            if (mem_write) begin
+              mem_write <= 0;
+            end
+          end else begin
+            idu_ready <= 1;
+            state <= `IDU_READY;
+            ins <= 0;
+          end
+        end
+
+        default: state <= `IDU_READY;
+      endcase
     end
   end
 
@@ -75,31 +89,10 @@ module IDU (
     ebreak(ins);
   end
 
-  always @(posedge clk) begin
-    if (mem_access && state != `IDU_READY) begin
-      if (mem_finish) begin
-        state <= `IDU_READY;
-        idu_ready <= 1;
-        ins <= 0;
-        write_flag <= 0;
-        read_flag <= 0;
-      end else begin
-        state <= `IDU_WAIT_MEM;
-        idu_ready <= 0;
-      end
-    end else begin
-      if (state == `IDU_WAIT_EXU) begin
-        idu_ready <= 1;
-        state <= `IDU_READY;
-        ins <= 0;
-      end else begin
-        idu_ready <= 0;
-      end
-    end
-  end
 
   wire [31:0] immI, immU, immB, immS, immJ;
 
+  assign pre_opcode = real_ins[6:0];
   assign opcode = ins[6:0];
   assign rs1 = ins[19:15];
   assign rs2 = ins[24:20];
@@ -127,6 +120,7 @@ module IDU (
   assign is_ecall = (ins === `OPCODE_ECALL);
   assign is_mret = (ins === `OPCODE_MRET);
   assign mem_access = (opcode === `OPCODE_LOAD) || (opcode === `OPCODE_STORE);
+  assign pre_mem_access = real_ins[6:0] == `OPCODE_LOAD || real_ins[6:0] == `OPCODE_STORE;
 
   assign csr_waddr = ins[22:20];
   assign jump_flag = (opcode == `OPCODE_JAL) | (opcode == `OPCODE_JALR);
