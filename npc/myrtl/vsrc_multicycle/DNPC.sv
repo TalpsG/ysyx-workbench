@@ -1,3 +1,4 @@
+`include "/home/talps/gitrepo/ysyx-workbench/npc/myrtl/vsrc_multicycle/utils.sv"
 module DNPC (
     input clk,
     input rst,
@@ -14,14 +15,18 @@ module DNPC (
     input [31:0] mepc,
     output reg [31:0] dnpc
 );
+  reg [1:0] state;
   always @(posedge clk) begin
-    //$display("jump_flag:%d,exu_res:%8x,branch_flag:%d,branch_pc:%8x", jump_flag, exu_res, branch_flag, branch_pc);
+    if (valid) begin
+      state <= `DNPC_WAIT;
+    end
   end
   always @(posedge clk) begin
     //dnpc 改为 reg
     if (rst) begin
-      dnpc <= 32'h80000000;
-    end else if (valid && ~ready) begin
+      state <= `DNPC_WAIT;
+      dnpc  <= 32'h80000000;
+    end else if (state == `DNPC_WAIT) begin
       if (is_ecall) begin
         dnpc <= mtvec;
       end else if (is_mret) begin
@@ -33,6 +38,7 @@ module DNPC (
       end else begin
         dnpc <= snpc;
       end
+      state <= `DNPC_READY;
     end
   end
 

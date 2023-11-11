@@ -13,8 +13,6 @@ module top (
 );
 
   always @(posedge clk) begin
-    //$display("\npc:%8x,waddr:%d,wdata:%8x,ins:%8x", outpc, reg_waddr, reg_wdata, ins);
-    //$display("reg_write:%d,exu_res:%8x,mem_rdata:%8x,opcode:%x\n", reg_write, exu_res, mem_rdata, opcode);
 
   end
   assign valid = ifu_valid;
@@ -32,16 +30,30 @@ module top (
   assign csr_reg[3] = csr_rdata3;
   assign csr_reg[4] = csr_rdata4;
   assign csr_reg[5] = csr_rdata5;
+
+
+  wire [31:0] ifu_araddr;
+  wire ifu_arvalid;
+  wire [31:0] ifu_rdata;
+  wire ifu_rvalid;
+  wire [1:0] ifu_rresp;
+  wire ifu_rready;
   IFU #(
       .WIDTH(32)
   ) u_IFU (
-      .clk(clk),
-      .rst(rst),
-      .in(dnpc),
-      .out(outpc),
-      .ins(ins),
-      .valid(ifu_valid),
-      .ready(idu_ready)
+      .clk        (clk),
+      .rst        (rst),
+      .in         (dnpc),
+      .idu_ready  (idu_ready),
+      .out        (outpc),
+      .ins        (ins),
+      .ifu_valid  (ifu_valid),
+      .ifu_araddr (ifu_araddr),
+      .ifu_arvalid(ifu_arvalid),
+      .ifu_rdata  (ifu_rdata),
+      .ifu_rvalid (ifu_rvalid),
+      .ifu_rresp  (ifu_rresp),
+      .ifu_rready (ifu_rready)
   );
 
   wire [4:0] rs1, rs2, rd;
@@ -60,6 +72,7 @@ module top (
   wire is_branch;
   IDU u_IDU (
       .clk           (clk),
+      .mem_rvalid    (mem_rvalid),
       .rst           (rst),
       .real_ins      (ins),
       .rs1           (rs1),
@@ -72,7 +85,6 @@ module top (
       .select_oprand1(select_oprand1),
       .select_oprand2(select_oprand2),
       .reg_write     (reg_write),
-      .pc_write      (pc_write),
       .mem_read      (mem_read),
       .mem_write     (mem_write),
       .is_ecall      (is_ecall),
@@ -87,7 +99,7 @@ module top (
       .jump_flag     (idu_jump_flag)
 
   );
-  wire [31:0] reg_wdata;
+  reg [31:0] reg_wdata;
   wire [31:0] reg_rdata1;
   wire [31:0] reg_rdata2;
   wire [4:0] reg_waddr = rd;
@@ -115,7 +127,7 @@ module top (
         `OPCODE_JALR,
         snpc,
         `OPCODE_LOAD,
-        mem_rdata,
+        mem_rdata_final,
         `OPCODE_ARITH,
         exu_res,
         `OPCODE_R,
@@ -125,6 +137,9 @@ module top (
       })
   );
 
+  always @(posedge clk) begin
+
+  end
 
   RegisterFile u_RegisterFile (
       .clk   (clk),
@@ -195,7 +210,8 @@ module top (
   wire [31:0] mem_awaddr;
   wire mem_wvalid;
   wire [7:0] mem_wstrb = mem_wmask;
-  wire [31:0] mem_wdata = reg_rdata2;
+  wire [31:0] idu_mem_wdata = reg_rdata2;
+  wire [31:0] mem_wdata;
   wire mem_wready;
   wire mem_bready;
   wire mem_bvalid;
@@ -209,30 +225,6 @@ module top (
 
 
 
-  MEM u_MEM (
-      .clk        (clk),
-      .rst        (rst),
-      .read       (mem_read),
-      .wen        (mem_write),
-      .readop     (mem_readop),
-      .mem_awvalid(mem_awvalid),
-      .mem_awready(mem_awready),
-      .mem_awaddr (mem_awaddr),
-      .mem_wvalid (mem_wvalid),
-      .mem_wstrb  (mem_wstrb),
-      .mem_wdata  (mem_wdata),
-      .mem_wready (mem_wready),
-      .mem_bvalid (mem_bvalid),
-      .mem_bready (mem_bready),
-      .mem_bresp  (mem_bresp),
-      .mem_arvalid(mem_arvalid),
-      .mem_arready(mem_arready),
-      .mem_araddr (mem_araddr),
-      .mem_rvalid (mem_rvalid),
-      .mem_rready (mem_rready),
-      .mem_rresp  (mem_rresp),
-      .mem_rdata  (mem_rdata)
-  );
 
   wire [31:0] branch_pc;
   wire [31:0] fake_csr_wdata;
@@ -284,10 +276,10 @@ module top (
       .mem_araddr    (mem_araddr),
       .mem_rready    (mem_rready),
       .mem_rvalid    (mem_rvalid),
-      .mem_rdata     (mem_rdata),
       .mem_rresp     (mem_rresp),
       .mem_wvalid    (mem_wvalid),
       .mem_wready    (mem_wready),
+      .idu_mem_wdata (idu_mem_wdata),
       .mem_wdata     (mem_wdata),
       .mem_wstrb     (mem_wstrb),
       .mem_awvalid   (mem_awvalid),
@@ -296,7 +288,9 @@ module top (
       .mem_bvalid    (mem_bvalid),
       .mem_bready    (mem_bready),
       .mem_bresp     (mem_bresp),
-      .mem_access    (mem_access)
+      .mem_readop    (mem_readop),
+      .mem_pos       (mem_pos)
+
   );
 
 
@@ -362,8 +356,56 @@ module top (
       })
   );
 
+  ARBITER u_ARBITER (
+      .clk        (clk),
+      .rst        (rst),
+      .ifu_araddr (ifu_araddr),
+      .ifu_arvalid(ifu_arvalid),
+      .ifu_arready(),
+      .ifu_rready (ifu_rready),
+      .ifu_rvalid (ifu_rvalid),
+      .ifu_rdata  (ifu_rdata),
+      .ifu_rresp  (ifu_rresp),
+      .ifu_awaddr (0),
+      .ifu_awvalid(0),
+      .ifu_awready(),
+      .ifu_wdata  (0),
+      .ifu_wvalid (0),
+      .ifu_wstrb  (0),
+      .ifu_wready (),
+      .ifu_bready (0),
+      .ifu_bvalid (),
+      .ifu_bresp  (),
+      .mem_awvalid(mem_awvalid),
+      .mem_awaddr (mem_awaddr),
+      .mem_awready(mem_awready),
+      .mem_wvalid (mem_wvalid),
+      .mem_wstrb  (mem_wstrb),
+      .mem_wdata  (mem_wdata),
+      .mem_wready (mem_wready),
+      .mem_bready (mem_bready),
+      .mem_bvalid (mem_bvalid),
+      .mem_bresp  (mem_bresp),
+      .mem_arvalid(mem_arvalid),
+      .mem_araddr (mem_araddr),
+      .mem_arready(mem_arready),
+      .mem_rready (mem_rready),
+      .mem_rvalid (mem_rvalid),
+      .mem_rdata  (mem_rdata),
+      .mem_rresp  (mem_rresp)
+  );
 
 
+  wire [ 1:0] mem_pos;
+  wire [31:0] mem_rdata_final;
+
+
+  RDATA RDATA (
+      .mem_pos        (mem_pos),
+      .mem_readop     (mem_readop),
+      .mem_rdata      (mem_rdata),
+      .mem_rdata_final(mem_rdata_final)
+  );
 
 
 

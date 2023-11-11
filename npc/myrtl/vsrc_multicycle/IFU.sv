@@ -1,15 +1,25 @@
+`include "/home/talps/gitrepo/ysyx-workbench/npc/myrtl/vsrc_multicycle/utils.sv"
 module IFU #(
     WIDTH = 32
 ) (
     input clk,
     input rst,
     input [WIDTH-1:0] in,
-    input ready,
+    input idu_ready,
     output [WIDTH-1:0] out,
     output reg [31:0] ins,
-    output reg valid
+    output reg ifu_valid,
+
+    output reg [31:0] ifu_araddr,
+    output reg ifu_arvalid,
+    input [31:0] ifu_rdata,
+    input ifu_rvalid,
+    input [1:0] ifu_rresp,
+    output reg ifu_rready
 
 );
+
+
   reg [31:0] pc;
   assign out = pc;
   import "DPI-C" function void fetch(
@@ -18,17 +28,12 @@ module IFU #(
   );
 
 
-  reg [31:0] araddr;
-  reg arvalid;
-  wire arready;
-  wire [31:0] rdata;
-  wire rvalid;
-  wire [1:0] rresp;
-  reg rready;
 
   always @(posedge clk) begin
-    if (rvalid) ins <= rdata;
+    if (ifu_rvalid) ins <= ifu_rdata;
   end
+
+
   /*
   *
   * 读事务依赖
@@ -43,65 +48,57 @@ module IFU #(
   *
   */
 
-
-  //araddr 
-  reg fetch_flag;
+  reg [1:0] state;
+  reg [31:0] delay, now;
   always @(posedge clk) begin
     if (rst) begin
       pc <= 32'h80000000 - 32'h4;
-      fetch_flag <= 0;
-      arvalid <= 0;
-      rready <= 0;
-      valid <= 0;
-    end else if (~valid && ~rvalid && ~fetch_flag) begin
-      pc <= in;
-      araddr <= in;
-      fetch_flag <= 1;
-      arvalid <= 1;
-      rready <= 1;
-    end else if (rvalid && fetch_flag) begin
-      arvalid <= 0;
-      rready <= 0;
-      valid <= 1;
-      fetch_flag <= 0;
-    end else if (valid && ready) begin
-      valid <= 0;
+      ifu_arvalid <= 0;
+      ifu_rready <= 0;
+      ifu_valid <= 0;
+      delay <= $random & 32'h0000001f;
+      now <= 0;
+      state <= `IFU_FETCH;
+    end else begin
+      case (state)
+        `IFU_FETCH: begin
+          pc <= in;
+          delay <= $random & 32'h0000001f;
+          ifu_araddr <= in;
+          now <= 0;
+          state <= `IFU_WAIT_DELAY;
+        end
+        `IFU_WAIT_DELAY: begin
+          if (delay == now) begin
+            ifu_arvalid <= 1;
+            ifu_rready <= 1;
+            state <= `IFU_WAIT_MEM;
+            now <= 0;
+          end else begin
+            now <= now + 1;
+          end
+        end
+        `IFU_WAIT_MEM: begin
+          if (ifu_rvalid) begin
+            ins <= ifu_rdata;
+            ifu_arvalid <= 0;
+            ifu_rready <= 0;
+            ifu_araddr <= 0;
+            ifu_valid <= 1;
+            state <= `IFU_WAIT_MEM;
+          end
+          if (idu_ready) begin
+            state <= `IFU_FETCH;
+          end
+        end
+        default: state <= `IFU_FETCH;
+      endcase
     end
   end
+  always @(posedge clk) begin
+    if (ifu_valid) ifu_valid <= 0;
+  end
 
-  // valid
-  //always @(posedge clk) begin
-  //if (rvalid) begin
-  //valid <= 1;
-  //end else if (valid && ready) begin
-  //valid <= 0;
-  //end
-  //end
-
-
-
-
-  INS_MEM u_INS_MEM (
-      .clk    (clk),
-      .rst    (rst),
-      .araddr (araddr),
-      .arvalid(arvalid),
-      .arready(arready),
-      .rdata  (rdata),
-      .rvalid (rvalid),
-      .rresp  (rresp),
-      .rready (rready),
-      .awaddr (0),
-      .awvalid(0),
-      .awready(),
-      .wdata  (0),
-      .wstrb  (0),
-      .wvalid (0),
-      .wready (),
-      .bresp  (),
-      .bvalid (),
-      .bready (0)
-  );
 
 
 

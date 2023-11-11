@@ -8,7 +8,6 @@ module WBU (
     input [31:0] outpc,
     input [31:0] fake_csr_wdata,
     input is_ecall,
-    input mem_access,
     input mem_read,
     input mem_write,
     input is_mret,
@@ -16,6 +15,7 @@ module WBU (
     input idu_jump_flag,
     input is_branch,
     input [2:0] csr_waddr,
+    input [31:0] idu_mem_wdata,
     output [31:0] branch_pc,
     output wbu_jump_flag,
     output branch_flag,
@@ -27,36 +27,35 @@ module WBU (
     output [31:0] csr_wdata4,
     output [31:0] csr_wdata5,
     output [5:0] csr_write,
+    output [2:0] mem_readop,
+    output reg [1:0] mem_pos,
 
 
-    output mem_arvalid,
+    output reg mem_arvalid,
     input mem_arready,
-    output [31:0] mem_araddr,
+    output reg [31:0] mem_araddr,
 
 
-    output mem_rready,
+    output reg mem_rready,
     input mem_rvalid,
-    input [31:0] mem_rdata,
     input [1:0] mem_rresp,
 
-    output mem_wvalid,
+    output reg mem_wvalid,
     input mem_wready,
-    output [31:0] mem_wdata,
-    output [7:0] mem_wstrb,
+    output reg [31:0] mem_wdata,
+    output reg [7:0] mem_wstrb,
 
-    output mem_awvalid,
+    output reg mem_awvalid,
     input mem_awready,
-    output [31:0] mem_awaddr,
+    output reg [31:0] mem_awaddr,
 
     input mem_bvalid,
-    output mem_bready,
+    output reg mem_bready,
     input [1:0] mem_bresp
 
 
 );
   assign wbu_jump_flag = idu_jump_flag;
-  assign mem_araddr = exu_res;
-  assign mem_awaddr = exu_res;
   assign branch_pc = outpc + imm;
   assign branch_flag = is_branch && exu_res[0];
   //assign reg_write =
@@ -76,42 +75,103 @@ module WBU (
   assign csr_wdata4 = fake_csr_wdata;
   assign csr_wdata5 = fake_csr_wdata;
 
-  always @(posedge clk) begin
-    //$display("csr_write:%x,is_mret:%d,is_ecall:%d,is_csr:%d,fake_csr_write:%x,fake_csr_wdata:%x", csr_write, is_mret, is_ecall, is_csr, fake_csr_write, fake_csr_wdata);
-  end
+
   wire [5:0] fake_csr_write;
-
-
-
-  assign mem_rready  = mem_read;
-  assign mem_arvalid = mem_read;
-  assign mem_wvalid  = mem_write;
-  assign mem_awvalid = mem_write;
-  assign mem_bready  = mem_write;
-
-
-  always @(posedge clk) begin
-    if (rst) begin
-    end else if (mem_access) begin
-      if (mem_read) begin
-        if (mem_read) begin
-          if (mem_rvalid && mem_rready) begin
-            mem_finish <= 1;
-          end
-        end
-      end else if (mem_write) begin
-        //write 
-        if (mem_bvalid) begin
-          mem_finish <= 1;
-        end
-      end
-    end
-  end
+  reg  [1:0] read_state;
+  reg  [1:0] write_state;
+  reg [31:0] read_delay, read_now;
+  reg [31:0] write_delay, write_now;
 
   always @(posedge clk) begin
     if (mem_finish) begin
       mem_finish <= 0;
     end
+  end
+  // state 在read或write脉冲来的时候变为1,表示要进行读取或写入操作 读写完毕后置为0
+  always @(posedge clk) begin
+    if (rst) begin
+      read_state  <= `MEM_WAIT_REQ;
+      write_state <= `MEM_WAIT_REQ;
+      read_delay = $random & 32'h0000001f;
+      read_now <= 0;
+      mem_araddr <= 0;
+      mem_arvalid <= 0;
+      mem_rready <= 0;
+      write_delay <= $random & 32'h0000001f;
+      mem_bready <= 0;
+      mem_awvalid <= 0;
+      mem_wdata <= 0;
+      mem_awaddr <= 0;
+      mem_wvalid <= 0;
+      mem_pos <= 0;
+    end else begin
+      case (read_state)
+        `MEM_WAIT_REQ: begin
+          if (mem_read) begin
+            read_state <= `MEM_BUSY;
+          end
+        end
+        `MEM_BUSY: begin
+          if (read_now == read_delay) begin
+            read_delay = $random & 32'h0000001f;
+            mem_araddr <= exu_res;
+            mem_pos <= exu_res[1:0];
+            mem_arvalid <= 1;
+            mem_rready <= 1;
+            read_now <= 0;
+            read_state <= `MEM_WAIT_RES;
+          end else begin
+            read_now <= read_now + 1;
+          end
+        end
+        `MEM_WAIT_RES: begin
+          if (mem_rvalid && mem_rready) begin
+            mem_finish <= 1;
+            read_state <= `MEM_WAIT_REQ;
+            read_now <= 0;
+            mem_araddr <= 0;
+            mem_arvalid <= 0;
+            mem_rready <= 0;
+          end
+        end
+        default: read_state <= `MEM_WAIT_REQ;
+      endcase
+      case (write_state)
+        `MEM_WAIT_REQ: begin
+          if (mem_write) begin
+            write_state <= `MEM_BUSY;
+          end
+        end
+        `MEM_BUSY: begin
+          if (write_now == write_delay) begin
+            write_delay <= $random & 32'h0000001f;
+            mem_awvalid <= 1;
+            mem_awaddr  <= exu_res;
+            mem_wdata   <= idu_mem_wdata;
+            mem_bready  <= 1;
+            write_now   <= 0;
+            mem_wvalid  <= 1;
+            write_state <= `MEM_WAIT_RES;
+          end else begin
+            write_now <= write_now + 1;
+          end
+        end
+        `MEM_WAIT_RES: begin
+          if (mem_bvalid) begin
+            mem_finish  <= 1;
+            write_state <= `MEM_WAIT_REQ;
+            mem_awvalid <= 0;
+            mem_bready  <= 0;
+            mem_wvalid  <= 0;
+            mem_wdata   <= 0;
+            write_now   <= 0;
+            mem_awaddr  <= 0;
+          end
+        end
+        default: write_state <= `MEM_WAIT_REQ;
+      endcase
+    end
+
   end
 
   MuxKey #(
@@ -136,8 +196,5 @@ module WBU (
         6'b100000
       })
   );
-
-
-
 
 endmodule

@@ -58,7 +58,7 @@ module INS_MEM (
       flag  <= 0;
       delay <= $random & 32'h0000001f;
       now   <= 0;
-    end else if (~rvalid && arvalid && arready) begin
+    end else if (~flag && ~rvalid && arvalid && arready) begin
       npc_mem_read(araddr, rdata_reg);
       flag  <= 1;
       rresp <= 0;
@@ -77,6 +77,7 @@ module INS_MEM (
         now <= 0;
         rvalid <= 1;
         rdata <= rdata_reg;
+        delay <= $random & 32'h0000001f;
       end else begin
         now   <= now + 1;
         rdata <= 0;

@@ -16,6 +16,7 @@ void init_record() {
 		printf("difftest with nemu fail\n");
 		exit(1);
 	}
+	printf("difftest init success !!!\n");
 }
 void check_record() {
 	char nemu[400]="";

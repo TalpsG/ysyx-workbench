@@ -20,32 +20,6 @@ VL_INLINE_OPT void Vtop___024root____Vdpiimwrap_top__DOT__u_IFU__DOT__fetch_TOP(
     ins = ins__Vcvt;
 }
 
-extern "C" void npc_mem_read(int raddr, int* rdata);
-
-VL_INLINE_OPT void Vtop___024root____Vdpiimwrap_top__DOT__u_IFU__DOT__u_INS_MEM__DOT__npc_mem_read_TOP(IData/*31:0*/ raddr, IData/*31:0*/ &rdata) {
-    VL_DEBUG_IF(VL_DBG_MSGF("+    Vtop___024root____Vdpiimwrap_top__DOT__u_IFU__DOT__u_INS_MEM__DOT__npc_mem_read_TOP\n"); );
-    // Body
-    int raddr__Vcvt;
-    for (size_t raddr__Vidx = 0; raddr__Vidx < 1; ++raddr__Vidx) raddr__Vcvt = raddr;
-    int rdata__Vcvt;
-    npc_mem_read(raddr__Vcvt, &rdata__Vcvt);
-    rdata = rdata__Vcvt;
-}
-
-extern "C" void npc_mem_write(int waddr, int wdata, char wmask);
-
-VL_INLINE_OPT void Vtop___024root____Vdpiimwrap_top__DOT__u_IFU__DOT__u_INS_MEM__DOT__npc_mem_write_TOP(IData/*31:0*/ waddr, IData/*31:0*/ wdata, CData/*7:0*/ wmask) {
-    VL_DEBUG_IF(VL_DBG_MSGF("+    Vtop___024root____Vdpiimwrap_top__DOT__u_IFU__DOT__u_INS_MEM__DOT__npc_mem_write_TOP\n"); );
-    // Body
-    int waddr__Vcvt;
-    for (size_t waddr__Vidx = 0; waddr__Vidx < 1; ++waddr__Vidx) waddr__Vcvt = waddr;
-    int wdata__Vcvt;
-    for (size_t wdata__Vidx = 0; wdata__Vidx < 1; ++wdata__Vidx) wdata__Vcvt = wdata;
-    char wmask__Vcvt;
-    for (size_t wmask__Vidx = 0; wmask__Vidx < 1; ++wmask__Vidx) wmask__Vcvt = wmask;
-    npc_mem_write(waddr__Vcvt, wdata__Vcvt, wmask__Vcvt);
-}
-
 extern "C" void ebreak(int ins);
 
 VL_INLINE_OPT void Vtop___024root____Vdpiimwrap_top__DOT__u_IDU__DOT__ebreak_TOP(IData/*31:0*/ ins) {
@@ -56,8 +30,22 @@ VL_INLINE_OPT void Vtop___024root____Vdpiimwrap_top__DOT__u_IDU__DOT__ebreak_TOP
     ebreak(ins__Vcvt);
 }
 
-VL_INLINE_OPT void Vtop___024root____Vdpiimwrap_top__DOT__u_MEM__DOT__npc_mem_write_TOP(IData/*31:0*/ awaddr, IData/*31:0*/ wdata, CData/*7:0*/ wstrb) {
-    VL_DEBUG_IF(VL_DBG_MSGF("+    Vtop___024root____Vdpiimwrap_top__DOT__u_MEM__DOT__npc_mem_write_TOP\n"); );
+extern "C" void npc_mem_read(int raddr, int* rdata);
+
+VL_INLINE_OPT void Vtop___024root____Vdpiimwrap_top__DOT__u_ARBITER__DOT__u_MEM__DOT__npc_mem_read_TOP(IData/*31:0*/ raddr, IData/*31:0*/ &rdata) {
+    VL_DEBUG_IF(VL_DBG_MSGF("+    Vtop___024root____Vdpiimwrap_top__DOT__u_ARBITER__DOT__u_MEM__DOT__npc_mem_read_TOP\n"); );
+    // Body
+    int raddr__Vcvt;
+    for (size_t raddr__Vidx = 0; raddr__Vidx < 1; ++raddr__Vidx) raddr__Vcvt = raddr;
+    int rdata__Vcvt;
+    npc_mem_read(raddr__Vcvt, &rdata__Vcvt);
+    rdata = rdata__Vcvt;
+}
+
+extern "C" void npc_mem_write(int awaddr, int wdata, char wstrb);
+
+VL_INLINE_OPT void Vtop___024root____Vdpiimwrap_top__DOT__u_ARBITER__DOT__u_MEM__DOT__npc_mem_write_TOP(IData/*31:0*/ awaddr, IData/*31:0*/ wdata, CData/*7:0*/ wstrb) {
+    VL_DEBUG_IF(VL_DBG_MSGF("+    Vtop___024root____Vdpiimwrap_top__DOT__u_ARBITER__DOT__u_MEM__DOT__npc_mem_write_TOP\n"); );
     // Body
     int awaddr__Vcvt;
     for (size_t awaddr__Vidx = 0; awaddr__Vidx < 1; ++awaddr__Vidx) awaddr__Vcvt = awaddr;
