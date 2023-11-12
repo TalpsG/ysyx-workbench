@@ -1,6 +1,5 @@
 #include <am.h>
 #include <nemu.h>
-#include <klib.h>
 
 void __am_timer_init() {
 }
@@ -9,6 +8,7 @@ void __am_timer_uptime(AM_TIMER_UPTIME_T *uptime) {
 	char *p =(char *) &(uptime->us);
 	for (int i = 0; i < 8; i++) {
 		p[i] = inb(RTC_ADDR+i);
+		printf("%x\n",p[i]);
 	}
 }
 
