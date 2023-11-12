@@ -2,9 +2,6 @@
 module MEM (
     input clk,
     input rst,
-    input read,
-    input wen,
-    input [2:0] readop,
 
 
     input mem_awvalid,
@@ -103,8 +100,8 @@ module MEM (
         end
         `MEM_WAIT_RES: begin
           if (read_delay == read_now) begin
-            read_now   <= 0;
-            read_delay <= $random & 32'h0000001f;
+            read_now <= 0;
+            //read_delay <= $random & 32'h0000001f;
             npc_mem_read(mem_araddr_reg, mem_rdata);
             mem_rvalid  <= 1;
             mem_arready <= 1;
@@ -135,9 +132,9 @@ module MEM (
         end
         `MEM_WAIT_RES: begin
           if (write_delay == write_now) begin
-            write_delay <= $random & 32'h0000001f;
-            write_now   <= 0;
-            mem_bvalid  <= 1;
+            //write_delay <= $random & 32'h0000001f;
+            write_now  <= 0;
+            mem_bvalid <= 1;
             npc_mem_write(mem_awaddr_reg, mem_wdata_reg, mem_wstrb_reg);
             mem_bresp   <= 0;
             write_state <= `MEM_WAIT_REQ;
