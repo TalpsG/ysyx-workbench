@@ -20,12 +20,10 @@ void  ebreak(int i){
 			printf("HIT GOOD TRAP,PC:0x%8x,RET:0x%8x\n",top.outpc,top.gpr[10]);
 			display_regs();
 			npc_state = ENDING;
-			exit(0);
 		} else {
 			printf("HIT BAD TRAP,PC:0x%8x,RET:0x%8x\n",top.outpc,top.gpr[10]);
 			display_regs();
 			npc_state = ABORT;
-			exit(1);
 		}
     }
 }

@@ -56,14 +56,14 @@ module IFU #(
       ifu_arvalid <= 0;
       ifu_rready <= 0;
       ifu_valid <= 0;
-      delay <= $random & 32'h0000001f;
+      delay <= 0;
       now <= 0;
       state <= `IFU_FETCH;
     end else begin
       case (state)
         `IFU_FETCH: begin
           pc <= in;
-          delay <= $random & 32'h0000001f;
+          //delay <= $random & 32'h0000001f;
           ifu_araddr <= in;
           now <= 0;
           state <= `IFU_WAIT_DELAY;

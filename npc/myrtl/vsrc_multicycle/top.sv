@@ -209,7 +209,7 @@ module top (
   wire mem_awready;
   wire [31:0] mem_awaddr;
   wire mem_wvalid;
-  wire [7:0] mem_wstrb = mem_wmask;
+  wire [7:0] mem_wstrb;
   wire [31:0] idu_mem_wdata = reg_rdata2;
   wire [31:0] mem_wdata;
   wire mem_wready;
@@ -288,8 +288,8 @@ module top (
       .mem_bvalid    (mem_bvalid),
       .mem_bready    (mem_bready),
       .mem_bresp     (mem_bresp),
-      .mem_readop    (mem_readop),
-      .mem_pos       (mem_pos)
+      .mem_pos       (mem_pos),
+      .mem_wmask     (mem_wmask)
 
   );
 

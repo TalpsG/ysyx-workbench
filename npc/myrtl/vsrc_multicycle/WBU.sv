@@ -16,6 +16,7 @@ module WBU (
     input is_branch,
     input [2:0] csr_waddr,
     input [31:0] idu_mem_wdata,
+    input [7:0] mem_wmask,
     output [31:0] branch_pc,
     output wbu_jump_flag,
     output branch_flag,
@@ -27,7 +28,6 @@ module WBU (
     output [31:0] csr_wdata4,
     output [31:0] csr_wdata5,
     output [5:0] csr_write,
-    output [2:0] mem_readop,
     output reg [1:0] mem_pos,
 
 
@@ -90,14 +90,16 @@ module WBU (
   // state 在read或write脉冲来的时候变为1,表示要进行读取或写入操作 读写完毕后置为0
   always @(posedge clk) begin
     if (rst) begin
-      read_state  <= `MEM_WAIT_REQ;
+      read_state <= `MEM_WAIT_REQ;
       write_state <= `MEM_WAIT_REQ;
-      read_delay = $random & 32'h0000001f;
+      //read_delay <= $random & 32'h0000001f;
+      read_delay <= 0;
       read_now <= 0;
       mem_araddr <= 0;
       mem_arvalid <= 0;
       mem_rready <= 0;
-      write_delay <= $random & 32'h0000001f;
+      //write_delay <= $random & 32'h0000001f;
+      write_delay <= 0;
       mem_bready <= 0;
       mem_awvalid <= 0;
       mem_wdata <= 0;
@@ -113,7 +115,7 @@ module WBU (
         end
         `MEM_BUSY: begin
           if (read_now == read_delay) begin
-            read_delay = $random & 32'h0000001f;
+            //read_delay <= $random & 32'h0000001f;
             mem_araddr <= exu_res;
             mem_pos <= exu_res[1:0];
             mem_arvalid <= 1;
@@ -144,10 +146,11 @@ module WBU (
         end
         `MEM_BUSY: begin
           if (write_now == write_delay) begin
-            write_delay <= $random & 32'h0000001f;
+            //write_delay <= $random & 32'h0000001f;
             mem_awvalid <= 1;
             mem_awaddr  <= exu_res;
             mem_wdata   <= idu_mem_wdata;
+            mem_wstrb   <= mem_wmask;
             mem_bready  <= 1;
             write_now   <= 0;
             mem_wvalid  <= 1;
