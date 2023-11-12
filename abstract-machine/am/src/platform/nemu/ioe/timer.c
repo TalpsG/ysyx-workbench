@@ -5,10 +5,11 @@ void __am_timer_init() {
 }
 
 void __am_timer_uptime(AM_TIMER_UPTIME_T *uptime) {
-	uint64_t temp =  inl(RTC_ADDR+4) ;
-	printf("low:%8x,high:%8x",inl(RTC_ADDR),inl(RTC_ADDR+4));
-	uptime->us = (temp <<32)|inl(RTC_ADDR);
-	printf("%16x",uptime->us);
+	printf("low:%u,hight:%u\n",inl(RTC_ADDR),inl(RTC_ADDR+4));
+	//uint64_t temp =  inl(RTC_ADDR+4) ;
+	//printf("low:%8x,high:%8x",inl(RTC_ADDR),inl(RTC_ADDR+4));
+	//uptime->us = (temp <<32)|inl(RTC_ADDR);
+	//printf("%16x",uptime->us);
 }
 
 void __am_timer_rtc(AM_TIMER_RTC_T *rtc) {
