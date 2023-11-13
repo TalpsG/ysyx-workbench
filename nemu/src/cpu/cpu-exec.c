@@ -116,7 +116,7 @@ static void exec_once(Decode *s, vaddr_t pc)
 {
   s->pc = pc;
   s->snpc = pc;
-#ifdef DIFFTEST_FOR_NPC
+#ifdef CONFIG_DIFFTEST_FOR_NPC
   add_record();
 #endif 
   isa_exec_once(s);

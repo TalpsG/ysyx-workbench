@@ -24,6 +24,7 @@
 #include <trace/mtrace.h>
 #include <trace/dtrace.h>
 #include <trace/etrace.h>
+#include <trace/difftest.h>
 
 //for elf
 static char *elf = NULL;
@@ -222,7 +223,7 @@ void init_monitor(int argc, char *argv[]) {
 
   /* Initialize differential testing. */
   init_difftest(diff_so_file, img_size, difftest_port);
-#ifdef DIFFTEST_FOR_NPC
+#ifdef CONFIG_DIFFTEST_FOR_NPC
 init_difftest_for_npc();
 #endif
   /* Initialize the simple debugger. */
