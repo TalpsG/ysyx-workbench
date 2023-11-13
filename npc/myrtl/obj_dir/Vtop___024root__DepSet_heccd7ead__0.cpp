@@ -257,7 +257,7 @@ VL_INLINE_OPT void Vtop___024root___nba_sequent__TOP__0(Vtop___024root* vlSelf) 
     if ((2U & (IData)(vlSelf->top__DOT__csr_write))) {
         __Vdlyvval__top__DOT__u_CSR__DOT__rf__v1 = 
             ((0x73U == vlSelf->top__DOT__u_IDU__DOT__ins)
-              ? vlSelf->out_snpc : vlSelf->top__DOT__fake_csr_wdata);
+              ? vlSelf->top__DOT__u_IFU__DOT__pc : vlSelf->top__DOT__fake_csr_wdata);
         __Vdlyvset__top__DOT__u_CSR__DOT__rf__v1 = 1U;
     }
     if ((4U & (IData)(vlSelf->top__DOT__csr_write))) {
