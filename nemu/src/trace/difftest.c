@@ -12,6 +12,12 @@ void init_difftest_for_npc() {
 	strcat(difftest_file, ".txt");
 	printf("\n%s\n",difftest_file);
   f = fopen(difftest_file, "w+");
+  if (f == NULL) {
+    printf("difftest for npc fail\n");
+	exit(1);
+  }
+    printf("difftest for npc success!!\n");
+
 }
 void add_record() {
   char buf[400] = "";

@@ -58,8 +58,6 @@ module MEM (
 
   reg write_flag;
   reg read_flag;
-  reg [31:0] write_now, write_delay;
-  reg [31:0] read_now, read_delay;
   reg [1:0] write_state, read_state;
   reg [31:0] mem_wdata_reg;
   reg [31:0] mem_awaddr_reg;
@@ -76,13 +74,8 @@ module MEM (
       mem_bresp   <= 0;
       mem_rdata = 0;
 
-      write_now <= 0;
-      write_delay <= 0;
-      read_delay <= 0;
-      read_now <= 0;
-
       write_state <= `MEM_WAIT_REQ;
-      read_state <= `MEM_WAIT_REQ;
+      read_state  <= `MEM_WAIT_REQ;
 
     end else begin
 
@@ -91,30 +84,22 @@ module MEM (
           if (~mem_rvalid && mem_arvalid && mem_arready && mem_rready) begin
             mem_araddr_reg <= mem_araddr;
             read_state <= `MEM_WAIT_RES;
-
             //读取的时候把ready都置为0
             mem_arready <= 0;
           end else begin
             mem_rvalid <= 0;
+            mem_rresp  <= 0;
           end
         end
         `MEM_WAIT_RES: begin
-          if (read_delay == read_now) begin
-            read_now <= 0;
-            //read_delay <= $random & 32'h0000001f;
-            npc_mem_read(mem_araddr_reg, mem_rdata);
-            mem_rvalid  <= 1;
-            mem_arready <= 1;
-            mem_rresp   <= 0;
-            read_state  <= `MEM_WAIT_REQ;
-          end else begin
-            read_now   <= read_now + 1;
-            mem_rvalid <= 0;
-          end
+          npc_mem_read(mem_araddr_reg, mem_rdata);
+          mem_rvalid  <= 1;
+          mem_arready <= 1;
+          mem_rresp   <= 0;
+          read_state  <= `MEM_WAIT_REQ;
         end
         default: begin
           read_state <= `MEM_WAIT_REQ;
-
         end
       endcase
       case (write_state)
@@ -131,16 +116,10 @@ module MEM (
           end
         end
         `MEM_WAIT_RES: begin
-          if (write_delay == write_now) begin
-            //write_delay <= $random & 32'h0000001f;
-            write_now  <= 0;
-            mem_bvalid <= 1;
-            npc_mem_write(mem_awaddr_reg, mem_wdata_reg, mem_wstrb_reg);
-            mem_bresp   <= 0;
-            write_state <= `MEM_WAIT_REQ;
-          end else begin
-            write_now <= write_now + 1;
-          end
+          mem_bvalid <= 1;
+          npc_mem_write(mem_awaddr_reg, mem_wdata_reg, mem_wstrb_reg);
+          mem_bresp   <= 0;
+          write_state <= `MEM_WAIT_REQ;
         end
         default: write_state <= `MEM_WAIT_REQ;
       endcase

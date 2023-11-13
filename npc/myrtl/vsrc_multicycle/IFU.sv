@@ -49,15 +49,12 @@ module IFU #(
   */
 
   reg [1:0] state;
-  reg [31:0] delay, now;
   always @(posedge clk) begin
     if (rst) begin
       pc <= 32'h80000000 - 32'h4;
       ifu_arvalid <= 0;
       ifu_rready <= 0;
       ifu_valid <= 0;
-      delay <= 0;
-      now <= 0;
       state <= `IFU_FETCH;
     end else begin
       case (state)
@@ -65,18 +62,9 @@ module IFU #(
           pc <= in;
           //delay <= $random & 32'h0000001f;
           ifu_araddr <= in;
-          now <= 0;
-          state <= `IFU_WAIT_DELAY;
-        end
-        `IFU_WAIT_DELAY: begin
-          if (delay == now) begin
-            ifu_arvalid <= 1;
-            ifu_rready <= 1;
-            state <= `IFU_WAIT_MEM;
-            now <= 0;
-          end else begin
-            now <= now + 1;
-          end
+          state <= `IFU_WAIT_MEM;
+          ifu_arvalid <= 1;
+          ifu_rready <= 1;
         end
         `IFU_WAIT_MEM: begin
           if (ifu_rvalid) begin

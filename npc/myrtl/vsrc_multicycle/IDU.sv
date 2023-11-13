@@ -94,8 +94,10 @@ module IDU (
 
   assign pre_opcode = real_ins[6:0];
   assign opcode = ins[6:0];
-  assign rs1 = ins[19:15];
-  assign rs2 = ins[24:20];
+  //为了组合逻辑一个周期执行完毕，需要提前取出raddr
+  assign rs1 = real_ins[19:15];
+  assign rs2 = real_ins[24:20];
+  //
   assign rd = ins[11:7];
   assign func7 = ins[31:25];
   assign func3 = ins[14:12];

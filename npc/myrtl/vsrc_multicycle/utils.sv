@@ -31,7 +31,6 @@
 
 
 `define IFU_FETCH 2'b00
-`define IFU_WAIT_DELAY 2'b01
 `define IFU_WAIT_MEM 2'b10
 
 
