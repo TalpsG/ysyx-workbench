@@ -71,8 +71,8 @@ word_t isa_query_intr() {
 }
 
 void print_csr() {
-  printf("id:0 mepc:%8x\n",mstatus);
-  printf("id:1 mepc:%8x\n",mepc);
-  printf("id:2 mepc:%8x\n",mcause);
-  printf("id:3 mepc:%8x\n",mtvec);
+  printf("id:0 mstatus:%8x\n",mstatus);
+  printf("id:1 mepc   :%8x\n",mepc);
+  printf("id:2 mcause :%8x\n",mcause);
+  printf("id:3 mtvec  :%8x\n",mtvec);
 }
