@@ -1,4 +1,4 @@
-`include "/home/talps/gitrepo/ysyx-workbench/npc/myrtl/vsrc_multicycle/utils.sv"
+`include "/home/talps/gitrepo/ysyx-workbench/npc/myrtl/vsrc_multicycle-with-delay/utils.sv"
 module WBU (
     input clk,
     input rst,
@@ -58,9 +58,18 @@ module WBU (
   assign wbu_jump_flag = idu_jump_flag;
   assign branch_pc = outpc + imm;
   assign branch_flag = is_branch && exu_res[0];
+  //assign reg_write =
+  //(opcode == `OPCODE_LUI) 
+  //| (opcode == `OPCODE_AUIPC)
+  //| (opcode == `OPCODE_JAL)
+  //| (opcode == `OPCODE_JALR)
+  //| (opcode == `OPCODE_LOAD)
+  //| (opcode == `OPCODE_ARITH)
+  //| (opcode == `OPCODE_R)
+  //| ((opcode == `OPCODE_CSR)&(func3 != 3'b0));
   assign csr_write = is_mret ? 6'h0 : (is_ecall ? 6'h6 : (is_csr ? fake_csr_write : 6'h0));
   assign csr_wdata0 = fake_csr_wdata;
-  assign csr_wdata1 = is_ecall ? (outpc) : fake_csr_wdata;
+  assign csr_wdata1 = is_ecall ? (outpc + 4) : fake_csr_wdata;
   assign csr_wdata2 = is_ecall ? 32'h1 : fake_csr_wdata;
   assign csr_wdata3 = fake_csr_wdata;
   assign csr_wdata4 = fake_csr_wdata;
@@ -70,6 +79,8 @@ module WBU (
   wire [5:0] fake_csr_write;
   reg  [1:0] read_state;
   reg  [1:0] write_state;
+  reg [31:0] read_delay, read_now;
+  reg [31:0] write_delay, write_now;
 
   always @(posedge clk) begin
     if (mem_finish) begin
@@ -81,9 +92,14 @@ module WBU (
     if (rst) begin
       read_state <= `MEM_WAIT_REQ;
       write_state <= `MEM_WAIT_REQ;
+      //read_delay <= $random & 32'h0000001f;
+      read_delay <= 0;
+      read_now <= 0;
       mem_araddr <= 0;
       mem_arvalid <= 0;
       mem_rready <= 0;
+      //write_delay <= $random & 32'h0000001f;
+      write_delay <= 0;
       mem_bready <= 0;
       mem_awvalid <= 0;
       mem_wdata <= 0;
@@ -98,19 +114,26 @@ module WBU (
           end
         end
         `MEM_BUSY: begin
-          mem_araddr <= exu_res;
-          mem_pos <= exu_res[1:0];
-          mem_arvalid <= 1;
-          mem_rready <= 1;
-          read_state <= `MEM_WAIT_RES;
+          if (read_now == read_delay) begin
+            //read_delay <= $random & 32'h0000001f;
+            mem_araddr <= exu_res;
+            mem_pos <= exu_res[1:0];
+            mem_arvalid <= 1;
+            mem_rready <= 1;
+            read_now <= 0;
+            read_state <= `MEM_WAIT_RES;
+          end else begin
+            read_now <= read_now + 1;
+          end
         end
         `MEM_WAIT_RES: begin
           if (mem_rvalid && mem_rready) begin
-            mem_finish  <= 1;
-            read_state  <= `MEM_WAIT_REQ;
-            mem_araddr  <= 0;
+            mem_finish <= 1;
+            read_state <= `MEM_WAIT_REQ;
+            read_now <= 0;
+            mem_araddr <= 0;
             mem_arvalid <= 0;
-            mem_rready  <= 0;
+            mem_rready <= 0;
           end
         end
         default: read_state <= `MEM_WAIT_REQ;
@@ -122,13 +145,19 @@ module WBU (
           end
         end
         `MEM_BUSY: begin
-          mem_awvalid <= 1;
-          mem_awaddr  <= exu_res;
-          mem_wdata   <= idu_mem_wdata;
-          mem_wstrb   <= mem_wmask;
-          mem_bready  <= 1;
-          mem_wvalid  <= 1;
-          write_state <= `MEM_WAIT_RES;
+          if (write_now == write_delay) begin
+            //write_delay <= $random & 32'h0000001f;
+            mem_awvalid <= 1;
+            mem_awaddr  <= exu_res;
+            mem_wdata   <= idu_mem_wdata;
+            mem_wstrb   <= mem_wmask;
+            mem_bready  <= 1;
+            write_now   <= 0;
+            mem_wvalid  <= 1;
+            write_state <= `MEM_WAIT_RES;
+          end else begin
+            write_now <= write_now + 1;
+          end
         end
         `MEM_WAIT_RES: begin
           if (mem_bvalid) begin
@@ -138,6 +167,7 @@ module WBU (
             mem_bready  <= 0;
             mem_wvalid  <= 0;
             mem_wdata   <= 0;
+            write_now   <= 0;
             mem_awaddr  <= 0;
           end
         end

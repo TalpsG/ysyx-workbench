@@ -1,4 +1,4 @@
-`include "/home/talps/gitrepo/ysyx-workbench/npc/myrtl/vsrc_multicycle/utils.sv"
+`include "/home/talps/gitrepo/ysyx-workbench/npc/myrtl/vsrc_multicycle-with-delay/utils.sv"
 module DNPC (
     input clk,
     input rst,
@@ -30,7 +30,7 @@ module DNPC (
       if (is_ecall) begin
         dnpc <= mtvec;
       end else if (is_mret) begin
-        dnpc <= mepc + 4;
+        dnpc <= mepc;
       end else if (jump_flag) begin
         dnpc <= exu_res;
       end else if (branch_flag) begin
