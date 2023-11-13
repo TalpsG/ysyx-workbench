@@ -51,6 +51,7 @@ paddr_t isa_mmu_translate(vaddr_t vaddr, int len, int type);
 word_t csr_read(word_t index) ;
 word_t csr_write(word_t index,word_t data) ;
 vaddr_t isa_raise_intr(word_t NO, vaddr_t epc);
+void print_csr();
 #define INTR_EMPTY ((word_t)-1)
 word_t isa_query_intr();
 

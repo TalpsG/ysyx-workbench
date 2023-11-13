@@ -96,6 +96,7 @@ static int cmd_info(char *args)
   {
     // print for debug
     isa_reg_display();
+	print_csr();
     return 0;
   }
   else if (strcmp(args, "w") == 0)
