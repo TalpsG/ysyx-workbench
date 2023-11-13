@@ -30,7 +30,7 @@ module ALU (
   assign res_and = num1 & num2;
   assign res_lower_unsigned = num1 < num2 ? 32'h1 : 32'h0;
   assign res_lower_signed = signed_num1 < signed_num2 ? 32'h1 : 32'h0;
-  assign res_left = num1 << num2;
+  assign res_left = num1 << num2[4:0];
   assign res_right_unsigned = num1 >> num2[4:0];
   assign res_right_signed = signed_num1 >>> num2[4:0];
   assign res_eq = num1 === num2 ? 32'b1 : 32'b0;

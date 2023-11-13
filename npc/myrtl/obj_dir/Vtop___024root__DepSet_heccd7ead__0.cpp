@@ -2233,11 +2233,9 @@ VL_INLINE_OPT void Vtop___024root___nba_sequent__TOP__0(Vtop___024root* vlSelf) 
                                              >> (0x1fU 
                                                  & vlSelf->top__DOT__oprand2)))));
     vlSelf->top__DOT__u_EXU__DOT__u_ALU__DOT__get_res__DOT__i0__DOT__pair_list[4U] 
-        = (0x600000000ULL | (QData)((IData)(((0x1fU 
-                                              >= vlSelf->top__DOT__oprand2)
-                                              ? (vlSelf->top__DOT__oprand1 
-                                                 << vlSelf->top__DOT__oprand2)
-                                              : 0U))));
+        = (0x600000000ULL | (QData)((IData)((vlSelf->top__DOT__oprand1 
+                                             << (0x1fU 
+                                                 & vlSelf->top__DOT__oprand2)))));
     vlSelf->top__DOT__u_EXU__DOT__u_ALU__DOT__get_res__DOT__i0__DOT__pair_list[5U] 
         = (0x500000000ULL | (QData)((IData)((VL_LTS_III(32, vlSelf->top__DOT__oprand1, vlSelf->top__DOT__oprand2)
                                               ? 1U : 0U))));
@@ -2268,9 +2266,7 @@ VL_INLINE_OPT void Vtop___024root___nba_sequent__TOP__0(Vtop___024root* vlSelf) 
     vlSelf->top__DOT__u_EXU__DOT__u_ALU__DOT__get_res__DOT__i0__DOT__data_list[3U] 
         = (vlSelf->top__DOT__oprand1 >> (0x1fU & vlSelf->top__DOT__oprand2));
     vlSelf->top__DOT__u_EXU__DOT__u_ALU__DOT__get_res__DOT__i0__DOT__data_list[4U] 
-        = ((0x1fU >= vlSelf->top__DOT__oprand2) ? (vlSelf->top__DOT__oprand1 
-                                                   << vlSelf->top__DOT__oprand2)
-            : 0U);
+        = (vlSelf->top__DOT__oprand1 << (0x1fU & vlSelf->top__DOT__oprand2));
     vlSelf->top__DOT__u_EXU__DOT__u_ALU__DOT__get_res__DOT__i0__DOT__data_list[5U] 
         = (VL_LTS_III(32, vlSelf->top__DOT__oprand1, vlSelf->top__DOT__oprand2)
             ? 1U : 0U);
