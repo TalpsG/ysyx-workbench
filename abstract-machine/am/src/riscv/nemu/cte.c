@@ -13,7 +13,7 @@ Context* __am_irq_handle(Context *c) {
 	  c->mepc += 4;
       break;
 	}
-      default: printf("mcause:%d\n",c->mcause);ev.event = EVENT_ERROR; break;
+      default:ev.event = EVENT_ERROR; break;
     }
 
     c = user_handler(ev, c);
