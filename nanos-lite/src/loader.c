@@ -11,10 +11,8 @@
 # define Elf_Ehdr Elf32_Ehdr
 # define Elf_Phdr Elf32_Phdr
 #endif
-char mem[1000000];
 static uintptr_t loader(PCB *pcb, const char *filename) {
   Elf32_Ehdr header_table ;
-  memset(mem, 0, 1000000);
   ramdisk_read(&header_table, 0, sizeof(Elf32_Ehdr));
   int phnum = header_table.e_phnum;
   //测试loader
@@ -29,12 +27,9 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
 	size_t p_offset = program_table.p_offset ;
 	size_t p_filesz = program_table.p_filesz;
 	printf("vaddr:%p offset %p\n",(void*)addr,(void*)p_offset);
-	size_t mem_addr = (addr-0x83000000);
-	printf("mem_addr:%p\n",(void*)mem_addr);
-	ramdisk_read(mem+mem_addr,p_offset,p_filesz);
+	ramdisk_read((void*)addr,p_offset,p_filesz);
 	printf("finish %d\n",i);
   }
-  printf("return to %p\n",(void *)header_table.e_entry);
   return (uintptr_t)header_table.e_entry;
 }
 
