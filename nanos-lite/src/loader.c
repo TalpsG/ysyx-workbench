@@ -13,17 +13,10 @@
 #endif
 //static char img[] = "/home/talps/gitrepo/ysyx-workbench/nanos-lite/build/ramdisk.img";
 static uintptr_t loader(PCB *pcb, const char *filename) {
-  //int fd = open(img,O_RDONLY);
-  //if (fd == -1) {
-    //printf("elf file read fail\n");
-	//return 0;
-  //}
-  //struct stat fs;
-  //fstat(fd, &fs);
-  //char *elf ;
-  //Elf32_Ehdr *header_table= (Elf32_Ehdr*)elf;
+  Elf32_Ehdr header_table ;
+  ramdisk_read(&header_table, (size_t)&ramdisk_start, RAMDISK_SIZE);
   //int phnum = header_table->e_phnum;
-  //printf("sizeof(Elf32_Phdr):%d,phentsize:%d\n",sizeof(Elf32_Phdr),header_table->e_phentsize);
+  printf("sizeof(Elf32_Phdr):%d,phentsize:%d\n",sizeof(Elf32_Phdr),header_table.e_phentsize);
   //测试loader
   //for (int i = 0; i < phnum; i++) {
 	//if(program_table[i].p_type != PT_LOAD) continue;
