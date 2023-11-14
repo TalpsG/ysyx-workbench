@@ -16,9 +16,6 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
   ramdisk_read(&header_table, 0, sizeof(Elf32_Ehdr));
   int phnum = header_table.e_phnum;
   //测试loader
-  printf("\nready move\n");
-  size_t start = (size_t)&ramdisk_start;
-  printf("start %p\n",(void*)start);
   for (int i = 0; i < phnum; i++) {
     Elf32_Phdr program_table;
     ramdisk_read(&program_table,header_table.e_phoff+i*sizeof(Elf32_Phdr),sizeof(Elf32_Phdr));
@@ -26,9 +23,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
     size_t addr =  program_table.p_vaddr ;
 	size_t p_offset = program_table.p_offset ;
 	size_t p_filesz = program_table.p_filesz;
-	printf("vaddr:%p offset %p\n",(void*)addr,(void*)p_offset);
 	ramdisk_read((void*)addr,p_offset,p_filesz);
-	printf("finish %d\n",i);
   }
   return (uintptr_t)header_table.e_entry;
 }
