@@ -28,6 +28,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
 	size_t p_filesz = program_table.p_filesz;
 	size_t p_memsz = program_table.p_memsz;
   	printf("\nmove\n");
+	printf("offset %p\n",p_offset);
 	ramdisk_write((void *)p_offset, addr, p_filesz);
 	printf("\nset\n");
 	ramdisk_set(0, addr+p_filesz,p_memsz-p_filesz);
