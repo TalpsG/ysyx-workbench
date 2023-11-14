@@ -11,9 +11,10 @@
 # define Elf_Ehdr Elf32_Ehdr
 # define Elf_Phdr Elf32_Phdr
 #endif
-//static char img[] = "/home/talps/gitrepo/ysyx-workbench/nanos-lite/build/ramdisk.img";
+char mem[1000000];
 static uintptr_t loader(PCB *pcb, const char *filename) {
   Elf32_Ehdr header_table ;
+  memset(mem, 0, 1000000);
   ramdisk_read(&header_table, 0, sizeof(Elf32_Ehdr));
   int phnum = header_table.e_phnum;
   //测试loader
@@ -28,11 +29,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
 	printf("vaddr:%p\n",(void*)addr);
 	size_t p_offset = program_table.p_offset + start;
 	size_t p_filesz = program_table.p_filesz;
-	size_t p_memsz = program_table.p_memsz;
-	printf("offset %p\n",p_offset);
-	ramdisk_write((void *)p_offset, addr, p_filesz);
-	printf("\nset\n");
-	ramdisk_set(0, addr+p_filesz,p_memsz-p_filesz);
+	ramdisk_read(mem+addr-0x8300000u,p_offset,p_filesz);
   }
   return (uintptr_t)header_table.e_entry;
 }
