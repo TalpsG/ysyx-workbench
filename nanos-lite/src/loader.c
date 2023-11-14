@@ -29,9 +29,9 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
 	size_t p_offset = program_table.p_offset ;
 	size_t p_filesz = program_table.p_filesz;
 	printf("vaddr:%p offset %p\n",(void*)addr,(void*)p_offset);
-	void *mem_addr = mem+addr-0x83000000;
+	size_t mem_addr = (addr-0x83000000);
 	printf("mem_addr:%p\n",(void*)mem_addr);
-	ramdisk_read(mem_addr,p_offset,p_filesz);
+	ramdisk_read(mem+mem_addr,p_offset,p_filesz);
 	printf("finish %d\n",i);
   }
   return (uintptr_t)header_table.e_entry;
