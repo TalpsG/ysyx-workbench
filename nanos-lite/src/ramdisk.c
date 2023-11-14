@@ -1,5 +1,4 @@
-#include <common.h>
-
+#include <ramdisk.h>
 extern uint8_t ramdisk_start;
 extern uint8_t ramdisk_end;
 #define RAMDISK_SIZE ((&ramdisk_end) - (&ramdisk_start))
@@ -22,7 +21,10 @@ size_t ramdisk_write(const void *buf, size_t offset, size_t len) {
   memcpy(&ramdisk_start + offset, buf, len);
   return len;
 }
-
+size_t ramdisk_set(int val, size_t offset, size_t len) {
+  memset(&ramdisk_start,val,len);
+  return len;
+}
 void init_ramdisk() {
   Log("ramdisk info: start = %p, end = %p, size = %d bytes",
       &ramdisk_start, &ramdisk_end, RAMDISK_SIZE);
