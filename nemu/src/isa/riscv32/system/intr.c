@@ -58,6 +58,7 @@ word_t isa_raise_intr(word_t NO, vaddr_t epc) {
    */
   mcause = NO;
   mepc =epc;
+  mstatus = 0x1800;
 #ifdef CONFIG_ETRACE
   char buf[100];
   sprintf(buf, "pc:%8x,mcause:%d,handler_addr:%8x\n",epc,mcause,mtvec);
