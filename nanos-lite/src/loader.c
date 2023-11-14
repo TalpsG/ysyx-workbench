@@ -18,13 +18,14 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
   int phnum = header_table.e_phnum;
   //测试loader
   printf("\nready move\n");
+  size_t start = (size_t)&ramdisk_start;
   for (int i = 0; i < phnum; i++) {
     Elf32_Phdr program_table;
     ramdisk_read(&program_table,header_table.e_phoff+i*sizeof(Elf32_Phdr),sizeof(Elf32_Phdr));
 	if(program_table.p_type != PT_LOAD) continue;
-    size_t addr =  program_table.p_vaddr;
+    size_t addr =  program_table.p_vaddr - start;
 	printf("vaddr:%p",(void*)addr);
-	size_t p_offset = program_table.p_offset;
+	size_t p_offset = program_table.p_offset + start;
 	size_t p_filesz = program_table.p_filesz;
 	size_t p_memsz = program_table.p_memsz;
   	printf("\nmove\n");
