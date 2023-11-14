@@ -13,6 +13,11 @@ Context* __am_irq_handle(Context *c) {
 	  c->mepc += 4;
       break;
 	}
+	case 8: {
+	  ev.event = EVENT_YIELD;
+	  c->mepc += 4;
+	  break;
+	}
       default:ev.event = EVENT_ERROR; break;
     }
 
