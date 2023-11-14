@@ -5,6 +5,29 @@
 #include <stdio.h>
 
 #if !defined(__ISA_NATIVE__) || defined(__NATIVE_USE_KLIB__)
+void customPrintPointer(void *ptr,char *buffer) {
+    unsigned int p = (unsigned int)ptr;
+    int index = 0;
+    buffer[index++] = '0';
+    buffer[index++] = 'x';
+    do {
+        int digit = p % 16;
+        buffer[index++] = (digit < 10) ? (digit + '0') : (digit - 10 + 'a');
+        p /= 16;
+    } while (p != 0);
+    buffer[index] = '\0';
+
+    // 反转字符串
+    int start = 2; // 从"0x"后开始反转
+    int end = index - 1;
+    while (start < end) {
+        char temp = buffer[start];
+        buffer[start] = buffer[end];
+        buffer[end] = temp;
+        start++;
+        end--;
+    }
+}
 void int2str(int i,char *p){                                              
     char temp[20];
     int isNeg = i<0;
@@ -96,9 +119,9 @@ int printf(const char *fmt, ...) {
       } else if (c_next == 'p') {
 		num++;
 		fmt_p +=2;
-		int temp  = sizeof(void *);
-		char buf[10];
-		int2str(temp, buf);
+		void *temp =va_arg(ap,void *);
+		char buf[20];
+		customPrintPointer(temp, buf);
 		for (int i = 0; i < strlen(buf); i++) {
 			putch(buf[i]);
 		}
