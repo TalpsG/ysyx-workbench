@@ -34,6 +34,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
 	ramdisk_read(mem+mem_addr,p_offset,p_filesz);
 	printf("finish %d\n",i);
   }
+  printf("return to %p\n",(void *)header_table.e_entry);
   return (uintptr_t)header_table.e_entry;
 }
 
