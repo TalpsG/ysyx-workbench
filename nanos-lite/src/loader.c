@@ -19,6 +19,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
   //测试loader
   printf("\nready move\n");
   size_t start = (size_t)&ramdisk_start;
+  printf("start %p\n",(void*)start);
   for (int i = 0; i < phnum; i++) {
     Elf32_Phdr program_table;
     ramdisk_read(&program_table,header_table.e_phoff+i*sizeof(Elf32_Phdr),sizeof(Elf32_Phdr));
