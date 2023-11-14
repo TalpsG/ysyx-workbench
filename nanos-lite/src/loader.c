@@ -14,8 +14,8 @@
 //static char img[] = "/home/talps/gitrepo/ysyx-workbench/nanos-lite/build/ramdisk.img";
 static uintptr_t loader(PCB *pcb, const char *filename) {
   Elf32_Ehdr header_table ;
-  printf("%p , %p",&ramdisk_start,(void *)RAMDISK_SIZE);
-  ramdisk_read(&header_table, (size_t)&ramdisk_start, RAMDISK_SIZE);
+  printf("\n%p , %p\n",&ramdisk_start,(void *)RAMDISK_SIZE);
+  ramdisk_read(&header_table, (size_t)&ramdisk_start, sizeof(Elf32_Ehdr));
   //int phnum = header_table->e_phnum;
   printf("sizeof(Elf32_Phdr):%d,phentsize:%d\n",sizeof(Elf32_Phdr),header_table.e_phentsize);
   //测试loader
