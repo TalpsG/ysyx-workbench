@@ -28,7 +28,6 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
 	//ramdisk_set(0, addr+p_filesz,p_memsz-p_filesz);
   //}
   //return (uintptr_t)header_table->e_entry;
-  TODO();
   return 0;
 }
 
