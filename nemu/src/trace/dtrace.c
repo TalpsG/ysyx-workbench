@@ -12,6 +12,7 @@ void init_dtrace() {
 }
 void add_dtrace(char *str) {
 	fprintf(f, "%s",str);
+	fflush(f);
 }
 void print_dtrace() {
 }
