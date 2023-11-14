@@ -30,6 +30,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
 	size_t p_offset = program_table.p_offset + start;
 	size_t p_filesz = program_table.p_filesz;
 	ramdisk_read(mem+addr-0x8300000u,p_offset,p_filesz);
+	printf("finish %d\n",i);
   }
   return (uintptr_t)header_table.e_entry;
 }
