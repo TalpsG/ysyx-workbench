@@ -18,6 +18,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
   Elf32_Phdr *program_table = (void *)header_table.e_phoff;
   int phnum = header_table.e_phnum;
   //测试loader
+  printf("\nready move\n");
   for (int i = 0; i < phnum; i++) {
 	if(program_table[i].p_type != PT_LOAD) continue;
     size_t addr =  program_table[i].p_vaddr;
