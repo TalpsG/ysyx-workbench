@@ -23,6 +23,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
     ramdisk_read(&program_table,header_table.e_phoff+i*sizeof(Elf32_Phdr),sizeof(Elf32_Phdr));
 	if(program_table.p_type != PT_LOAD) continue;
     size_t addr =  program_table.p_vaddr;
+	printf("vaddr:%p",(void*)addr);
 	size_t p_offset = program_table.p_offset;
 	size_t p_filesz = program_table.p_filesz;
 	size_t p_memsz = program_table.p_memsz;
