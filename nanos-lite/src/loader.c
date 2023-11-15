@@ -15,6 +15,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
   Elf32_Ehdr header_table ;
   ramdisk_read(&header_table, 0, sizeof(Elf32_Ehdr));
   int phnum = header_table.e_phnum;
+  printf("\nmagic:%p\n",(void *)header_table.e_ident);
   //测试loader
   for (int i = 0; i < phnum; i++) {
     Elf32_Phdr program_table;
