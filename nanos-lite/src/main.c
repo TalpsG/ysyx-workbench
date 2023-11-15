@@ -8,14 +8,14 @@ void init_fs(void);
 void init_proc(void);
 
 int main() {
-  //extern const char logo[];
-  //printf("%s", logo);
-  //Log("'Hello World!' from Nanos-lite");
-  //Log("Build time: %s, %s", __TIME__, __DATE__);
+  extern const char logo[];
+  printf("%s", logo);
+  Log("'Hello World!' from Nanos-lite");
+  Log("Build time: %s, %s", __TIME__, __DATE__);
 
-  //init_mm();
+  init_mm();
 
-  //init_device();
+  init_device();
 
   init_ramdisk();
 
@@ -23,11 +23,11 @@ int main() {
   init_irq();
 #endif
 
-  //init_fs();
+  init_fs();
 
   init_proc();
 
-  //Log("Finish initialization");
+  Log("Finish initialization");
 
 #ifdef HAS_CTE
   yield();
