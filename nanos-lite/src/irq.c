@@ -1,5 +1,5 @@
 #include <common.h>
-
+#include <syscall.h>
 static Context* do_event(Event e, Context* c) {
   printf("event:%d\n",e.event);
   switch (e.event) {
@@ -7,7 +7,7 @@ static Context* do_event(Event e, Context* c) {
 		break;
 	}
 	case EVENT_SYSCALL: {
-		printf("syscall catch!\n");
+		do_syscall(c);
 		break;
 	}
 
