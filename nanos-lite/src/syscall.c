@@ -11,6 +11,8 @@ int sys_exit(int code) {
 }
 int sys_write(int fd, const void *buf, size_t n) {
 	printf("fd:%d\n",fd);
+	printf("buf:%x\n",buf);
+	printf("size:%d\n",n);
   if (fd == 1 || fd == 2) {
 	int i;
 	for (i = 0; i < n; i++) {
@@ -39,11 +41,11 @@ void do_syscall(Context *c) {
 	break;
   }
   case 0: {
-    c->GPR2 = sys_exit(a[1]);
+    c->GPRx = sys_exit(a[1]);
 	break;
   }
   case 4: {
-	c->GPR2 = sys_write(a[1],(void*) a[2], a[3]);
+	c->GPRx = sys_write(a[1],(void*) a[2], a[3]);
   }
 
     default: panic("Unhandled syscall ID = %d", a[0]);
