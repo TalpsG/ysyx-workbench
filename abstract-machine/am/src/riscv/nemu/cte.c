@@ -8,6 +8,7 @@ static Context* (*user_handler)(Event, Context*) = NULL;
 Context* __am_irq_handle(Context *c) {
   if (user_handler) {
     Event ev = {0};
+	printf("reg[17]:%x\n",(void *)c->GPR1);
     switch (c->GPR1) {
 		case 0xffffffff: {
 			ev.event = EVENT_YIELD;
