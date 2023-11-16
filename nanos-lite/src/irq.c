@@ -1,7 +1,6 @@
 #include <common.h>
 #include <syscall.h>
 static Context* do_event(Event e, Context* c) {
-  printf("event:%d\n",e.event);
   switch (e.event) {
 	case EVENT_YIELD : {
 		break;
