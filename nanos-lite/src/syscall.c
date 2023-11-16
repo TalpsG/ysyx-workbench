@@ -11,7 +11,7 @@ int sys_exit(int code) {
 }
 int sys_write(int fd, const void *buf, size_t n) {
 	printf("fd:%d\n",fd);
-	printf("buf:%x\n",buf);
+	printf("buf:%p\n",buf);
 	printf("size:%d\n",n);
   if (fd == 1 || fd == 2) {
 	int i;
