@@ -15,6 +15,10 @@ Context* __am_irq_handle(Context *c) {
 	  c->mcause = 0xb; 
       break;
 	}
+	case 0x1: {
+      ev.event = EVENT_SYSCALL;
+	  c->mepc += 4;
+	}
     default: {
       ev.event = EVENT_ERROR;
 	  c->mepc += 4;
