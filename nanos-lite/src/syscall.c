@@ -10,6 +10,7 @@ int sys_exit(int code) {
   halt(code);
 }
 int sys_write(int fd, const void *buf, size_t n) {
+	printf("fd:%d\n",fd);
   if (fd == 1 || fd == 2) {
 	int i;
 	for (i = 0; i < n; i++) {
