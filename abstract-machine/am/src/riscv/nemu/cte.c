@@ -6,7 +6,6 @@
 static Context* (*user_handler)(Event, Context*) = NULL;
 
 Context* __am_irq_handle(Context *c) {
-	printf("a7:%d\n",c->GPR1);
   if (user_handler) {
     Event ev = {0};
     switch (c->GPR1) {
