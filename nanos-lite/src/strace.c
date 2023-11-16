@@ -6,4 +6,5 @@ struct strace_info {
 };
 
 void add_strace(char *name, char *para) {
+	// nothing to do
 }

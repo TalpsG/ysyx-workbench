@@ -1,10 +1,12 @@
 #include "syscall.h"
 #include "common.h"
 int sys_yield() {
+  printf("syscall : yield ,no param\n");
   yield();
   return 0;
 }
 int sys_exit(int code) {
+  printf("syscall : exit  ,param1: %d\n",code);
   halt(code);
 }
 void do_syscall(Context *c) {
