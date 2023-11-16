@@ -6,11 +6,11 @@ static Context* do_event(Event e, Context* c) {
 		break;
 	}
 	case EVENT_SYSCALL: {
-		//printf("syscall catch!\n");
+		printf("syscall catch!\n");
 		break;
 	}
 
-    default: panic("Unhandled event ID = %d", e.event);
+    default: panic("Unhandled event ID = %d", e.event);break;
   }
 
   return c;
