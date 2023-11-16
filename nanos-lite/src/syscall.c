@@ -10,7 +10,6 @@ void do_syscall(Context *c) {
 
   switch (a[0]) {
   case 1: {
-	printf("sys_yield catch\n");
 	sys_yield();
 	break;
   }
