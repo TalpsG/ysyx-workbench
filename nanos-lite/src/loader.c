@@ -4,6 +4,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <unistd.h>
+#include <fs.h>
 #ifdef __LP64__
 # define Elf_Ehdr Elf64_Ehdr
 # define Elf_Phdr Elf64_Phdr
@@ -12,7 +13,7 @@
 # define Elf_Phdr Elf32_Phdr
 #endif
 static uintptr_t loader(PCB *pcb, const char *filename) {
-
+  fs_open(NULL, 0, 0);
   Elf_Ehdr header_table ;
   ramdisk_read(&header_table, 0, sizeof(Elf_Ehdr));
   int phnum = header_table.e_phnum;
