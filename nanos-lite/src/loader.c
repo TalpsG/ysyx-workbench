@@ -33,6 +33,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
 	ramdisk_read((void*)addr,file_offset+ p_offset,p_filesz);
 	memset((void*)(addr+file_offset+ p_filesz),0,p_memsz - p_filesz);
   }
+  fs_close(fd);
   return (uintptr_t)header_table.e_entry;
 }
 

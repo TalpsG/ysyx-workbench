@@ -50,7 +50,25 @@ size_t fs_fileoffset(int fd) {
   return file_table[fd].disk_offset;
 }
 size_t fs_lseek(int fd, size_t offset, int whence) {
-  return 0;
+	switch (whence){
+		case SEEK_SET: {
+			file_table[fd].open_offset = offset;
+			return file_table[fd].open_offset;
+		}
+		case SEEK_CUR: {
+			file_table[fd].open_offset += offset;
+			return file_table[fd].open_offset;
+		}
+		case SEEK_END: {
+			file_table[fd].open_offset = file_table[fd].size+offset;
+			return file_table[fd].open_offset;
+		}
+		default: {
+			printf("whence only can be SEEK_SET,SEEK_CUR or SEEK_END\n");
+			return -1;
+		}
+	}
+  return -1;
 }
 int fs_close(int fd) {
   return 0;
