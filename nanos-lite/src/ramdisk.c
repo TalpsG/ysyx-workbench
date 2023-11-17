@@ -7,7 +7,7 @@
 /* read `len' bytes starting from `offset' of ramdisk into `buf' */
 size_t ramdisk_read(void *buf, size_t offset, size_t len) {
   assert(offset + len <= RAMDISK_SIZE);
-  printf("addr:%p,len:%d",&ramdisk_start+offset,len);
+  printf("addr:%p,len:%d\n",&ramdisk_start+offset,len);
   memcpy(buf, &ramdisk_start + offset, len);
   return len;
 }
