@@ -4,11 +4,11 @@
 int main() {
   FILE *fp = fopen("/share/files/num", "r+");
   assert(fp);
-
+	printf("fopen pass");
   fseek(fp, 0, SEEK_END);
   long size = ftell(fp);
   assert(size == 5000);
-
+	printf("fseek pass");
   fseek(fp, 500 * 5, SEEK_SET);
   int i, n;
   for (i = 500; i < 1000; i ++) {
