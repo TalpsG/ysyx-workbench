@@ -43,7 +43,7 @@ void do_syscall(Context *c) {
 	break;
   }
   case 4: {
-	c->GPRx = sys_write(a[1],(void*) a[2], a[3]);
+	c->gpr[10] = sys_write(a[1],(void*) a[2], a[3]);
 	break;
   }
 
