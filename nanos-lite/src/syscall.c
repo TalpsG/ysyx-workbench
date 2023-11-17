@@ -1,15 +1,24 @@
 #include "syscall.h"
 #include "common.h"
+#define STRACE 1
 int sys_yield() {
+#ifdef STRACE
   printf("syscall : yield ,no param\n");
+#endif
   yield();
   return 0;
 }
 int sys_exit(int code) {
+#ifdef STRACE
   printf("syscall : exit  ,param1: %d\n",code);
+#endif
   halt(code);
+
 }
 int sys_write(int fd, const void *buf, size_t n) {
+#ifdef STRACE
+  printf("syscall : write ,param1:%d,param2:%p,param3:%d",fd,buf,n);
+#endif
   if (fd == 1 || fd == 2) {
 	int i;
 	for (i = 0; i < n; i++) {
