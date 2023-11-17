@@ -15,7 +15,7 @@ int sys_write(int fd, const void *buf, size_t n) {
 	for (i = 0; i < n; i++) {
 		putch(((char*)buf)[i]);
 	}
-	return n;
+	return i;
   } else {
     char str[] = "not support filesystem\n";
 	int i;
