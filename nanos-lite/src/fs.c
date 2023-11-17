@@ -46,6 +46,9 @@ size_t fs_write(int fd, const void *buf, size_t len) {
 	file_table[fd].open_offset += len;
   return len;
 }
+size_t fs_fileoffset(int fd) {
+  return file_table[fd].disk_offset;
+}
 size_t fs_lseek(int fd, size_t offset, int whence) {
   return 0;
 }
