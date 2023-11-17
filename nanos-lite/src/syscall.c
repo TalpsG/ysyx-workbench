@@ -1,6 +1,6 @@
 #include "syscall.h"
 #include "common.h"
-#define STRACE 1
+//#define STRACE 1
 int sys_yield() {
 #ifdef STRACE
   printf("syscall : yield ,no param\n");
