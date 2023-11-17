@@ -43,6 +43,9 @@ int sys_read(int fd, void *buf, size_t count) {
   printf("not support stdin\n");
   return 0;
 }
+size_t sys_lseek(int fd, size_t offset, int whence) {
+	return fs_lseek(fd, offset, whence);
+}
 int sys_close(int fd) {
   return 0;
 }
@@ -76,6 +79,10 @@ void do_syscall(Context *c) {
   }
   case 7:{
 	c->GPRx = sys_close(a[1]);
+	break;
+  }
+  case 8: {
+    c->GPRx = sys_lseek(a[1],a[2],a[3]);
 	break;
   }
   case 9: {
