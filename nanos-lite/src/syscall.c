@@ -1,7 +1,7 @@
 #include "syscall.h"
 #include "common.h"
 #include <fs.h>
-//#define STRACE 1
+#define STRACE 1
 int sys_yield() {
 #ifdef STRACE
   printf("syscall : yield ,no param\n");
@@ -31,22 +31,37 @@ int sys_write(int fd, const void *buf, size_t n) {
   }
 }
 int sys_brk(int increment) {
+#ifdef STRACE
+  printf("syscall : brk   ,no param\n");
+#endif
 	return 0;
 }
 int sys_open(char *path, int flag, int mode) {
+#ifdef STRACE
+  printf("syscall : open  ,param1:%p param2 :%d param3 %d\n",path,flag,mode);
+#endif
 	return fs_open(path, flag, mode);
 }
 int sys_read(int fd, void *buf, size_t count) {
   if (fd != 0) {
+#ifdef STRACE
+  printf("syscall : read  ,param1:%d param2 :%p param3 %d\n",fd,buf,count);
+#endif
 	return fs_read(fd, buf, count);
   } 
   printf("not support stdin\n");
   return 0;
 }
 size_t sys_lseek(int fd, size_t offset, int whence) {
+#ifdef STRACE
+  printf("syscall : lseek ,param1:%d param2 :%d param3 %d\n",fd,offset,whence);
+#endif
 	return fs_lseek(fd, offset, whence);
 }
 int sys_close(int fd) {
+#ifdef STRACE
+  printf("syscall : close ,param1:%d\n",fd);
+#endif
   return 0;
 }
 void do_syscall(Context *c) {
