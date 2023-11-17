@@ -1,5 +1,5 @@
 #include <fs.h>
-
+#include <ramdisk.h>
 typedef size_t (*ReadFn) (void *buf, size_t offset, size_t len);
 typedef size_t (*WriteFn) (const void *buf, size_t offset, size_t len);
 
@@ -36,14 +36,23 @@ void init_fs() {
 }
 
 int fs_open(const char *pathname, int flags, int mode) {
-	printf("file num:%d\n",sizeof(file_table)/sizeof(Finfo));
-	return 0;
+	static int file_num = sizeof(file_table)/sizeof(Finfo);
+	for (int i = 0; i < file_num; i++) {
+		if (strcmp(pathname, file_table[i].name) == 0) {
+			return i;
+		}
+	}
+	printf("no file named %s\n",pathname);
+	assert(0);
+	return -1;
 }
 size_t fs_read(int fd, void *buf, size_t len) {
-	return 0;
+	ramdisk_read(buf, file_table[fd].disk_offset,len);
+	return len;
 }
 size_t fs_write(int fd, const void *buf, size_t len) {
-  return 0;
+	ramdisk_write(buf, file_table[fd].disk_offset, len);
+  return len;
 }
 size_t fs_lseek(int fd, size_t offset, int whence) {
   return 0;

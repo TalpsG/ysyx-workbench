@@ -1,5 +1,6 @@
 #include "syscall.h"
 #include "common.h"
+#include <fs.h>
 //#define STRACE 1
 int sys_yield() {
 #ifdef STRACE
@@ -26,17 +27,24 @@ int sys_write(int fd, const void *buf, size_t n) {
 	}
 	return i;
   } else {
-    char str[] = "not support filesystem\n";
-	int i;
-	int len = strlen(str);
-	for (i = 0; i < len; i++) {
-		putch(str[i]);
-	}
-	return i;
+	return fs_write(fd, buf, n);
   }
 }
 int sys_brk(int increment) {
 	return 0;
+}
+int sys_open(char *path, int flag, int mode) {
+	return fs_open(path, flag, mode);
+}
+int sys_read(int fd, void *buf, size_t count) {
+  if (fd != 0) {
+	return fs_read(fd, buf, count);
+  } 
+  printf("not support stdin\n");
+  return 0;
+}
+int sys_close(int fd) {
+  return 0;
 }
 void do_syscall(Context *c) {
   uintptr_t a[4];
@@ -46,16 +54,28 @@ void do_syscall(Context *c) {
   a[3] = c->GPR4;
 
   switch (a[0]) {
-  case 1: {
-	sys_yield();
-	break;
-  }
   case 0: {
     c->GPRx = sys_exit(a[1]);
 	break;
   }
+  case 1: {
+	sys_yield();
+	break;
+  }
+  case 2: {
+    c->GPRx = sys_open((void *)a[1],0,0);
+	break;
+  }
+  case 3: {
+    c->GPRx = sys_read(a[1],(void*) a[2], a[3]);
+	break;
+  }
   case 4: {
 	c->GPRx = sys_write(a[1],(void*) a[2], a[3]);
+	break;
+  }
+  case 7:{
+	c->GPRx = sys_close(a[1]);
 	break;
   }
   case 9: {
