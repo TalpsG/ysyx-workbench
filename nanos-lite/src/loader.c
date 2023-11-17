@@ -20,7 +20,6 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
   int phnum = header_table.e_phnum;
   assert(*(uint32_t *)&header_table.e_ident == 0x464c457f);
   //测试loader
-  printf("program table address : %p\n",(void*)header_table.e_phoff);
   for (int i = 0; i < phnum; i++) {
     Elf_Phdr program_table;
     ramdisk_read(&program_table,file_offset+header_table.e_phoff+i*sizeof(Elf_Phdr),sizeof(Elf_Phdr));
