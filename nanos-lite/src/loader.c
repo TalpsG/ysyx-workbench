@@ -12,14 +12,14 @@
 # define Elf_Phdr Elf32_Phdr
 #endif
 static uintptr_t loader(PCB *pcb, const char *filename) {
-  Elf32_Ehdr header_table ;
-  ramdisk_read(&header_table, 0, sizeof(Elf32_Ehdr));
+  Elf_Ehdr header_table ;
+  ramdisk_read(&header_table, 0, sizeof(Elf_Ehdr));
   int phnum = header_table.e_phnum;
   assert(*(uint32_t *)&header_table.e_ident == 0x464c457f);
   //测试loader
   for (int i = 0; i < phnum; i++) {
-    Elf32_Phdr program_table;
-    ramdisk_read(&program_table,header_table.e_phoff+i*sizeof(Elf32_Phdr),sizeof(Elf32_Phdr));
+    Elf_Phdr program_table;
+    ramdisk_read(&program_table,header_table.e_phoff+i*sizeof(Elf_Phdr),sizeof(Elf_Phdr));
 	if(program_table.p_type != PT_LOAD) continue;
     size_t addr =  program_table.p_vaddr ;
 	size_t p_offset = program_table.p_offset ;
