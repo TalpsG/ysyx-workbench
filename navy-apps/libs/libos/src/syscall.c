@@ -54,7 +54,6 @@ intptr_t _syscall_(intptr_t type, intptr_t a0, intptr_t a1, intptr_t a2) {
   asm volatile (SYSCALL : "=r" (ret) : "r"(_gpr1), "r"(_gpr2), "r"(_gpr3), "r"(_gpr4));
   return ret;
 }
-
 void _exit(int status) {
   _syscall_(SYS_exit, status, 0, 0);
   while (1);
@@ -69,9 +68,12 @@ int _write(int fd, void *buf, size_t count) {
 	return _syscall_(SYS_write, fd, buf, count);
 }
 
+extern char end;
 void *_sbrk(intptr_t increment) {
-	return (void *)-1;
-	return (void *)_syscall_(SYS_brk,increment, 0, 0);
+	static intptr_t program_break = &end;
+	increment = (increment + 3) & 0xfffffffc;
+	int ret = _syscall_(SYS_brk,increment, 0, 0);
+	program_break += increment;
 }
 
 int _read(int fd, void *buf, size_t count) {

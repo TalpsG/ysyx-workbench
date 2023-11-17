@@ -18,6 +18,7 @@ Context* __am_irq_handle(Context *c) {
 		case 0x0: //exit
 		case 0x4: //write
 		case 0x1: //yield
+		case 0x9: //brk
 		{
 			ev.event = EVENT_SYSCALL;
 			c->mepc += 4;
