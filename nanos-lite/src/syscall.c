@@ -17,7 +17,7 @@ int sys_exit(int code) {
 }
 int sys_write(int fd, const void *buf, size_t n) {
 #ifdef STRACE
-  printf("syscall : write ,param1:%d,param2:%p,param3:%d",fd,buf,n);
+  printf("syscall : write ,param1:%d,param2:%p,param3:%d\n",fd,buf,n);
 #endif
   if (fd == 1 || fd == 2) {
 	int i;
