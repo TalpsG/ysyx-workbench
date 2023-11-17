@@ -66,12 +66,10 @@ int _open(const char *path, int flags, mode_t mode) {
 }
 
 int _write(int fd, void *buf, size_t count) {
-	uintptr_t ret = _syscall_(SYS_write, fd, buf, count);
-	return ret;
+	return _syscall_(SYS_write, fd, buf, count);
 }
 
 void *_sbrk(intptr_t increment) {
-	return (void *)-1;
 	return (void *)_syscall_(SYS_brk,increment, 0, 0);
 }
 
