@@ -1,15 +1,5 @@
 #include <fs.h>
 #include <ramdisk.h>
-typedef size_t (*ReadFn) (void *buf, size_t offset, size_t len);
-typedef size_t (*WriteFn) (const void *buf, size_t offset, size_t len);
-
-typedef struct {
-  char *name;
-  size_t size;
-  size_t disk_offset;
-  ReadFn read;
-  WriteFn write;
-} Finfo;
 
 enum {FD_STDIN, FD_STDOUT, FD_STDERR, FD_FB};
 
@@ -34,11 +24,11 @@ static Finfo file_table[] __attribute__((used)) = {
 void init_fs() {
   // TODO: initialize the size of /dev/fb
 }
-
 int fs_open(const char *pathname, int flags, int mode) {
 	static int file_num = sizeof(file_table)/sizeof(Finfo);
 	for (int i = 0; i < file_num; i++) {
 		if (strcmp(pathname, file_table[i].name) == 0) {
+			file_table[i].open_offset = 0;
 			return i;
 		}
 	}
@@ -48,10 +38,12 @@ int fs_open(const char *pathname, int flags, int mode) {
 }
 size_t fs_read(int fd, void *buf, size_t len) {
 	ramdisk_read(buf, file_table[fd].disk_offset,len);
+	file_table[fd].open_offset += len;
 	return len;
 }
 size_t fs_write(int fd, const void *buf, size_t len) {
 	ramdisk_write(buf, file_table[fd].disk_offset, len);
+	file_table[fd].open_offset += len;
   return len;
 }
 size_t fs_lseek(int fd, size_t offset, int whence) {
