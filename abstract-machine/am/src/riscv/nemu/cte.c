@@ -21,6 +21,7 @@ Context* __am_irq_handle(Context *c) {
 		{
 			ev.event = EVENT_SYSCALL;
 			c->mepc += 4;
+			printf("a0:%d,a1:%d,a2:%d",c->gpr[10],c->gpr[11],c->gpr[12]);
 			break;
 		}
 		default: {
