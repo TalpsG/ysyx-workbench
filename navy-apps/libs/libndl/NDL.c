@@ -9,6 +9,7 @@
 static int evtdev = -1;
 static int fbdev = -1;
 static int screen_w = 0, screen_h = 0;
+static int canvas_w = 0, canvas_h = 0;
 static uint32_t sys_init_time ;
 static int event_fd ;
 uint32_t NDL_GetTicks() {
@@ -40,13 +41,36 @@ void NDL_OpenCanvas(int *w, int *h) {
     }
     close(fbctl);
   } else {
-	fbdev = open("/dev/fb",0,0);
-	printf("%d %d %d\n",*w,*h,fbdev);
+    if (*w == 0 && *h == 0) {
+		canvas_h = screen_h;
+		canvas_w = screen_w;
+    } else {
+		canvas_h = *h;
+		canvas_w = *w;
+	}
   }
 }
 
 void NDL_DrawRect(uint32_t *pixels, int x, int y, int w, int h) {
-	write(fbdev	, pixels, w*h);
+	uint32_t upspace = (screen_h - canvas_h)/2; //屏幕和画布上方间的空白处
+	int h_flag =( screen_h- canvas_h )%2;
+	int w_flag =( screen_w- canvas_w )%2;
+	for (int i = 0; i < upspace; i++) {
+		lseek(fbdev,screen_w,SEEK_CUR);
+	}
+	for (int i = 0; i < y; i++) {
+		//画布上方没画的空白行
+		lseek(fbdev, screen_w, SEEK_CUR);
+	}
+	for (int i = 0; i < h; i++) { //h行
+		lseek(fbdev,(screen_w-canvas_w)/2,SEEK_CUR);
+		lseek(fbdev,x,SEEK_CUR);
+		write(fbdev, pixels+i*w,w);
+		lseek(fbdev,canvas_w-w-x,SEEK_CUR);
+		lseek(fbdev,(screen_w-canvas_w)/2+w_flag,SEEK_CUR);
+	}
+	for (int i = 0; i < upspace + h_flag; i++) {
+	}
 }
 
 void NDL_OpenAudio(int freq, int channels, int samples) {

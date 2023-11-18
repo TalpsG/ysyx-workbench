@@ -31,17 +31,27 @@ size_t events_read(void *buf, size_t offset, size_t len) {
   return real_len<len?real_len:len;
 }
 
+
+static int screen_w,screen_h;
 size_t dispinfo_read(void *buf, size_t offset, size_t len) {
 	AM_GPU_CONFIG_T p;
 	ioe_read(AM_GPU_CONFIG, &p);
+	screen_w= p.width;
+	screen_h = p.height;
 	snprintf(buf,len,"WIDTH :%d\nHEIGHT:%d",p.width,p.height);
 	size_t real_len = strlen(buf);
   return len>real_len?real_len:len;
 }
 
 size_t fb_write(const void *buf, size_t offset, size_t len) {
-	printf("offset:%d,len:%d\n");
-  return 0;
+	AM_GPU_FBDRAW_T p;
+	p.w = len;
+	p.h = 1;
+	p.y = offset/screen_w;
+	p.x = offset - p.y*screen_w;
+	p.pixels = (void *)buf;
+	ioe_write(AM_GPU_FBDRAW, &p);
+  return len;
 }
 
 void init_device() {

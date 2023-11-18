@@ -49,7 +49,7 @@ int fs_open(const char *pathname, int flags, int mode) {
 }
 size_t fs_read(int fd, void *buf, size_t len) {
   if (file_table[fd].read != NULL) {
-		size_t ret = file_table[fd].read(buf,0,len);
+		size_t ret = file_table[fd].read(buf,file_table[fd].open_offset,len);
 		file_table[fd].open_offset += ret;
 		return ret;
 	}
@@ -59,7 +59,7 @@ size_t fs_read(int fd, void *buf, size_t len) {
 }
 size_t fs_write(int fd, const void *buf, size_t len) {
   if (file_table[fd].write != NULL) {
-		size_t ret = file_table[fd].write(buf,0,len);
+		size_t ret = file_table[fd].write(buf,file_table[fd].open_offset,len);
 		file_table[fd].open_offset += ret;
 		return ret;
 	}
