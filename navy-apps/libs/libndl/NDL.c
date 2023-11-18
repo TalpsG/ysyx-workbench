@@ -71,7 +71,7 @@ int NDL_Init(uint32_t flags) {
   read(dispinfo_fd, str, 30);
   sscanf(str, "WIDTH:%d\nHEIGHT:%d",&screen_w,&screen_h);
   printf("event fd :%d\n",event_fd);
-  printf("%s\n",str);
+  printf("%d %d\n",screen_h,screen_w);
   return 0;
 }
 
