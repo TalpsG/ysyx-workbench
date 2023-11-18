@@ -218,7 +218,43 @@ int sprintf(char *out, const char *fmt, ...) {
 }
 
 int snprintf(char *out, size_t n, const char *fmt, ...) {
-  panic("Not implemented");
+    va_list ap;
+  va_start(ap,fmt);                                                                                                                                       
+  int num = 0;
+  int op = 0;
+  for(int i=0;i<=strlen(fmt)&& i <n;){
+      if(fmt[i]!='%') {
+        out[op] = fmt[i];
+        op++;
+        i++;
+        continue;
+      }
+      if(fmt[i+1] == 'd'){
+          int t = va_arg(ap, int);
+          char p[20];
+          int2str(t,p );
+          i += 2;
+          num ++;
+          int len = strlen(p);
+          for(int j = 0;j<len;j++){
+            out[op++]=p[j];
+          }
+          continue;
+      }
+      if(fmt[i+1] == 's'){
+          char *p = va_arg(ap,char *);
+          i += 2;
+          num ++;
+          int len = strlen(p);
+          for(int j=0;j<len;j++){
+            out[op++] = p[j];
+          }
+          continue;
+      }
+  }
+  va_end(ap);
+  return num;
+
 }
 
 int vsnprintf(char *out, size_t n, const char *fmt, va_list ap) {
