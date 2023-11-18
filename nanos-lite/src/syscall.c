@@ -1,6 +1,7 @@
 #include "syscall.h"
 #include "common.h"
 #include <fs.h>
+#include <sys/time.h>
 #define STRACE 1
 int sys_yield() {
 #ifdef STRACE
@@ -56,6 +57,9 @@ int sys_close(int fd) {
 #endif
   return 0;
 }
+int sys_gettimeofday(struct timeval *tv, struct timezone *tz) {
+	return 0;
+}
 void do_syscall(Context *c) {
   uintptr_t a[4];
   a[0] = c->GPR1;
@@ -94,6 +98,10 @@ void do_syscall(Context *c) {
   case 9: {
     c->GPRx = sys_brk(a[1]);
     break;
+  }
+  case 19: {
+    c->GPRx = sys_gettimeofday((void*)a[1],(void*)a[2]);
+	break;
   }
 
     default: panic("Unhandled syscall ID = %d", a[0]);
