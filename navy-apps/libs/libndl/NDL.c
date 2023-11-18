@@ -23,8 +23,8 @@ int NDL_PollEvent(char *buf, int len) {
 
 void NDL_OpenCanvas(int *w, int *h) {
   if (getenv("NWM_APP")) {
-    int fbctl = 4;
-    fbdev = 5;
+    int fbctl = -1; //还未实现fbctl
+    fbdev = open("/dev/fb",0,0);
     screen_w = *w; screen_h = *h;
     char buf[64];
     int len = sprintf(buf, "%d %d", screen_w, screen_h);
@@ -39,7 +39,8 @@ void NDL_OpenCanvas(int *w, int *h) {
     }
     close(fbctl);
   } else {
-	printf("%d %d",*w,*h);
+	fbdev = open("/dev/fb",0,0);
+	printf("%d %d %d\n",*w,*h,fbdev);
   }
 }
 
