@@ -9,6 +9,7 @@ static int evtdev = -1;
 static int fbdev = -1;
 static int screen_w = 0, screen_h = 0;
 static uint32_t sys_init_time ;
+static int event_fd ;
 uint32_t NDL_GetTicks() {
   struct timeval temp;
   gettimeofday(&temp,NULL);
@@ -17,6 +18,7 @@ uint32_t NDL_GetTicks() {
 }
 
 int NDL_PollEvent(char *buf, int len) {
+	read(event_fd, buf, len);
   return 0;
 }
 
@@ -64,8 +66,10 @@ int NDL_Init(uint32_t flags) {
   struct timeval temp;
   gettimeofday(&temp,NULL);
   sys_init_time = temp.tv_usec/1000;
+  event_fd = open("/dev/events",0,0);
   return 0;
 }
 
 void NDL_Quit() {
+	close(event_fd);
 }

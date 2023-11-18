@@ -1,8 +1,8 @@
 #include <fs.h>
 #include <ramdisk.h>
-
+extern size_t events_read(void *buf, size_t offset, size_t len);
 extern size_t serial_write(const void *buf, size_t offset, size_t len);
-enum {FD_STDIN, FD_STDOUT, FD_STDERR, FD_FB};
+enum {FD_STDIN, FD_STDOUT, FD_STDERR, FD_EVENT,FD_FB};
 
 size_t invalid_read(void *buf, size_t offset, size_t len) {
   panic("should not reach here");
@@ -19,6 +19,7 @@ static Finfo file_table[] __attribute__((used)) = {
   [FD_STDIN]  = {"stdin", 0, 0, invalid_read, invalid_write},
   [FD_STDOUT] = {"stdout", 0, 0, invalid_read, serial_write},
   [FD_STDERR] = {"stderr", 0, 0, invalid_read, serial_write},
+  [FD_EVENT] = {"/dev/events", 0, 0, events_read, invalid_write},
 #include "files.h"
 };
 
@@ -30,8 +31,8 @@ int fs_open(const char *pathname, int flags, int mode) {
 	for (int i = 0; i < file_num; i++) {
 		if (strcmp(pathname, file_table[i].name) == 0) {
 			file_table[i].open_offset = 0;
-			file_table[i].read = NULL;
-			file_table[i].write = NULL;
+			//file_table[i].read = NULL;
+			//file_table[i].write = NULL;
 			return i;
 		}
 	}
