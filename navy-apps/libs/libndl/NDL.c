@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/select.h>
 #include <unistd.h>
 #include <sys/time.h>
 
@@ -45,7 +46,7 @@ void NDL_OpenCanvas(int *w, int *h) {
 }
 
 void NDL_DrawRect(uint32_t *pixels, int x, int y, int w, int h) {
-	printf("x:%d,y:%d,w:%d,h:%d\n",x,y,w,h);
+	write(fbdev	, pixels, w*h);
 }
 
 void NDL_OpenAudio(int freq, int channels, int samples) {
