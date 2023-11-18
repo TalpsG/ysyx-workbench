@@ -9,7 +9,7 @@ int main() {
 		unsigned int now = NDL_GetTicks(); 
 		now = now;
 		if (now >= 500 * times) {
-			printf("times:%d",times++);
+			printf("times:%d\n",times++);
 		}
 	}
   return 0;
