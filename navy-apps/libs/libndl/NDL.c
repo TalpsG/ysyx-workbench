@@ -67,6 +67,7 @@ int NDL_Init(uint32_t flags) {
   gettimeofday(&temp,NULL);
   sys_init_time = temp.tv_usec/1000;
   event_fd = open("/dev/events",0,0);
+  printf("event fd :%d\n",event_fd);
   return 0;
 }
 
