@@ -69,7 +69,7 @@ int NDL_Init(uint32_t flags) {
   int dispinfo_fd = open("/proc/dispinfo",0,0);
   char str[30];
   read(dispinfo_fd, str, 30);
-  sscanf(str, "WIDTH:%d\nHEIGHT:%d",&screen_w,&screen_h);
+  sscanf(str, "%d\n%d",&screen_w,&screen_h);
   printf("event fd :%d\n",event_fd);
   printf("%d %d\n",screen_h,screen_w);
   return 0;
