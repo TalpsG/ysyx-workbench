@@ -1,6 +1,7 @@
 #include <fs.h>
 #include <ramdisk.h>
 
+extern size_t serial_write(const void *buf, size_t offset, size_t len);
 enum {FD_STDIN, FD_STDOUT, FD_STDERR, FD_FB};
 
 size_t invalid_read(void *buf, size_t offset, size_t len) {
@@ -29,6 +30,8 @@ int fs_open(const char *pathname, int flags, int mode) {
 	for (int i = 0; i < file_num; i++) {
 		if (strcmp(pathname, file_table[i].name) == 0) {
 			file_table[i].open_offset = 0;
+			file_table[i].read = NULL;
+			file_table[i].write = NULL;
 			return i;
 		}
 	}
@@ -42,6 +45,9 @@ size_t fs_read(int fd, void *buf, size_t len) {
 	return len;
 }
 size_t fs_write(int fd, const void *buf, size_t len) {
+	if (fd == 1 || fd == 2) {
+		return serial_write(buf, 0, len)	;
+	}
 	ramdisk_write(buf, file_table[fd].disk_offset +file_table[fd].open_offset, len);
 	file_table[fd].open_offset += len;
   return len;

@@ -20,15 +20,7 @@ int sys_write(int fd, const void *buf, size_t n) {
 #ifdef STRACE
   printf("syscall : write ,param1:%d,param2:%p,param3:%d\n",fd,buf,n);
 #endif
-  if (fd == 1 || fd == 2) {
-	int i;
-	for (i = 0; i < n; i++) {
-		putch(((char*)buf)[i]);
-	}
-	return i;
-  } else {
 	return fs_write(fd, buf, n);
-  }
 }
 int sys_brk(int increment) {
 #ifdef STRACE
