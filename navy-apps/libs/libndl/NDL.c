@@ -75,14 +75,18 @@ int NDL_Init(uint32_t flags) {
   for (int i = 0; i < len;) {
     if (strncmp(h, str + i, strlen(h)) == 0) {
 		i += strlen(h);
-		if(i>=len) break;
 		while(str[i] == ' ' || str[i] == ':') i++;
 		sscanf(str+i,"%d",&screen_h);
+		while(str[i]!='\n' && i<len) i++;
+		i++;
+		if(i>=len) break;
     } else if (strncmp(w, str + i, strlen(w)) == 0) {
 		i += strlen(w);
-		if(i>=len) break;
 		while(str[i] == ' ' || str[i] == ':') i++;
 		sscanf(str+i,"%d",&screen_w);
+		while(str[i]!='\n'&&i<len) i++;
+		i++;
+		if(i>=len) break;
 	}
   }
   printf("event fd :%d\n",event_fd);
