@@ -6,7 +6,9 @@ int main() {
 	struct timeval tv;
 	int times= 1;
     while (1) {
-		if (NDL_GetTicks() >= 500 * times) {
+		unsigned int now = NDL_GetTicks(); 
+		printf("now : %d\n",now);
+		if (now >= 500 * times) {
 			printf("times:%d",times++);
 		}
 	}
