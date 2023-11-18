@@ -58,6 +58,10 @@ int sys_close(int fd) {
   return 0;
 }
 int sys_gettimeofday(struct timeval *tv, struct timezone *tz) {
+	AM_TIMER_UPTIME_T p;
+	ioe_read(AM_TIMER_UPTIME,&p );
+	tv->tv_sec = p.us/1000000;
+	tv->tv_usec = p.us;
 	return 0;
 }
 void do_syscall(Context *c) {
