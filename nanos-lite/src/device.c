@@ -35,12 +35,12 @@ size_t dispinfo_read(void *buf, size_t offset, size_t len) {
 	AM_GPU_CONFIG_T p;
 	ioe_read(AM_GPU_CONFIG, &p);
 	snprintf(buf,len,"WIDTH :%d\nHEIGHT:%d",p.width,p.height);
-  return 0;
+	size_t real_len = strlen(buf);
+  return len>real_len?real_len:len;
 }
 
 size_t fb_write(const void *buf, size_t offset, size_t len) {
 	printf("offset:%d,len:%d\n");
-	//ioe_write(AM_GPU_FBDRAW,NULL);
   return 0;
 }
 
