@@ -69,7 +69,22 @@ int NDL_Init(uint32_t flags) {
   int dispinfo_fd = open("/proc/dispinfo",0,0);
   char str[30];
   read(dispinfo_fd, str, 30);
-  sscanf(str, "%d\n%d",&screen_w,&screen_h);
+  int len =strlen(str);
+  char h[]= "HEIGHT";
+  char w[]= "WIDTH";
+  for (int i = 0; i < len;) {
+    if (strncmp(h, str + i, strlen(h)) == 0) {
+		i += strlen(h);
+		if(i>=len) break;
+		while(str[i] == ' ' || str[i] == ':') i++;
+		sscanf(str+i,"%d",&screen_h);
+    } else if (strncmp(w, str + i, strlen(w)) == 0) {
+		i += strlen(w);
+		if(i>=len) break;
+		while(str[i] == ' ' || str[i] == ':') i++;
+		sscanf(str+i,"%d",&screen_w);
+	}
+  }
   printf("event fd :%d\n",event_fd);
   printf("%d %d\n",screen_h,screen_w);
   return 0;
