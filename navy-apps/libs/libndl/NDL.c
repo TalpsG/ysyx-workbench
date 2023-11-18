@@ -66,7 +66,12 @@ int NDL_Init(uint32_t flags) {
   gettimeofday(&temp,NULL);
   sys_init_time = temp.tv_usec/1000;
   event_fd = open("/dev/events",0,0);
+  int dispinfo_fd = open("/proc/dispinfo",0,0);
+  char str[30];
+  read(dispinfo_fd, str, 30);
+  sscanf(str, "WIDTH:%d\nHEIGHT:%d",&screen_w,&screen_h);
   printf("event fd :%d\n",event_fd);
+  printf("%s\n",str);
   return 0;
 }
 
