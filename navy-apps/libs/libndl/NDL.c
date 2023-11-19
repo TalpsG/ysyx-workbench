@@ -41,6 +41,8 @@ void NDL_OpenCanvas(int *w, int *h) {
     }
     close(fbctl);
   } else {
+	fbdev = open("/dev/fb",0,0);
+	printf("fb fd :%d\n",fbdev);
     if (*w == 0 && *h == 0) {
 		canvas_h = screen_h;
 		canvas_w = screen_w;
