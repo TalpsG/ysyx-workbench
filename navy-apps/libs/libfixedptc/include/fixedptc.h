@@ -125,37 +125,59 @@ typedef	__uint128_t fixedptud;
  * Putting them only in macros will effectively make them optional. */
 #define fixedpt_tofloat(T) ((float) ((T)*((float)(1)/(float)(1L << FIXEDPT_FBITS))))
 
-/* Multiplies a fixedpt number with an integer, returns the result. */
-static inline fixedpt fixedpt_muli(fixedpt A, int B) {
-	return 0;
-}
 
-/* Divides a fixedpt number with an integer, returns the result. */
-static inline fixedpt fixedpt_divi(fixedpt A, int B) {
-	return 0;
-}
 
 /* Multiplies two fixedpt numbers, returns the result. */
 static inline fixedpt fixedpt_mul(fixedpt A, fixedpt B) {
-	return 0;
+	return (A*B)>>8;
 }
 
+/* Multiplies a fixedpt number with an integer, returns the result. */
+static inline fixedpt fixedpt_muli(fixedpt A, int B) {
+	fixedpt b = B<<8;
+	return fixedpt_mul(A, b);
+}
 
 /* Divides two fixedpt numbers, returns the result. */
 static inline fixedpt fixedpt_div(fixedpt A, fixedpt B) {
-	return 0;
+	A = A<<8;
+	fixedpt C =( A/B ) >> 8;
+	return C;
+}
+/* Divides a fixedpt number with an integer, returns the result. */
+static inline fixedpt fixedpt_divi(fixedpt A, int B) {
+	fixedpt b = fixedpt_rconst(B);
+	return fixedpt_div(A, B);
 }
 
 static inline fixedpt fixedpt_abs(fixedpt A) {
-	return 0;
+	if(A&0x80000000) return -A;
+	return A;
 }
 
 static inline fixedpt fixedpt_floor(fixedpt A) {
-	return 0;
+	//向下取整
+	if (A & 0x80000000) {
+		//负数
+		return A & 0xffffff00;
+	}
+	if((A&0xff)== 0) return A;
+	return  A&0xffffff00;
 }
 
 static inline fixedpt fixedpt_ceil(fixedpt A) {
-	return 0;
+	if (A & 0x80000000) {
+		//负数
+		if((A&0xff)== 0x00) return A; //负整数
+		else {
+			return (A&0xffffff00)+(1<<8);
+		}
+	}
+	if((A&0xff)==0)  return A;
+	else {
+		return (A&0xffffff00)+(1<<8);
+	}
+	return A;
 }
 
 /*
