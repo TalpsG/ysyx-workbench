@@ -58,15 +58,12 @@ size_t fs_read(int fd, void *buf, size_t len) {
 	return len;
 }
 size_t fs_write(int fd, const void *buf, size_t len) {
-	printf("fswrite\n");
   if (file_table[fd].write != NULL) {
 		size_t ret = file_table[fd].write(buf,file_table[fd].open_offset,len);
 		file_table[fd].open_offset += ret;
-		printf("oop\n");
 		return ret;
 	}
 	ramdisk_write(buf, file_table[fd].disk_offset +file_table[fd].open_offset, len);
-	printf("file\n");
 	file_table[fd].open_offset += len;
   return len;
 }
