@@ -11,7 +11,7 @@ int main() {
 	assert(B == (1<<8));
 	C = A-1;
 	B = fixedpt_floor(C);
-
+	printf("%p\n",B);
 	assert(B == 0);
 
   return 0;
