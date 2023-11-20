@@ -14,12 +14,12 @@ void SDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, uint32_t color) {
 }
 
 void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
-	if (!x && !y && !w && !h) {
-		x = 0;
-		y = 0;
-		w = s->w;
-		h = s->h;
-	}
+	//if (!x && !y && !w && !h) {
+		//x = 0;
+		//y = 0;
+		//w = s->w;
+		//h = s->h;
+	//}
 	printf("%s  %s : %d",__FUNCTION__,__FILE__,__LINE__);
 	//NDL_DrawRect(s->pixels,x,y,w,h);
 }
