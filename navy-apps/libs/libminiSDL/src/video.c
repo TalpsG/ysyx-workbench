@@ -20,7 +20,6 @@ void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
 		w = s->w;
 		h = s->h;
 	}
-	printf("%s  %s : %d\n",__FUNCTION__,__FILE__,__LINE__);
 	NDL_DrawRect(s->pixels,x,y,w,h);
 }
 
