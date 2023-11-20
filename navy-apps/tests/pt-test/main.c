@@ -14,11 +14,14 @@ int main() {
 	assert(B == 0);
 	fixedpt A_neg = (~A)+1;
 	fixedpt B_neg = fixedpt_floor(A_neg);
+	fixedpt C_neg ;
 	assert(B_neg == A_neg);
 	B_neg = A_neg +1;
-	printf("%p %p\n",A_neg,B_neg);
-	assert(B_neg == A_neg);
+	C_neg = fixedpt_floor(B_neg);
+	printf("%p %p\n",A_neg,C_neg);
+	assert(C_neg == A_neg);
 	B_neg = A_neg -1;
+	fixedpt_floor(B_neg);
 	assert(B_neg == ((~(2<<8))+1));
 
 
