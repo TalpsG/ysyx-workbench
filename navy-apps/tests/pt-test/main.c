@@ -14,6 +14,7 @@ int main() {
 	assert(B == 0);
 	fixedpt A_neg = (~A)+1;
 	fixedpt B_neg = fixedpt_floor(A);
+	printf("%p %p",A_neg,B_neg);
 	assert(B_neg == A_neg);
 	B_neg = A_neg +1;
 	assert(B_neg == A_neg);
