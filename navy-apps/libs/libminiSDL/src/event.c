@@ -19,7 +19,8 @@ int SDL_PollEvent(SDL_Event *ev) {
 }
 
 int SDL_WaitEvent(SDL_Event *event) {
-	printf("%s  %s : %d\n",__FUNCTION__,__FILE__,__LINE__);
+	char buf[100]
+	int ret = NDL_PollEvent(buf,100);
   return 1;
 }
 
