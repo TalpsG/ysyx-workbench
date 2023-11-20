@@ -18,11 +18,11 @@ int main() {
 	assert(B_neg == A_neg);
 	B_neg = A_neg +1;
 	C_neg = fixedpt_floor(B_neg);
-	printf("%p %p\n",A_neg,C_neg);
 	assert(C_neg == A_neg);
 	B_neg = A_neg -1;
-	fixedpt_floor(B_neg);
-	assert(B_neg == ((~(2<<8))+1));
+	C_neg = fixedpt_floor(B_neg);
+	printf("%p %p\n",A_neg,C_neg);
+	assert(C_neg == ((~(2<<8))+1));
 
 
   return 0;
