@@ -1,6 +1,6 @@
 #!/bin/bash
 
-convert slides.pdf \
+convert report.pdf \
   -sharpen "0x1.0" \
   -type truecolor -resize 400x300\! slides.bmp
 

@@ -25,7 +25,7 @@ void init_proc() {
   Log("Initializing processes...");
 
   // load program here
-  naive_uload(NULL,"/bin/pt-test");
+  naive_uload(NULL,"/bin/nslider");
 
 }
 
