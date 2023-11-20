@@ -19,7 +19,7 @@ int SDL_PollEvent(SDL_Event *ev) {
 }
 
 int SDL_WaitEvent(SDL_Event *event) {
-	char buf[100]
+	char buf[100];
 	int ret = NDL_PollEvent(buf,100);
   return 1;
 }
