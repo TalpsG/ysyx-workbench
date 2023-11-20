@@ -21,9 +21,11 @@ int SDL_PollEvent(SDL_Event *ev) {
 int SDL_WaitEvent(SDL_Event *event) {
 	char buf[100] ;
 	int ret = NDL_PollEvent(buf,100);
-	if (ret) {
-		event->type = strncmp("ku",buf,2)==0?SDL_KEYUP:SDL_KEYDOWN;
-	}
+	printf("%s\n",buf);
+	//if (ret) {
+		//event->type = strncmp("ku",buf,2)==0?SDL_KEYUP:SDL_KEYDOWN;
+		//event->keysym.sym = 
+	//}
   return 1;
 }
 
