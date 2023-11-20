@@ -13,7 +13,7 @@ int main() {
 	B = fixedpt_floor(C);
 	assert(B == 0);
 	fixedpt A_neg = (~A)+1;
-	fixedpt B_neg = fixedpt_floor(A);
+	fixedpt B_neg = fixedpt_floor(A_neg);
 	printf("%p %p\n",A_neg,B_neg);
 	assert(B_neg == A_neg);
 	B_neg = A_neg +1;
