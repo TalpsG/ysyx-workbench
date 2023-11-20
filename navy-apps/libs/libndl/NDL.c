@@ -70,8 +70,9 @@ void NDL_DrawRect(uint32_t *pixels, int x, int y, int w, int h) {
 		lseek(fbdev,canvas_w-w-x,SEEK_CUR);
 		lseek(fbdev,(screen_w-canvas_w)/2+w_flag,SEEK_CUR);
 	}
-	for (int i = 0; i < upspace + h_flag; i++) {
-	}
+	//for (int i = 0; i < upspace + h_flag; i++) {
+	//}
+	lseek(fbdev,0,SEEK_SET);
 }
 
 void NDL_OpenAudio(int freq, int channels, int samples) {
