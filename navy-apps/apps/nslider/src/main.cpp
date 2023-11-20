@@ -29,7 +29,9 @@ void render() {
   slide = SDL_LoadBMP(fname);
   printf("load bmp over\n");
   assert(slide);
+  printf("painting now \n")
   SDL_UpdateRect(slide, 0, 0, 0, 0);
+  printf("painting over \n")
 }
 
 void prev(int rep) {
