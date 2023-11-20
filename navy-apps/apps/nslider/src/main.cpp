@@ -20,9 +20,9 @@ SDL_Surface *slide = NULL;
 int cur = 0;
 
 void render() {
-  //if (slide) {
-    //SDL_FreeSurface(slide);
-  //}
+  if (slide) {
+    SDL_FreeSurface(slide);
+  }
   char fname[256];
   sprintf(fname, path, cur);
   printf("cur:%x\n",cur);
@@ -50,7 +50,7 @@ int main() {
   SDL_Init(0);
   SDL_Surface *screen = SDL_SetVideoMode(W, H, 32, SDL_HWSURFACE);
 	cur = 0;
-	printf("N:%d\n",N);
+	slide = NULL;
   int rep = 0, g = 0;
   render();
 
