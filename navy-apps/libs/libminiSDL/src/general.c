@@ -17,10 +17,10 @@ int SDL_SetError(const char* fmt, ...) {
 }
 
 int SDL_ShowCursor(int toggle) {
-	printf("%s  %s : %d",__FUNCTION__,__FILE__,__LINE__);
+	printf("%s  %s : %d\n",__FUNCTION__,__FILE__,__LINE__);
   return 0;
 }
 
 void SDL_WM_SetCaption(const char *title, const char *icon) {
-	printf("%s  %s : %d",__FUNCTION__,__FILE__,__LINE__);
+	printf("%s  %s : %d\n",__FUNCTION__,__FILE__,__LINE__);
 }
