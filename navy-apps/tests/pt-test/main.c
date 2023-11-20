@@ -11,8 +11,15 @@ int main() {
 	assert(B == (1<<8));
 	C = A-1;
 	B = fixedpt_floor(C);
-	printf("%p\n",B);
 	assert(B == 0);
+	fixedpt A_neg = (~A)+1;
+	fixedpt B_neg = fixedpt_floor(A);
+	assert(B_neg == A_neg);
+	B_neg = A_neg +1;
+	assert(B_neg == A_neg);
+	B_neg = A_neg -1;
+	assert(B_neg == ((~(2<<8))+1));
+
 
   return 0;
 }
