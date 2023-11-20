@@ -7,7 +7,7 @@ int main() {
 	fixedpt B = fixedpt_floor(A);
 	assert(B == (1<<8));
 	fixedpt C = A+1;
-	B = fixedpt_floor(A);
+	B = fixedpt_floor(C);
 	assert(B == (1<<8));
 	C = A-1;
 	B = fixedpt_floor(C);
