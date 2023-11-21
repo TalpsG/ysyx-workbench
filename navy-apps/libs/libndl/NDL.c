@@ -45,6 +45,8 @@ void NDL_OpenCanvas(int *w, int *h) {
     if (*w == 0 && *h == 0) {
 		canvas_h = screen_h;
 		canvas_w = screen_w;
+		*w = screen_w;
+		*h = screen_h;
     } else {
 		canvas_h = *h;
 		canvas_w = *w;
@@ -53,12 +55,6 @@ void NDL_OpenCanvas(int *w, int *h) {
 }
 
 void NDL_DrawRect(uint32_t *pixels, int x, int y, int w, int h) {
-	if (!x && !y && !w && !h) {
-          x = 0;
-          y = 0;
-          w = canvas_w;
-          h = canvas_h;
-	}
 	uint32_t upspace = (screen_h - canvas_h)/2; //屏幕和画布上方间的空白处
 	int h_flag =( screen_h- canvas_h )%2;
 	int w_flag =( screen_w- canvas_w )%2;
