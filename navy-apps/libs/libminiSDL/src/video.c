@@ -29,10 +29,15 @@ void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst, SDL_
 		dst_x = dstrect->x;
 		dst_y = dstrect->y;
 	}
+	printf("start copy!\n");
+	printf("srcx:%d,srcy:%d w:%d h:%d\n",src_x,src_y,w,h);
+	printf("dstx:%d,dsty:%d \n",dst_x,dst_y);
 	for (int i = 0; i < h; i++) {
 		for (int j = 0; j < w; j++) {
+			printf("%p %p\n",(dst_y+i)*dst->w+dst_x+j+p_dst,p_src+(src_y+i)*src->w+src_x+j);
 			p_dst[(dst_y+i)*dst->w+dst_x+j] = p_src[(src_y+i)*src->w+src_x+j];
 		}
+
 	}
 }
 
