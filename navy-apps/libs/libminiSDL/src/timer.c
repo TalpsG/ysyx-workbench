@@ -13,8 +13,7 @@ int SDL_RemoveTimer(SDL_TimerID id) {
 }
 
 uint32_t SDL_GetTicks() {
-	printf("%s  %s : %d\n",__FUNCTION__,__FILE__,__LINE__);
-  return 0;
+	return NDL_GetTicks();
 }
 
 void SDL_Delay(uint32_t ms) {
