@@ -11,8 +11,8 @@ void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst, SDL_
 	if (srcrect == NULL) {
 		w = src->w;
 		h = src->h;
+		printf("src,w:%d h:%d",w,h);
 	} else {
-		printf("src:%d %d %d %d\n",srcrect->x,srcrect->y,src->w,src->h);
 		w = srcrect->w;
 		h = srcrect->h;
 	}
