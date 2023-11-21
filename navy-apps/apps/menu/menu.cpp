@@ -80,6 +80,7 @@ int main(int argc, char *argv[], char *envp[]) {
   set_i_max();
 
   while (1) {
+  printf("w:%d,h:%d\n",font->w,font->h);
     display_menu(i_max);
 
     SDL_Event e;
