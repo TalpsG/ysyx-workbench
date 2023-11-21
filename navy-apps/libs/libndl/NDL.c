@@ -55,25 +55,11 @@ void NDL_OpenCanvas(int *w, int *h) {
 }
 
 void NDL_DrawRect(uint32_t *pixels, int x, int y, int w, int h) {
-	uint32_t upspace = (screen_h - canvas_h)/2; //屏幕和画布上方间的空白处
-	int h_flag =( screen_h- canvas_h )%2;
-	int w_flag =( screen_w- canvas_w )%2;
-	for (int i = 0; i < upspace; i++) {
-		lseek(fbdev,screen_w,SEEK_CUR);
-	}
-	for (int i = 0; i < y; i++) {
-		//画布上方没画的空白行
-		lseek(fbdev, screen_w, SEEK_CUR);
-	}
-	for (int i = 0; i < h; i++) { //h行
-		lseek(fbdev,(screen_w-canvas_w)/2,SEEK_CUR);
-		lseek(fbdev,x,SEEK_CUR);
-		write(fbdev, pixels+i*w,w);
-		lseek(fbdev,canvas_w-w-x,SEEK_CUR);
-		lseek(fbdev,(screen_w-canvas_w)/2+w_flag,SEEK_CUR);
-	}
-	//for (int i = 0; i < upspace + h_flag; i++) {
-	//}
+  for (int i = 0; i < h; ++i){
+    lseek(fbdev, ((y + i) * screen_w + (x)) * sizeof(uint32_t), SEEK_SET);
+    write(fbdev, pixels + w * i, w * sizeof(uint32_t));
+  }
+  //close(graphics);	
 	lseek(fbdev,0,SEEK_SET);
 }
 
