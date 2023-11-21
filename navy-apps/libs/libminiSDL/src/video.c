@@ -55,8 +55,10 @@ void SDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, uint32_t color) {
 }
 
 void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
+	printf("update in \n");
 	if (w == 0 && h == 0 && x ==0 && y == 0){
       NDL_DrawRect((uint32_t *)s->pixels, 0, 0, s->w, s->h);
+	printf("update out \n");
       return ;
     }
     
@@ -68,6 +70,7 @@ void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
     }
     NDL_DrawRect(pixels, x, y, w, h);
 
+	printf("update out \n");
     free(pixels);	
 }
 
