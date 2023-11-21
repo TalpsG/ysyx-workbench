@@ -5,41 +5,61 @@
 #include <stdlib.h>
 
 void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst, SDL_Rect *dstrect) {
-	assert(dst && src);
-	assert(dst->format->BitsPerPixel == src->format->BitsPerPixel);
-	uint32_t *p_src = src->pixels;
-	uint32_t *p_dst = dst->pixels;
-	printf("psrc:%p,pdst:%p\n",p_src,p_dst);
-	int dst_x,dst_y,w,h,src_x,src_y;
-	if (srcrect == NULL) {
-		w = src->w;
-		h = src->h;
-		src_x = 0;
-		src_y = 0;
-	} else {
-		w = srcrect->w;
-		h = srcrect->h;
-		src_x = srcrect->x;
-		src_y = srcrect->y;
-	}
-	if (dstrect == NULL) {
-		dst_x = 0;
-		dst_y = 0;
-	} else {
-		dst_x = dstrect->x;
-		dst_y = dstrect->y;
-	}
-	printf("start copy!\n");
-	printf("srcx:%d,srcy:%d w:%d h:%d\n",src_x,src_y,w,h);
-	printf("dstx:%d,dsty:%d \n",dst_x,dst_y);
-	for (int i = 0; i < h; i++) {
-		for (int j = 0; j < w; j++) {
-			printf("%d %d\n",i,j);
-			printf("dst:%p,src:%p\n",p_dst+(dst_y+i)*dst->w+dst_x+j,p_src+(src_y+i)*src->w+src_x+j);
-			p_dst[(dst_y+i)*dst->w+dst_x+j] = p_src[(src_y+i)*src->w+src_x+j];
-		}
+	uint32_t* src_pixels = (uint32_t*)src->pixels;
+    uint32_t* dst_pixels = (uint32_t*)dst->pixels;
 
-	}
+    int rect_w, rect_h, src_x, src_y, dst_x, dst_y;
+    if (srcrect){
+      rect_w = srcrect->w; rect_h = srcrect->h;
+      src_x = srcrect->x; src_y = srcrect->y; 
+    }else {
+      rect_w = src->w; rect_h = src->h;
+      src_x = 0; src_y = 0;
+    }
+    if (dstrect){
+      dst_x = dstrect->x, dst_y = dstrect->y;
+    }else {
+      dst_x = 0; dst_y = 0;
+    }
+    
+    for (int i = 0; i < rect_h; ++i){
+      for (int j = 0; j < rect_w; ++j){
+        dst_pixels[(dst_y + i) * dst->w + dst_x + j] = src_pixels[(src_y + i) * src->w + src_x + j];
+      }
+    }
+	//assert(dst && src);
+	//assert(dst->format->BitsPerPixel == src->format->BitsPerPixel);
+	//uint32_t *p_src = src->pixels;
+	//uint32_t *p_dst = dst->pixels;
+	//printf("psrc:%p,pdst:%p\n",p_src,p_dst);
+	//int dst_x,dst_y,w,h,src_x,src_y;
+	//if (srcrect == NULL) {
+		//w = src->w;
+		//h = src->h;
+		//src_x = 0;
+		//src_y = 0;
+	//} else {
+		//w = srcrect->w;
+		//h = srcrect->h;
+		//src_x = srcrect->x;
+		//src_y = srcrect->y;
+	//}
+	//if (dstrect == NULL) {
+		//dst_x = 0;
+		//dst_y = 0;
+	//} else {
+		//dst_x = dstrect->x;
+		//dst_y = dstrect->y;
+	//}
+	//printf("start copy!\n");
+	//printf("srcx:%d,srcy:%d w:%d h:%d\n",src_x,src_y,w,h);
+	//printf("dstx:%d,dsty:%d \n",dst_x,dst_y);
+	//for (int i = 0; i < h; i++) {
+		//for (int j = 0; j < w; j++) {
+			//p_dst[(dst_y+i)*dst->w+dst_x+j] = p_src[(src_y+i)*src->w+src_x+j];
+		//}
+
+	//}
 }
 
 void SDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, uint32_t color) {
