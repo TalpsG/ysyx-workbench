@@ -70,7 +70,7 @@ void do_syscall(Context *c) {
   a[1] = c->GPR2;
   a[2] = c->GPR3;
   a[3] = c->GPR4;
-  printf("a[0]:%d\n",a[0]);
+  printf("a[0]:%d a[1]:%d a[2]:%d\n",a[0],a[1],a[2]);
   switch (a[0]) {
   case 0: {
     c->GPRx = sys_exit(a[1]);
