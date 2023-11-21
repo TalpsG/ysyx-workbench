@@ -72,6 +72,7 @@ int main(int argc, char *argv[], char *envp[]) {
 	i_max = 0;
   SDL_Init(0);
   screen = SDL_SetVideoMode(0, 0, 32, SDL_HWSURFACE);
+  printf("screen w:%d,h:%d\n",screen->w,screen->h);
 
 
   font = new BDF_Font(font_fname);
