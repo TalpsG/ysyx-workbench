@@ -76,7 +76,7 @@ void do_syscall(Context *c) {
 	break;
   }
   case 1: {
-	sys_yield();
+	c->GPRx = sys_yield();
 	break;
   }
   case 2: {
