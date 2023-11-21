@@ -56,8 +56,8 @@ void NDL_DrawRect(uint32_t *pixels, int x, int y, int w, int h) {
 	if (!x && !y && !w && !h) {
           x = 0;
           y = 0;
-          w = screen_w;
-          h = screen_h;
+          w = canvas_w;
+          h = canvas_h;
 	}
 	uint32_t upspace = (screen_h - canvas_h)/2; //屏幕和画布上方间的空白处
 	int h_flag =( screen_h- canvas_h )%2;
