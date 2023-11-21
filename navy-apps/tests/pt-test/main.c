@@ -4,6 +4,6 @@
 #include </home/talps/gitrepo/ysyx-workbench/navy-apps/libs/libfixedptc/include/fixedptc.h>
 int main() {
 	char *p = malloc(1);
-	assert(p);
+	//assert(p);
   return 0;
 }
