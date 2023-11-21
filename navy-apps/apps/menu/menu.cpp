@@ -143,8 +143,8 @@ static void draw_text_row(char *s, int r) {
 
 static void display_menu(int n) {
   clear_display();
-  printf("clear\n");
   SDL_Rect rect = { .x = screen->w - logo_sf->w, .y = 0 };
+  printf("logo_sf:%p screen:%p\n");
   SDL_BlitSurface(logo_sf, NULL, screen, &rect);
   printf("Available applications:\n");
   char buf[80];
