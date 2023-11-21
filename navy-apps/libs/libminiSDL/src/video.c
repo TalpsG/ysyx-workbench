@@ -19,8 +19,6 @@ void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst, SDL_
 	} else {
 		w = srcrect->w;
 		h = srcrect->h;
-		dst->w = w;
-		dst->h = h;
 		src_x = srcrect->x;
 		src_y = srcrect->y;
 	}
@@ -31,6 +29,8 @@ void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst, SDL_
 		dst_x = dstrect->x;
 		dst_y = dstrect->y;
 	}
+	dst->w = w;
+	dst->h = h;
 	for (int i = 0; i < h; i++) {
 		memcpy(p_dst+(dst_y+i)*dst->w,p_src+(src_y+i)*src->w,w);
 	}
