@@ -177,7 +177,7 @@ static void display_menu(int n) {
   i ++;
 
   SDL_UpdateRect(screen, 0, 0, 0, 0);
-
+	printf("update over\n");
   printf("========================================\n");
   printf("Please Choose.\n");
   fflush(stdout);
