@@ -23,6 +23,7 @@ int SDL_PollEvent(SDL_Event *ev) {
 	int keydown, code;
 	printf("scanf\n");
 	sscanf(buf,"%d %d" ,keydown,code); 
+	printf("scan over\n");
 	ev->type = keydown?SDL_KEYDOWN:SDL_KEYUP;
 	ev->key.keysym.sym = code;
 	return 1;
