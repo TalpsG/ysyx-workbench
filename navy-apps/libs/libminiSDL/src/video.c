@@ -33,7 +33,7 @@ void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst, SDL_
 		printf("start x:%d,w:%d\n",(dst_y+i)*dst->w+dst_x,w);
 		for (int j = 0; j < w; j++) {
 			p_dst[(dst_y+i)*dst->w+dst_x] = p_src[(src_y+i)*src->w+src_x];
-			printf("%x,%x\n",p_dst[(dst_y+i)*dst->w+dst_x],p_src[(src_y+i)*src->w+src_x])
+			printf("%x,%x\n",p_dst[(dst_y+i)*dst->w+dst_x],p_src[(src_y+i)*src->w+src_x]);
 
 		}
 	}
