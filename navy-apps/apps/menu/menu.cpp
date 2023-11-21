@@ -149,7 +149,9 @@ static void display_menu(int n) {
   for (i = 0; i <= n; i ++) {
     auto *item = &items[page * 10 + i];
     sprintf(buf, "  [%d] %s", i, item->name);
+	printf("draw row\n");
     draw_text_row(buf, i);
+	printf("draw row over\n");
   }
 
   i = 11;
