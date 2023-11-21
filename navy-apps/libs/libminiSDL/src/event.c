@@ -21,8 +21,8 @@ int SDL_PollEvent(SDL_Event *ev) {
 	int keydown, code;
 	sscanf(buf,"%d %d" ,keydown,code); 
 	ev->type = keydown?SDL_KEYDOWN:SDL_KEYUP;
-	//ev->key.keysym = 
-	return 0;
+	ev->key.keysym.sym = code;
+	return 1;
 }
 
 int SDL_WaitEvent(SDL_Event *event) {
