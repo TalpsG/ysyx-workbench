@@ -29,8 +29,6 @@ void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst, SDL_
 		dst_x = dstrect->x;
 		dst_y = dstrect->y;
 	}
-	dst->w = 128;
-	dst->h = 128;
 	for (int i = 0; i < h; i++) {
 		memcpy(p_dst+(dst_y+i)*dst->w,p_src+(src_y+i)*src->w,w);
 	}
@@ -61,7 +59,7 @@ void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
 	printf("update in \n");
 	printf("s->w:%d,s->h:%d\n",s->w,s->h);
 	if (w == 0 && h == 0 && x ==0 && y == 0){
-      NDL_DrawRect((uint32_t *)s->pixels, 0, 0, s->w, s->h);
+      NDL_DrawRect((uint32_t *)s->pixels, 0, 0, 0, 0);
 	printf("all zero update out \n");
       return ;
     }
