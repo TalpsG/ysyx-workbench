@@ -16,12 +16,12 @@ int SDL_PushEvent(SDL_Event *ev) {
 
 int SDL_PollEvent(SDL_Event *ev) {
 	printf("poll\n");
+	char buf[200];
 	int ret = NDL_PollEvent(buf,20);
 	if(ret == 0) return 0;
 	printf("catch!\n");
 	int keydown, code;
 	printf("scanf\n");
-	char buf[200];
 	printf("buf:%p\n",buf);
 	sscanf(buf,"%d %d" ,keydown,code); 
 	printf("scan over\n");
