@@ -3,7 +3,6 @@
 #include <ramdisk.h>
 #include <sys/stat.h>
 #include <fcntl.h>
-#include <unistd.h>
 #include <fs.h>
 #ifdef __LP64__
 # define Elf_Ehdr Elf64_Ehdr
@@ -30,6 +29,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
 	size_t p_memsz= program_table.p_memsz;
 
 	ramdisk_read((void*)addr,file_offset+ p_offset,p_filesz);
+	printf("%d %d\n",p_memsz,p_filesz);
 	memset((void*)(addr+file_offset+ p_filesz),0,p_memsz - p_filesz);
   }
   fs_close(fd);
