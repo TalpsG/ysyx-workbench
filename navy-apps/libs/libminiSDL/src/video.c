@@ -6,6 +6,8 @@
 
 void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst, SDL_Rect *dstrect) {
 	int x,y,w,h;
+	printf("%d %d %d %d\n",srcrect->x,srcrect->y,src->w,src->h);
+	printf("%d %d %d %d\n",dstrect->x,dstrect->y,dst->w,dst->h);
 	if (srcrect == NULL) {
 		w = src->w;
 		h = src->h;
