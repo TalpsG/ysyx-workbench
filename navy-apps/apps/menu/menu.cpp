@@ -146,6 +146,7 @@ static void draw_text_row(char *s, int r) {
 }
 
 static void display_menu(int n) {
+	printf("w:%d,h:%d\n",)
   clear_display();
   SDL_Rect rect = { .x = screen->w - logo_sf->w, .y = 0 };
   SDL_BlitSurface(logo_sf, NULL, screen, &rect);
@@ -153,6 +154,7 @@ static void display_menu(int n) {
   char buf[80];
   int i;
   for (i = 0; i <= n; i ++) {
+	printf("w:%d,h:%d\n",)
     auto *item = &items[page * 10 + i];
     sprintf(buf, "  [%d] %s", i, item->name);
     draw_text_row(buf, i);
