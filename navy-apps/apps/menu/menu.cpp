@@ -79,7 +79,6 @@ int main(int argc, char *argv[], char *envp[]) {
 
   font = new BDF_Font(font_fname);
   while (1) {
-  printf("w:%d,h:%d\n",font->w,font->h);
     display_menu(i_max);
 
     SDL_Event e;
@@ -122,7 +121,6 @@ int main(int argc, char *argv[], char *envp[]) {
 }
 
 static void draw_ch(BDF_Font *font, int x, int y, char ch, uint32_t fg, uint32_t bg) {
-	printf("draw_ch w:%d,h:%d\n",font->w,font->h);
   SDL_Surface *s = BDF_CreateSurface(font, ch, fg, bg);
   SDL_Rect dstrect = { .x = x, .y = y };
   SDL_BlitSurface(s, NULL, screen, &dstrect);
@@ -130,7 +128,6 @@ static void draw_ch(BDF_Font *font, int x, int y, char ch, uint32_t fg, uint32_t
 }
 
 static void draw_str(BDF_Font *font, int x, int y, char *str, uint32_t fp, uint32_t bg) {
-	printf("draw_str  w:%d,h:%d\n",font->w,font->h);
   while (*str) {
     draw_ch(font, x, y, *str, fp, bg);
     x += font->w;
@@ -145,13 +142,10 @@ static void draw_text_row(char *s, int r) {
 }
 
 static void display_menu(int n) {
-  printf("w:%d,h:%d\n",font->w,font->h);
   clear_display();
-  printf("w:%d,h:%d\n",font->w,font->h);
   SDL_Rect rect = { .x = screen->w - logo_sf->w, .y = 0 };
   SDL_BlitSurface(logo_sf, NULL, screen, &rect);
   printf("Available applications:\n");
-  printf("w:%d,h:%d\n",font->w,font->h);
   char buf[80];
   int i;
   for (i = 0; i <= n; i ++) {
