@@ -28,6 +28,7 @@ void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst, SDL_
 		dst_x = dstrect->x;
 		dst_y = dstrect->y;
 	}
+	printf("w:%d,h:%d\n",w,h);
 	for (int i = 0; i < h; i++) {
 		memcpy(p_dst+(dst_y+i)*dst->w,p_src+(src_y+i)*src->w,w);
 	}
