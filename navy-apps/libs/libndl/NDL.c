@@ -66,7 +66,9 @@ void NDL_DrawRect(uint32_t *pixels, int x, int y, int w, int h) {
 	for (int i = 0; i < h; i++) { //h行
 		lseek(fbdev,(screen_w-canvas_w)/2,SEEK_CUR);
 		lseek(fbdev,x,SEEK_CUR);
+		printf("write:%d\n",i);
 		write(fbdev, pixels+i*w,w);
+		printf("write:%d over\n",i);
 		lseek(fbdev,canvas_w-w-x,SEEK_CUR);
 		lseek(fbdev,(screen_w-canvas_w)/2+w_flag,SEEK_CUR);
 	}
