@@ -59,7 +59,7 @@ void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
 	printf("update in \n");
 	if (w == 0 && h == 0 && x ==0 && y == 0){
       NDL_DrawRect((uint32_t *)s->pixels, 0, 0, s->w, s->h);
-	printf("update out \n");
+	printf("all zero update out \n");
       return ;
     }
     
