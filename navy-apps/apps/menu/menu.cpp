@@ -75,6 +75,7 @@ int main(int argc, char *argv[], char *envp[]) {
   screen = SDL_SetVideoMode(0, 0, 32, SDL_HWSURFACE);
   font = new BDF_Font(font_fname);
   printf("w:%d,h:%d\n",font->w,font->h);
+  printf("add:%p\n",font);
   logo_sf = SDL_LoadBMP("/share/pictures/projectn.bmp");
   assert(logo_sf);
   set_i_max();
@@ -156,7 +157,6 @@ static void display_menu(int n) {
   char buf[80];
   int i;
   for (i = 0; i <= n; i ++) {
-  printf("w:%d,h:%d\n",font->w,font->h);
     auto *item = &items[page * 10 + i];
     sprintf(buf, "  [%d] %s", i, item->name);
     draw_text_row(buf, i);
