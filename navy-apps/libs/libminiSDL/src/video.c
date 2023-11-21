@@ -21,7 +21,7 @@ void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst, SDL_
 		x = dstrect->x;
 		y = dstrect->y;
 	}
-	printf("ndl draw  pixels:%p\n",dst->pixels);
+	printf("ndl draw  pixels:%p ,%d %d %d %d \n",dst->pixels,x,y,w,h);
 	NDL_DrawRect(dst->pixels,x,y,w,h);
 	printf("ndl draw over \n");
 }
