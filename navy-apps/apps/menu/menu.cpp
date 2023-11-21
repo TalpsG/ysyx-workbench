@@ -73,13 +73,13 @@ int main(int argc, char *argv[], char *envp[]) {
   SDL_Init(0);
 
   screen = SDL_SetVideoMode(0, 0, 32, SDL_HWSURFACE);
-  font = new BDF_Font(font_fname);
   printf("w:%d,h:%d\n",font->w,font->h);
   printf("add:%p\n",font);
   logo_sf = SDL_LoadBMP("/share/pictures/projectn.bmp");
   assert(logo_sf);
   set_i_max();
 
+  font = new BDF_Font(font_fname);
   while (1) {
   printf("w:%d,h:%d\n",font->w,font->h);
     display_menu(i_max);
