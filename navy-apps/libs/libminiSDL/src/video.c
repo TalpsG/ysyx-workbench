@@ -22,7 +22,7 @@ void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst, SDL_
 		y = dstrect->y;
 	}
 	uint32_t *p = src->pixels;
-	NDL_DrawRect(src->pixels,x,y,w,h)
+	NDL_DrawRect(src->pixels,x,y,w,h);
 }
 
 void SDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, uint32_t color) {
