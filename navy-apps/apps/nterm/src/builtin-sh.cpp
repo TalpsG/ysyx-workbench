@@ -28,11 +28,9 @@ static void sh_handle_cmd(const char *cmd) {
 void builtin_sh_run() {
   sh_banner();
   sh_prompt();
-	printf("builtin\n")	;
   while (1) {
     SDL_Event ev;
     if (SDL_PollEvent(&ev)) {
-		printf("event!\n");
       if (ev.type == SDL_KEYUP || ev.type == SDL_KEYDOWN) {
         const char *res = term->keypress(handle_key(&ev));
         if (res) {
