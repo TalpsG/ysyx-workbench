@@ -3,49 +3,44 @@
 #include <assert.h>
 #include <string.h>
 #include <stdlib.h>
-extern unsigned palette[];
 void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst, SDL_Rect *dstrect) {
 	assert(dst && src);
 	assert(dst->format->BitsPerPixel == src->format->BitsPerPixel);
-	if (dst->format->BitsPerPixel == 32) {
-		uint32_t *p_src = src->pixels;
-		uint32_t *p_dst = dst->pixels;
-		int dst_x,dst_y,w,h,src_x,src_y;
-		if (srcrect == NULL) {
-			w = src->w;
-			h = src->h;
-			src_x = 0;
-			src_y = 0;
-		} else {
-			w = srcrect->w;
-			h = srcrect->h;
-			src_x = srcrect->x;
-			src_y = srcrect->y;
+	uint32_t *p_src = src->pixels;
+	uint32_t *p_dst = dst->pixels;
+	int dst_x,dst_y,w,h,src_x,src_y;
+	if (srcrect == NULL) {
+		w = src->w;
+		h = src->h;
+		src_x = 0;
+		src_y = 0;
+	} else {
+		w = srcrect->w;
+		h = srcrect->h;
+		src_x = srcrect->x;
+		src_y = srcrect->y;
+	}
+	if (dstrect == NULL) {
+		dst_x = 0;
+		dst_y = 0;
+	} else {
+		dst_x = dstrect->x;
+		dst_y = dstrect->y;
+	}
+	for (int i = 0; i < h; i++) {
+		for (int j = 0; j < w; j++) {
+			p_dst[(dst_y+i)*dst->w+dst_x+j] = p_src[(src_y+i)*src->w+src_x+j];
 		}
-		if (dstrect == NULL) {
-			dst_x = 0;
-			dst_y = 0;
-		} else {
-			dst_x = dstrect->x;
-			dst_y = dstrect->y;
-		}
-		for (int i = 0; i < h; i++) {
-			for (int j = 0; j < w; j++) {
-				p_dst[(dst_y+i)*dst->w+dst_x+j] = p_src[(src_y+i)*src->w+src_x+j];
-			}
-		}
-	} else if (dst->format->BitsPerPixel == 8) {
-
 	}
 }
 
 void SDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, uint32_t color) {
 	int x,y,w,h;
 	if (dstrect == NULL) {
-          x = 0;
-          y = 0;
-          w = dst->w;
-          h = dst->h;
+		x = 0;
+		y = 0;
+		w = dst->w;
+		h = dst->h;
 	} else {
 		x = dstrect->x;
 		y = dstrect->y;
@@ -61,20 +56,51 @@ void SDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, uint32_t color) {
 }
 
 void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
-	if (w == 0 && h == 0 && x ==0 && y == 0){
-      NDL_DrawRect((uint32_t *)s->pixels, 0, 0, s->w, s->h);
-      return ;
-    }
-    
-    uint32_t *pixels = malloc(w * h * sizeof(uint32_t));
-    assert(pixels);
-    uint32_t *src = (uint32_t *)s->pixels;
-    for (int i = 0; i < h; ++i){
-      memcpy(&pixels[i * w], &src[(y + i) * s->w + x], sizeof(uint32_t) * w);
-    }
-    NDL_DrawRect(pixels, x, y, w, h);
+	if (s->format->BitsPerPixel == 32) {
+		if (w == 0 && h == 0 && x ==0 && y == 0){
+			NDL_DrawRect((uint32_t *)s->pixels, 0, 0, s->w, s->h);
+			return ;
+		}
+		
+		uint32_t *pixels = malloc(w * h * sizeof(uint32_t));
+		assert(pixels);
+		uint32_t *src = (uint32_t *)s->pixels;
+		for (int i = 0; i < h; ++i){
+			memcpy(&pixels[i * w], &src[(y + i) * s->w + x], sizeof(uint32_t) * w);
+		}
+		NDL_DrawRect(pixels, x, y, w, h);
 
-    free(pixels);	
+		free(pixels);
+	} else if (s->format->BitsPerPixel == 8) {
+		if (w == 0 && h == 0 && x ==0 && y == 0){
+			char *index = s->pixels;
+			uint32_t *pixels = malloc(sizeof(uint32_t)*s->w*s->h);
+			assert(pixels);
+			for (int i = 0; i < s->h; i++) {
+				for (int j = 0; j < s->w; j++) {
+					pixels[i*w+j] = s->format->palette->colors[index[i*w+j]].val;
+				}
+			}
+			NDL_DrawRect(pixels, 0, 0, s->w, s->h);
+			free(pixels);
+			return ;
+		}
+		
+		uint32_t *pixels = malloc(w * h * sizeof(uint32_t));
+		assert(pixels);
+		char *index = (char*)s->pixels;
+		for (int i = 0; i < h; ++i){
+			for (int j = 0; j < w; j++) {
+				pixels[i*w+j] = s->format->palette->colors[index[i*w+j]].val;
+			}
+		}
+		NDL_DrawRect(pixels, x, y, w, h);
+
+		free(pixels);
+		//todo
+
+	}
+
 }
 
 // APIs below are already implemented.
