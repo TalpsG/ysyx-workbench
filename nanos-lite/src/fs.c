@@ -1,5 +1,6 @@
 #include <fs.h>
 #include <ramdisk.h>
+#include <stdio.h>
 extern size_t events_read(void *buf, size_t offset, size_t len);
 extern size_t serial_write(const void *buf, size_t offset, size_t len);
 extern size_t dispinfo_read(void *buf, size_t offset, size_t len);
@@ -34,6 +35,7 @@ void init_fs() {
   file_table[FD_FB].size = 4*p.height*p.width;
 }
 int fs_open(const char *pathname, int flags, int mode) {
+	printf("%s %s\n",__FUNCTION__,pathname);
 	static int file_num = sizeof(file_table)/sizeof(Finfo);
 	for (int i = 0; i < file_num; i++) {
 		if (strcmp(pathname, file_table[i].name) == 0) {
@@ -49,6 +51,10 @@ int fs_open(const char *pathname, int flags, int mode) {
 }
 size_t fs_read(int fd, void *buf, size_t len) {
 	Finfo *p = &file_table[fd];
+	printf("%s %s\n",__FUNCTION__,p->name);
+	if (fd <= 2) {
+          assert(0);
+	}
   if (file_table[fd].read != NULL) {
 		size_t ret = p->read(buf,p->open_offset,len);
 		file_table[fd].open_offset += ret;
@@ -61,6 +67,7 @@ size_t fs_read(int fd, void *buf, size_t len) {
 }
 size_t fs_write(int fd, const void *buf, size_t len) {
 	Finfo *p = &file_table[fd];
+	printf("%s %s\n",__FUNCTION__,p->name);
   if (file_table[fd].write != NULL) {
 		size_t ret = p->write(buf,p->open_offset,len);
 		p->open_offset += ret;
@@ -76,7 +83,7 @@ size_t fs_fileoffset(int fd) {
 }
 size_t fs_lseek(int fd, size_t offset, int whence) {
   Finfo *info = &file_table[fd];
-
+	printf("%s %s\n",__FUNCTION__,info->name);
   switch(whence){
     case SEEK_CUR:
       assert(info->open_offset + offset <= info->size);
@@ -101,5 +108,7 @@ size_t fs_lseek(int fd, size_t offset, int whence) {
 }
 int fs_close(int fd) {
 	file_table[fd].open_offset = 0;
+	printf("%s %s\n",__FUNCTION__,file_table[fd].name);
+
   return 0;
 }
