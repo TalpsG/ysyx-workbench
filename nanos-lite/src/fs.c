@@ -75,31 +75,29 @@ size_t fs_fileoffset(int fd) {
   return file_table[fd].disk_offset;
 }
 size_t fs_lseek(int fd, size_t offset, int whence) {
-	switch (whence){
-		case SEEK_SET: {
-			file_table[fd].open_offset = offset < file_table[fd].size? offset:file_table[fd].size;
-			return file_table[fd].open_offset;
-		}
-		case SEEK_CUR: {
-                  file_table[fd].open_offset =
-                      (file_table[fd].open_offset + offset) <= file_table[fd].size
-                      ?
-                      (file_table[fd].open_offset + offset):file_table[fd].size ;
-			return file_table[fd].open_offset;
-		}
-		case SEEK_END: {
-                  file_table[fd].open_offset =
-                      (file_table[fd].size + offset) <= file_table[fd].size
-                      ?
-                      (file_table[fd].size + offset):file_table[fd].size ;
-			return file_table[fd].open_offset;
-		}
-		default: {
-			printf("whence only can be SEEK_SET,SEEK_CUR or SEEK_END\n");
-			return -1;
-		}
-	}
-  return -1;
+  Finfo *info = &file_table[fd];
+
+  switch(whence){
+    case SEEK_CUR:
+      assert(info->open_offset + offset <= info->size);
+      info->open_offset += offset;
+      break;
+
+    case SEEK_SET:
+      assert(offset <= info->size);
+      info->open_offset = offset;
+      break;
+
+    case SEEK_END:
+      assert(offset <= info->size);
+      info->open_offset = info->size + offset;
+      break;
+
+    default:
+      assert(0);
+  }
+
+  return info->open_offset;	
 }
 int fs_close(int fd) {
   return 0;
