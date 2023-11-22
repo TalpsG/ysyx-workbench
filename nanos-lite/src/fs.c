@@ -51,7 +51,9 @@ int fs_open(const char *pathname, int flags, int mode) {
 }
 size_t fs_read(int fd, void *buf, size_t len) {
 	Finfo *p = &file_table[fd];
+#ifdef STRACE
 	printf("%s %s\n",__FUNCTION__,p->name);
+#endif  
 	if (fd <= 2) {
           assert(0);
 	}
@@ -67,7 +69,9 @@ size_t fs_read(int fd, void *buf, size_t len) {
 }
 size_t fs_write(int fd, const void *buf, size_t len) {
 	Finfo *p = &file_table[fd];
+#ifdef STRACE
 	printf("%s %s\n",__FUNCTION__,p->name);
+#endif  
   if (file_table[fd].write != NULL) {
 		size_t ret = p->write(buf,p->open_offset,len);
 		p->open_offset += ret;
@@ -83,7 +87,9 @@ size_t fs_fileoffset(int fd) {
 }
 size_t fs_lseek(int fd, size_t offset, int whence) {
   Finfo *info = &file_table[fd];
+#ifdef STRACE
 	printf("%s %s\n",__FUNCTION__,info->name);
+#endif
   switch(whence){
     case SEEK_CUR:
       assert(info->open_offset + offset <= info->size);
@@ -108,7 +114,9 @@ size_t fs_lseek(int fd, size_t offset, int whence) {
 }
 int fs_close(int fd) {
 	file_table[fd].open_offset = 0;
+#ifdef STRACE
 	printf("%s %s\n",__FUNCTION__,file_table[fd].name);
+#endif
 
   return 0;
 }
