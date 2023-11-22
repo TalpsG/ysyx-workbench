@@ -68,6 +68,7 @@ int strncmp(const char *s1, const char *s2, size_t n) {
 }
 
 void *memset(void *s, int c, size_t n) {
+	printf("memset, addr:%p,value:%d,size:%d\n",s,c,n);
   char *p = s;
   for(size_t i = 0; i<n ;i++){
     p[i] = c&0xff;
