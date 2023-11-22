@@ -29,7 +29,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
 	size_t p_memsz= program_table.p_memsz;
 
 	ramdisk_read((void*)addr,file_offset+ p_offset,p_filesz);
-	printf("%p %p %p %d\n",addr,p_memsz,p_filesz,p_memsz - p_filesz);
+	printf("%p %d\n",addr+file_offset+p_filesz,p_memsz - p_filesz);
 	memset((void*)(addr+file_offset+ p_filesz),0,p_memsz - p_filesz);
   }
   fs_close(fd);
