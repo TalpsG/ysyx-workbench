@@ -72,9 +72,11 @@ void *_sbrk(intptr_t increment) {
 	static intptr_t program_break = &end;
 	increment = (increment + 3) & 0xfffffffc;
 	int ret = _syscall_(SYS_brk,increment, 0, 0);
-	void *temp  = program_break;
-	program_break += increment;
-	return temp;
+	if (ret == 0) {
+		void *temp  = program_break;
+		program_break += increment;
+		return temp;
+	}else return -1;
 }
 
 int _read(int fd, void *buf, size_t count) {
