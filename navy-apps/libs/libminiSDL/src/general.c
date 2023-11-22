@@ -1,7 +1,6 @@
 #include <NDL.h>
 
 int SDL_Init(uint32_t flags) {
-	printf("sdl init\n");
   return NDL_Init(flags);
 }
 
