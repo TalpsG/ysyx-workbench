@@ -81,7 +81,6 @@ void *_sbrk(intptr_t increment) {
   }else {
     assert(0);
   }
-	printf("brk:%p\n",old_program_break);
   return old_program_break;
 }
 
