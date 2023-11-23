@@ -70,6 +70,7 @@ size_t fs_read(int fd, void *buf, size_t len) {
 	size_t real_len;
 	if (p->read) {
 		real_len = p->read(buf,p->open_offset,len);
+		p->open_offset += real_len;
 		return real_len;
 	}
 	real_len = (p->open_offset + len) > p->size ? (p->size - p->open_offset) : len;
@@ -79,11 +80,14 @@ size_t fs_read(int fd, void *buf, size_t len) {
 }
 size_t fs_write(int fd, const void *buf, size_t len) {
 	Finfo *p = &file_table[fd];
+	size_t  real_len;
 	if (p->write != NULL) {
-		return p->write(buf,p->open_offset,len);
+		real_len = p->write(buf,p->open_offset,len);
+		p->open_offset += real_len;
+		return real_len;
 	}
 	assert(p->open_offset+len<p->size);
-	size_t real_len = ramdisk_write(buf, p->disk_offset+ p->open_offset, len);
+	real_len = ramdisk_write(buf, p->disk_offset+ p->open_offset, len);
 	p->open_offset += real_len;
 	return real_len;
 }
