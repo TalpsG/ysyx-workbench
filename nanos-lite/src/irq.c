@@ -5,7 +5,7 @@ int sys_yield() {
 }
 static Context* do_event(Event e, Context* c) {
   switch (e.event) {
-	case 1: {
+	case 4: {
 		c->GPRx = sys_yield();
 		break;
 	}
