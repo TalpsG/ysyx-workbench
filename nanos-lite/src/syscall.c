@@ -2,7 +2,7 @@
 #include "syscall.h"
 #include <fs.h>
 #include <sys/time.h>
-//#define STRACE 1
+#define STRACE 1
 int sys_yield() {
   yield();
 #ifdef STRACE
@@ -63,7 +63,7 @@ int sys_gettimeofday(struct timeval *tv, struct timezone *tz) {
 	tv->tv_sec = time / 1000000;
 	tv->tv_usec = time % 1000000;
 #ifdef STRACE
-	printf("%s param : %p %p %p return:%p\n",__FUNCTION__,fd,offset,whence,ret);
+	printf("%s param : %p %p  \n",__FUNCTION__,tv,tz);
 #endif
 	return 0;
 }
