@@ -59,7 +59,7 @@ word_t isa_raise_intr(word_t NO, vaddr_t epc) {
   mcause = NO;
   mepc = NO==1?epc+4:epc;
   mstatus = 0x1800;
-  mstatus |= ((1<<11)+(1<<12));
+	mstatus |=( (1<<11)+(1<<12));
 #ifdef CONFIG_ETRACE
   char buf[100];
   sprintf(buf, "pc:%8x,mcause:%d,handler_addr:%8x\n",epc,mcause,mtvec);
@@ -70,4 +70,4 @@ word_t isa_raise_intr(word_t NO, vaddr_t epc) {
 
 word_t isa_query_intr() {
   return INTR_EMPTY;
-}
+} 
