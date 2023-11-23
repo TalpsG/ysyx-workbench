@@ -55,7 +55,7 @@ void NDL_OpenCanvas(int *w, int *h) {
 }
 
 void NDL_DrawRect(uint32_t *pixels, int x, int y, int w, int h) {
-	printf("1\n");
+	write(1, "1\n", 2);
 	lseek(fbdev, 0 , SEEK_SET);
 	for (int i = 0; i < h; i++) {
 		lseek(fbdev, x, SEEK_CUR);
