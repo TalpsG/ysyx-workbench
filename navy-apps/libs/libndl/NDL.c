@@ -81,6 +81,7 @@ int NDL_Init(uint32_t flags) {
   read(fbctl, buf, 64);
   int len = strlen(buf);
   printf("len:%d buf:%s\n",len,buf);
+  printf("strcmp,%d\n",strcmp("WIDTH",buf)) ;
   for (int i = 0; i < len;i++ ) {
 	printf(" i : %d\n",i);
 	if (strcmp(buf + i, "HEIGHT") == 0) {
