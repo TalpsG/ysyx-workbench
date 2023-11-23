@@ -50,7 +50,7 @@ void SDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, uint32_t color) {
 	if (dstrect == NULL) {
 		for (int i = 0; i < dst->h; i++) {
 			for (int j = 0; j < dst->w; j++) {
-				dst->pixels[i*dst->w+j] = color;
+				((uint32_t)dst->pixels)[i*dst->w+j] = color;
 				if (dst->pixels[i * dst->w + j] != 0xffffff)
                                   printf("color : %p not fill\n",dst->pixels[i*dst->w+j]);
 			}
@@ -58,7 +58,7 @@ void SDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, uint32_t color) {
 	} else {
 		for (int i = 0; i < dstrect->h; i++) {
 			for (int j = 0; j < dstrect->w; j++) {
-				dst->pixels[(dstrect->y+i)*dst->w+dstrect->x+j] = color;
+				((uint32_t)dst->pixels)[(dstrect->y+i)*dst->w+dstrect->x+j] = color;
 			}
 		}
 	}
