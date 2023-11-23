@@ -1,6 +1,7 @@
 #include <common.h>
 #include "syscall.h"
 #include <fs.h>
+#include <sys/time.h>
 //#define STRACE 1
 int sys_yield() {
   yield();
@@ -57,6 +58,17 @@ int  sys_lseek(int fd, int offset, int whence) {
 #endif
 	return ret;
 }
+int sys_gettimeofday(struct timeval *tv, struct timezone *tz) {
+	AM_TIMER_UPTIME_T p;
+	ioe_read(AM_TIMER_UPTIME,&p);
+	uint64_t time = p.us;
+	tv->tv_sec = time / 1000000;
+	tv->tv_sec = time % 1000000;
+#ifdef STRACE
+	printf("%s param : %p %p %p return:%p\n",__FUNCTION__,fd,offset,whence,ret);
+#endif
+	return 0;
+}
 void do_syscall(Context *c) {
   uintptr_t a[4];
   a[0] = c->GPR1;
@@ -94,6 +106,10 @@ void do_syscall(Context *c) {
 	}
 	case 9: {
 		c->GPRx = sys_brk(a[1]);
+		break;
+	}
+	case 19: {
+		c->GPRx = sys_gettimeofday((void *)a[1],(void *)a[2]);
 		break;
 	}
         
