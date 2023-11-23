@@ -2,6 +2,10 @@
 
 static Context* do_event(Event e, Context* c) {
   switch (e.event) {
+	case 1: {
+		printf("catch yield\n");
+		break;
+	}
     default: panic(" nanos Unhandled event ID = %d", e.event);
   }
 
