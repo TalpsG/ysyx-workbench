@@ -26,7 +26,7 @@ int sys_write(int fd, void *buf, size_t count) {
 }
 int sys_brk(intptr_t increment) {
 #ifdef STRACE
-	printf("%s param : %p return:%p\n",__FUNCTION__,increment);
+	printf("%s param : %p return:%p\n",__FUNCTION__,increment,0);
 #endif
 	return 0;
 }
