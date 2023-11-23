@@ -20,7 +20,7 @@
 typedef struct {
   word_t mcause;
   vaddr_t mepc;
-  word_t mstatus;
+  word_t mstatus ;
   word_t mtvec;
 } riscv_CSRs;
 typedef struct {

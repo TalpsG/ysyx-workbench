@@ -17,6 +17,7 @@
 #include <stdio.h>
 #include "trace/etrace.h"
 extern CPU_state cpu;
+static int first = 1;
 word_t csr_read(word_t index) {
 	switch (index)
 	{
@@ -59,6 +60,7 @@ word_t isa_raise_intr(word_t NO, vaddr_t epc) {
   /* TODO: Trigger an interrupt/exception with ``NO''.
    * Then return the address of the interrupt/exception vector.
    */
+   if(first) cpu.csr.mstatus = 0x1800;
   cpu.csr.mcause = NO;
   cpu.csr.mepc = epc;
   cpu.csr.mstatus &= ~(1<<7);// 清除mpie位
