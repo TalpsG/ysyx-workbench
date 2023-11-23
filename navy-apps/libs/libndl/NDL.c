@@ -101,6 +101,7 @@ int NDL_Init(uint32_t flags) {
 		sscanf(buf+i, "%d",&screen_h);
 	}
   }
+  printf("screen w:%d h:%d\n",screen_w,screen_h);
   return 0;
 }
 
