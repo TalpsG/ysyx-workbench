@@ -70,6 +70,9 @@ bool isa_difftest_checkregs(CPU_state *ref_r, vaddr_t pc) {
       return false;
     }
   }
+  if (cpu.pc == 0x800191b8) {
+    printf("mstatus:%08x  expected:%8x",ref_r->csr.mstatus,cpu.csr.mstatus);
+  }
   return true;
 }
 
