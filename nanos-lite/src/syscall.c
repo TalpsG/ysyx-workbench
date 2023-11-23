@@ -61,7 +61,7 @@ int  sys_lseek(int fd, int offset, int whence) {
 int sys_gettimeofday(struct timeval *tv, struct timezone *tz) {
 	uint64_t time = io_read(AM_TIMER_UPTIME).us;
 	tv->tv_sec = time / 1000000;
-	tv->tv_sec = time % 1000000;
+	tv->tv_usec = time % 1000000;
 #ifdef STRACE
 	printf("%s param : %p %p %p return:%p\n",__FUNCTION__,fd,offset,whence,ret);
 #endif
