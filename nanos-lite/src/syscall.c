@@ -17,12 +17,14 @@ int sys_exit(int code) {
 	return 0;
 }
 int sys_write(int fd, void *buf, size_t count) {
-	printf("fd:%d\n",fd);
-	assert(fd == 1|| fd == 2);
 	int i;
-	char *data = buf;
-	for (i = 0; i < count; i++) {
-		putch(data[i]);
+	if (fd == 1 || fd == 2) {
+		char *data = buf;
+		for (i = 0; i < count; i++) {
+			putch(data[i]);
+		}
+	} else {
+		i = fs_write(fd, buf, count);
 	}
 #ifdef STRACE
 	printf("%s param : %p %p %p return:%p\n",__FUNCTION__,fd,buf,count,i);
