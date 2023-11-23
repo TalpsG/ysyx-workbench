@@ -21,7 +21,6 @@ void __am_gpu_fbdraw(AM_GPU_FBDRAW_T *ctl) {
 	int w = ctl->w,h = ctl->h;
 	int x = ctl->x,y=ctl->y;
 	int pos = (y)*vga_w+x;
-	printf("in am %d %d %d %d\n",x,y,w,h);
 	for (int i = 0; i < h; i++) {
           for (int j = 0; j < w; j++) {
             fb[pos+i*vga_w+j] = ((uint32_t*)ctl->pixels)[i*w+j];
