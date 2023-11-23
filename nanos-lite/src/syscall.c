@@ -41,6 +41,27 @@ int sys_open(const char *path, int flags, int mode) {
 #endif
 	return ret;
 }
+int sys_read(int fd, void *buf, size_t count) {
+	int ret = fs_read(fd, buf, count);
+#ifdef STRACE
+	printf("%s param : %p %p %p return:%p\n",__FUNCTION__,fd,buf,count,ret);
+#endif
+	return ret;
+}
+int sys_close(int fd) {
+	int ret = fs_close(fd );
+#ifdef STRACE
+	printf("%s param : %p return:%p\n",__FUNCTION__,fd,ret);
+#endif
+	return ret;
+}
+int  sys_lseek(int fd, int offset, int whence) {
+	int ret = fs_lseek(fd,offset,whence );
+#ifdef STRACE
+	printf("%s param : %p %p %p return:%p\n",__FUNCTION__,fd,offset,whence,ret);
+#endif
+	return ret;
+}
 void do_syscall(Context *c) {
   uintptr_t a[4];
   a[0] = c->GPR1;
@@ -60,8 +81,20 @@ void do_syscall(Context *c) {
 		c->GPRx = sys_open((void *)a[1],0,0);
 		break;
 	}
+	case 3: {
+		c->GPRx = sys_read(a[1],(void *)a[2],a[3]);
+		break;
+	}
 	case 4: {
 		c->GPRx = sys_write(a[1],(void*)a[2],a[3]);
+		break;
+	}
+	case 7: {
+		c->GPRx = sys_close(a[1]);
+		break;
+	}
+	case 8: {
+		c->GPRx = sys_lseek(a[1],a[2],a[3]);
 		break;
 	}
 	case 9: {
