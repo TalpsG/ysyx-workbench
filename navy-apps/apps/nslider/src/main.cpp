@@ -1,6 +1,7 @@
 #include <SDL.h>
 #include <SDL_bmp.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <assert.h>
 
 #define W 400
@@ -26,6 +27,7 @@ void render() {
   char fname[256];
   sprintf(fname, path, cur);
   slide = SDL_LoadBMP(fname);
+  write(1,"s\n",2);
   assert(slide);
   SDL_UpdateRect(slide, 0, 0, 0, 0);
 }
