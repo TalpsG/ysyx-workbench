@@ -85,8 +85,9 @@ int NDL_Init(uint32_t flags) {
     if (buf[i] == ' ' || buf[i] == '\n' || buf[i] == ':') {
 		continue;
 	}
+	printf("no : %s\n",buf+i);
 	if (strcmp(buf + i, "HEIGHT") == 0) {
-		printf("height : %s",buf+i);
+		printf("height : %s\n",buf+i);
 		i += strlen("HEIGHT");
 		while (1) {
 			if(buf[i] == ' ' || buf[i] == ':') i++;
@@ -95,7 +96,7 @@ int NDL_Init(uint32_t flags) {
 		sscanf(buf+i, "%d",&screen_h);
 	}
 	if (strcmp(buf + i, "WIDTH") == 0) {
-		printf("width : %s",buf+i);
+		printf("width : %s\n",buf+i);
 		i += strlen("WIDTH");
 		while (1) {
 			if(buf[i] == ' ' || buf[i] == ':') i++;
