@@ -70,51 +70,51 @@ static void clear_display(void) {
 int main(int argc, char *argv[], char *envp[]) {
   SDL_Init(0);
   screen = SDL_SetVideoMode(0, 0, 32, SDL_HWSURFACE);
+	clear_display();
+  //font = new BDF_Font(font_fname);
+  //logo_sf = SDL_LoadBMP("/share/pictures/projectn.bmp");
+  //assert(logo_sf);
+  //set_i_max();
 
-  font = new BDF_Font(font_fname);
-  logo_sf = SDL_LoadBMP("/share/pictures/projectn.bmp");
-  assert(logo_sf);
-  set_i_max();
+  //while (1) {
+    //display_menu(i_max);
 
-  while (1) {
-    display_menu(i_max);
+    //SDL_Event e;
+    //do {
+      //SDL_WaitEvent(&e);
+    //} while (e.type != SDL_KEYDOWN);
 
-    SDL_Event e;
-    do {
-      SDL_WaitEvent(&e);
-    } while (e.type != SDL_KEYDOWN);
+    //int i = -1;
+    //switch (e.key.keysym.sym) {
+      //case SDLK_0: i = 0; break;
+      //case SDLK_1: i = 1; break;
+      //case SDLK_2: i = 2; break;
+      //case SDLK_3: i = 3; break;
+      //case SDLK_4: i = 4; break;
+      //case SDLK_5: i = 5; break;
+      //case SDLK_6: i = 6; break;
+      //case SDLK_7: i = 7; break;
+      //case SDLK_8: i = 8; break;
+      //case SDLK_9: i = 9; break;
+      //case SDLK_LEFT: prev(); break;
+      //case SDLK_RIGHT: next(); break;
+    //}
 
-    int i = -1;
-    switch (e.key.keysym.sym) {
-      case SDLK_0: i = 0; break;
-      case SDLK_1: i = 1; break;
-      case SDLK_2: i = 2; break;
-      case SDLK_3: i = 3; break;
-      case SDLK_4: i = 4; break;
-      case SDLK_5: i = 5; break;
-      case SDLK_6: i = 6; break;
-      case SDLK_7: i = 7; break;
-      case SDLK_8: i = 8; break;
-      case SDLK_9: i = 9; break;
-      case SDLK_LEFT: prev(); break;
-      case SDLK_RIGHT: next(); break;
-    }
-
-    if (i != -1 && i <= i_max) {
-      i += page * 10;
-      auto *item = &items[i];
-      const char *exec_argv[3];
-      exec_argv[0] = item->bin;
-      exec_argv[1] = item->arg1;
-      exec_argv[2] = NULL;
-      clear_display();
-      SDL_UpdateRect(screen, 0, 0, 0, 0);
-      execve(exec_argv[0], (char**)exec_argv, (char**)envp);
-      fprintf(stderr, "\033[31m[ERROR]\033[0m Exec %s failed.\n\n", exec_argv[0]);
-    } else {
-      fprintf(stderr, "Choose a number between %d and %d\n\n", 0, i_max);
-    }
-  }
+    //if (i != -1 && i <= i_max) {
+      //i += page * 10;
+      //auto *item = &items[i];
+      //const char *exec_argv[3];
+      //exec_argv[0] = item->bin;
+      //exec_argv[1] = item->arg1;
+      //exec_argv[2] = NULL;
+      //clear_display();
+      //SDL_UpdateRect(screen, 0, 0, 0, 0);
+      //execve(exec_argv[0], (char**)exec_argv, (char**)envp);
+      //fprintf(stderr, "\033[31m[ERROR]\033[0m Exec %s failed.\n\n", exec_argv[0]);
+    //} else {
+      //fprintf(stderr, "Choose a number between %d and %d\n\n", 0, i_max);
+    //}
+  //}
   return -1;
 }
 
