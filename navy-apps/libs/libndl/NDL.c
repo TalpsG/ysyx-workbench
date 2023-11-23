@@ -80,11 +80,12 @@ int NDL_Init(uint32_t flags) {
   char buf[65];
   read(fbctl, buf, 64);
   int len = strlen(buf);
+  printf("strcmp:%d\n",strcmp("WIDTH", "WIDTH1"));
   for (int i = 0; i < len;i++ ) {
     if (buf[i] == ' ' || buf[i] == '\n' || buf[i] == ':') {
 		continue;
 	}
-	if (strcmp("WIDTH",buf + i ) == 0) {
+	if (strcmp(buf + i, "HEIGHT") == 0) {
 		printf("height : %s\n",buf+i);
 		i += strlen("HEIGHT");
 		while (1) {
