@@ -97,7 +97,6 @@ int NDL_Init(uint32_t flags) {
 		sscanf(buf+i, "%d",&screen_h);
 		i++;
 	}
-	printf("%s\n",buf+i);
 	if (strcmp(buf + i, "WIDTH") == 0) {
 		printf("width : %s\n",buf+i);
 		i += strlen("WIDTH");
