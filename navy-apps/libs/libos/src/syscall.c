@@ -73,6 +73,8 @@ static void *program_break = NULL;
 void *_sbrk(intptr_t increment) {
 	if(program_break == NULL) program_break = &end;
 	if (_syscall_(SYS_brk, increment, 0, 0) == 0) {
+		putch('1');
+		putch('\n');
 		void * old = program_break;	
 		program_break += increment;
 		return old;
