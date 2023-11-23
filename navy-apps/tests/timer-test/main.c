@@ -2,6 +2,7 @@
 #include <NDL.h>
 int main() {
 	struct timeval t;
+	NDL_Init(0);
 	gettimeofday(&t, NULL);
 	uint32_t time = NDL_GetTicks();
 	int i= 1;
