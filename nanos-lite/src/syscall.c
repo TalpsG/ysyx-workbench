@@ -38,7 +38,7 @@ void do_syscall(Context *c) {
   a[0] = c->GPR1;
   a[1] = c->GPR2;
   a[2] = c->GPR3;
-  a[3] = c->GPRx;
+  a[3] = c->GPR4;
   switch (a[0]) {
 	case 0: {
 		c->GPRx = sys_exit(a[1]);
