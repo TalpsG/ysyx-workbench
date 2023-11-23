@@ -45,6 +45,8 @@ void NDL_OpenCanvas(int *w, int *h) {
     if (*w == 0 && *h == 0) {
 		*w = screen_w;
 		*h = screen_h;
+		canvas_w = screen_w;
+		canvas_h = screen_h;
     } else {
 		canvas_w = *w;
 		canvas_h = *h;
@@ -53,6 +55,12 @@ void NDL_OpenCanvas(int *w, int *h) {
 }
 
 void NDL_DrawRect(uint32_t *pixels, int x, int y, int w, int h) {
+	lseek(fbdev,0 , SEEK_SET);
+	for (int i = 0; i < h; i++) {
+		lseek(fbdev, x, SEEK_CUR);
+		write(fbdev,pixels[i*w],w);
+		lseek(fbdev,screen_w-w-x , SEEK_CUR);
+	}
 }
 
 void NDL_OpenAudio(int freq, int channels, int samples) {
@@ -74,6 +82,7 @@ int NDL_Init(uint32_t flags) {
     evtdev = 3;
   }
   evtdev = open("/dev/events",0,0);
+  fbdev = open("/dev/fb",0,0);
   gettimeofday(&tv,NULL);
   boot_time = tv.tv_sec * 1000 + tv.tv_usec / 1000;
   int fbctl = open("/dev/fbctl",0,0);
@@ -103,7 +112,7 @@ int NDL_Init(uint32_t flags) {
 		sscanf(buf+i, "%d",&screen_w);
 	}
   }
-  printf("screen w:%d h:%d\n",screen_w,screen_h);
+
   return 0;
 }
 

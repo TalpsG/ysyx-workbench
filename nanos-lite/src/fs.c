@@ -4,6 +4,7 @@
 typedef size_t (*ReadFn) (void *buf, size_t offset, size_t len);
 typedef size_t (*WriteFn) (const void *buf, size_t offset, size_t len);
 
+size_t fb_write(const void *buf, size_t offset, size_t len);
 size_t dispinfo_read(void *buf, size_t offset, size_t len);
 size_t events_read(void *buf, size_t offset, size_t len);
 size_t serial_write(const void *buf, size_t offset, size_t len);
@@ -37,12 +38,17 @@ static Finfo file_table[] __attribute__((used)) = {
   [FD_STDERR] = {"stderr", 0, 0, invalid_read, serial_write},
   [FD_EVENTS] = {"/dev/events", 0, 0, events_read, invalid_write},
   [FD_FBCTL] = {"/dev/fbctl", 0, 0, dispinfo_read, invalid_write},
-  [FD_FB] = {"/dev/fb", 0, 0, invalid_read, invalid_write},
+  [FD_FB] = {"/dev/fb", 0, 0, invalid_read, fb_write},
 #include "files.h"
 };
-
+int screen_w,screen_h;
 void init_fs() {
   // TODO: initialize the size of /dev/fb
+  AM_GPU_CONFIG_T p;
+  ioe_read(AM_GPU_CONFIG, &p);
+  screen_h = p.height;
+  screen_w = p.width;
+  file_table[FD_FB].size = 4*p.width*p.height;
 }
 int fs_open(const char *pathname, int flags, int mode) {
 	static int num = sizeof(file_table) / sizeof(Finfo);
