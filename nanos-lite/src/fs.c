@@ -3,12 +3,15 @@
 typedef size_t (*ReadFn) (void *buf, size_t offset, size_t len);
 typedef size_t (*WriteFn) (const void *buf, size_t offset, size_t len);
 
+size_t ramdisk_read(void *buf, size_t offset, size_t len);
+size_t ramdisk_write(const void *buf, size_t offset, size_t len);
 typedef struct {
   char *name;
   size_t size;
   size_t disk_offset;
   ReadFn read;
   WriteFn write;
+  size_t open_offset;
 } Finfo;
 
 enum {FD_STDIN, FD_STDOUT, FD_STDERR, FD_FB};
@@ -34,3 +37,23 @@ static Finfo file_table[] __attribute__((used)) = {
 void init_fs() {
   // TODO: initialize the size of /dev/fb
 }
+int fs_open(const char *pathname, int flags, int mode) {
+	static int num = sizeof(file_table) / sizeof(Finfo);
+	for (int i = 0; i < num; i++) {
+		if (strcmp(pathname, file_table[i].name) == 0) {
+			file_table[i].open_offset = 0;
+			return i;
+		}
+	}
+	printf("no file named %s\n",pathname);
+	assert(0);
+}
+size_t fs_read(int fd, void *buf, size_t len) {
+	Finfo *p = &file_table[fd];
+	size_t real_len = (p->open_offset + len) > p->size ? (p->size - p->open_offset) : len;
+	ramdisk_read(buf,p->open_offset , real_len);
+	return real_len;
+}
+size_t fs_write(int fd, const void *buf, size_t len);
+size_t fs_lseek(int fd, size_t offset, int whence);
+int fs_close(int fd);
