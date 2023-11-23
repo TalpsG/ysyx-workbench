@@ -1,5 +1,6 @@
 #include <common.h>
 #include "syscall.h"
+#include <fs.h>
 //#define STRACE 1
 int sys_yield() {
   yield();
@@ -33,6 +34,13 @@ int sys_brk(intptr_t increment) {
 #endif
 	return 0;
 }
+int sys_open(const char *path, int flags, int mode) {
+	int ret = fs_open(path, flags, mode);
+#ifdef STRACE
+	printf("%s param : %s %p %p return:%p\n",__FUNCTION__,path,flags,mode,ret);
+#endif
+	return ret;
+}
 void do_syscall(Context *c) {
   uintptr_t a[4];
   a[0] = c->GPR1;
@@ -46,6 +54,10 @@ void do_syscall(Context *c) {
 	}
 	case 1: {
 		c->GPRx = sys_yield();
+		break;
+	}
+	case 2: {
+		c->GPRx = sys_open((void *)a[1],0,0);
 		break;
 	}
 	case 4: {
