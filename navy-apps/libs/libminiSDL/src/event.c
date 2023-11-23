@@ -1,5 +1,6 @@
 #include <NDL.h>
 #include <SDL.h>
+#include <stdio.h>
 
 #define keyname(k) #k,
 
@@ -17,7 +18,17 @@ int SDL_PollEvent(SDL_Event *ev) {
 }
 
 int SDL_WaitEvent(SDL_Event *event) {
-  return 1;
+	char buf[50];
+	while (1) {
+		if (NDL_PollEvent(buf, 50)) {
+			int keycode,keydown;
+			sscanf(buf,"%d %d" ,&keydown,&keycode); 
+			event->type = keydown?SDL_KEYDOWN:SDL_KEYUP;
+			event->key.keysym.sym = keycode;
+			return 1;
+		}
+	}
+  return 0;
 }
 
 int SDL_PeepEvents(SDL_Event *ev, int numevents, int action, uint32_t mask) {
