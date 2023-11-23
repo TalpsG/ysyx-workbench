@@ -22,8 +22,9 @@ void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
 		}
 		uint32_t *pixels = malloc(sizeof(uint32_t)*w*h);
 		for (int i = 0; i < h; i++) {
-			
+			memcpy(pixels+i*w,s->pixels+(y+i)*s->w+x,sizeof(uint32_t)*w)
 		}
+		NDL_DrawRect(pixels,x,y,w,h);
 		return;
 	}
 }
