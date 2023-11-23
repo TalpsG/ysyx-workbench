@@ -13,6 +13,7 @@ size_t ramdisk_write(const void *buf, size_t offset, size_t len);
 static uintptr_t loader(PCB *pcb, const char *filename) {
 	printf("loader\n");
 	Elf_Ehdr ehdr;
+	printf("add:%p\n",&ehdr);
   ramdisk_read(&ehdr, 0, sizeof(Elf_Ehdr));
   printf("read\n");
   // check valid elf
