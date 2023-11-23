@@ -1,9 +1,5 @@
 #include <common.h>
 void do_syscall(Context *c);
-int sys_yield() {
-  yield();
-  return 0;
-}
 static Context* do_event(Event e, Context* c) {
   switch (e.event) {
 	case EVENT_SYSCALL: {
