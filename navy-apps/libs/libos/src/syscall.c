@@ -69,10 +69,8 @@ int _write(int fd, void *buf, size_t count) {
 	return _syscall_(SYS_write, fd , buf, count);
 }
 extern char end;
-static void *program_break = NULL;
 void *_sbrk(intptr_t increment) {
-  return (void *)-1;
-	if(program_break == NULL) program_break = &end;
+static void *program_break = &end;
 	if (_syscall_(SYS_brk, increment, 0, 0) == 0) {
 		putch('1');
 		putch('\n');
@@ -80,6 +78,7 @@ void *_sbrk(intptr_t increment) {
 		program_break += increment;
 		return old;
 	}
+  return (void *)-1;
 }
 
 int _read(int fd, void *buf, size_t count) {
