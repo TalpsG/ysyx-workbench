@@ -7,7 +7,6 @@ int main() {
 	uint32_t *p = &t.tv_usec;
 	while (1) {
 		gettimeofday(&t, NULL);
-		printf("%p\n",&p);
 		if (t.tv_usec - time > 500000 ) {
 			printf("0.5sec\n")	;
 			time = t.tv_usec;
