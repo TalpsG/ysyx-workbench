@@ -4,6 +4,10 @@ int sys_yield() {
   yield();
   return 0;
 }
+int sys_exit(int code) {
+  halt(code);
+	return 0;
+}
 void do_syscall(Context *c) {
   uintptr_t a[4];
   a[0] = c->GPR1;
@@ -11,6 +15,10 @@ void do_syscall(Context *c) {
   a[2] = c->GPR3;
   a[3] = c->GPRx;
   switch (a[0]) {
+	case 0: {
+		c->GPRx = sys_exit(a[1]);
+		break;
+	}
 	case 1: {
 		c->GPRx = sys_yield();
 		break;
