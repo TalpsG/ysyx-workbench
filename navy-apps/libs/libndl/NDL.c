@@ -80,13 +80,19 @@ int NDL_Init(uint32_t flags) {
   char buf[65];
   read(fbctl, buf, 64);
   int len = strlen(buf);
-  for (int i = 0; i < len;i++ ) {
+  printf("len:%d buf:%s\n",len,buf);
+  for (int i = 0; i < len; ) {
+    if (buf[i] == ' ' || buf[i] == '\n' || buf[i] == ':') {
+		i++;
+		continue;
+	}
 	if (strcmp(buf + i, "HEIGHT") == 0) {
 		printf("height : %s\n",buf+i);
 		i += strlen("HEIGHT");
 		while (1) {
-			if(buf[i] == ' ' || buf[i] == ':') i++;
-			else break;
+                  if (buf[i] == ' ' || buf[i] == ':')
+                    i++;
+                  else break;
 		}
 		printf("%s\n",buf+i);
 		sscanf(buf+i, "%d",&screen_h);
@@ -96,12 +102,11 @@ int NDL_Init(uint32_t flags) {
 		printf("width : %s\n",buf+i);
 		i += strlen("WIDTH");
 		while (1) {
-			if (buf[i] == ' ' || buf[i] == ':') i++;
+			if(buf[i] == ' ' || buf[i] == ':') i++;
 			else break;
 		}
 		printf("%s\n",buf+i);
 		sscanf(buf+i, "%d",&screen_h);
-		i++;
 	}
   }
   printf("screen w:%d h:%d\n",screen_w,screen_h);
