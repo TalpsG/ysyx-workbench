@@ -79,6 +79,8 @@ static void *program_break = &end;
 		_write(1, buf, strlen(buf));
 		return old;
 	}
+	char str[]= "fail";
+	_write(1, str, 4);
   return (void *)-1;
 }
 
