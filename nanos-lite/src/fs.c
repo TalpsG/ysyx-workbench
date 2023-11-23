@@ -82,7 +82,7 @@ size_t fs_write(int fd, const void *buf, size_t len) {
 	Finfo *p = &file_table[fd];
 	size_t  real_len;
 	if (p->write != NULL) {
-		if(fd!=5) printf("write :%d \n",fd);
+		serial_write("10\n", 0, 3);
 		real_len = p->write(buf,p->open_offset,len);
 		p->open_offset += real_len;
 		return real_len;
