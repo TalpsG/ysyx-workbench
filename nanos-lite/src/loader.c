@@ -23,7 +23,6 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
       ramdisk_read((void*)phdr[i].p_vaddr, phdr[i].p_offset, phdr[i].p_memsz);
       // set .bss with zeros
       memset((void*)(phdr[i].p_vaddr+phdr[i].p_filesz), 0, phdr[i].p_memsz - phdr[i].p_filesz);
-	  printf("%p %p %p\n",phdr[i].p_vaddr,phdr[i].p_filesz,phdr[i].p_memsz);
     }
   }
   return ehdr.e_entry;
