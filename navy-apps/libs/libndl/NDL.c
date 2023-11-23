@@ -82,6 +82,7 @@ int NDL_Init(uint32_t flags) {
   int len = strlen(buf);
   printf("len:%d buf:%s\n",len,buf);
   for (int i = 0; i < len; ) {
+	printf(" i : %d\n",i);
     if (buf[i] == ' ' || buf[i] == '\n' || buf[i] == ':') {
 		i++;
 		continue;
