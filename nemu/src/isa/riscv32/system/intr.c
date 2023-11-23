@@ -50,10 +50,10 @@ word_t csr_write(word_t index,word_t data) {
 	return 0;
 }
 void MRET() {
-	cpu.csr.mstatus &= ~(1<<3);
-	cpu.csr.mstatus |= ((cpu.csr.mstatus&(1<<7))>>4);
-	cpu.csr.mstatus |=(1<<7);
-	cpu.csr.mstatus &= ~((1<<11)+(1<<12));//将m模式对应的代码存入mpp
+  cpu.csr.mstatus &= ~(1<<3); \
+  cpu.csr.mstatus |= ((cpu.csr.mstatus&(1<<7))>>4); \
+  cpu.csr.mstatus |= (1<<7); \
+  cpu.csr.mstatus &= ~((1<<11)+(1<<12)); \
 }
 word_t isa_raise_intr(word_t NO, vaddr_t epc) {
   /* TODO: Trigger an interrupt/exception with ``NO''.
@@ -61,10 +61,10 @@ word_t isa_raise_intr(word_t NO, vaddr_t epc) {
    */
   cpu.csr.mcause = NO;
   cpu.csr.mepc = epc;
-  cpu.csr.mstatus &= ~(1<<7);// 清除mpie位
-  cpu.csr.mstatus |= (cpu.csr.mstatus&(1<<3)<<4); //mie位存入mpie位
-  cpu.csr.mstatus &= ~(1<<3); //清除mpie
-  cpu.csr.mstatus |= ((1<<11)+(1<<12));//将m模式对应的代码存入mpp
+  cpu.csr.mstatus &= ~(1<<7);
+  cpu.csr.mstatus |= ((cpu.csr.mstatus&(1<<3))<<4);
+  cpu.csr.mstatus &= ~(1<<3);
+  cpu.csr.mstatus |= ((1<<11)+(1<<12));
   
 #ifdef CONFIG_ETRACE
   char buf[100];
