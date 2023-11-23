@@ -9,10 +9,10 @@ int sys_yield() {
   return 0;
 }
 int sys_exit(int code) {
-  halt(code);
 #ifdef STRACE
 	printf("%s param : %d\n",__FUNCTION__,code);
 #endif
+  halt(code);
 	return 0;
 }
 void do_syscall(Context *c) {
