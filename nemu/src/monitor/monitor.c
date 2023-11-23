@@ -47,7 +47,6 @@ void init_callbuff() {
 }
 void add_callbuf(char *str) {
 	fprintf(f,"%s",str);
-	fflush(f);
 }
 void new_func_info(char *name,Elf32_Addr add,uint32_t size){
   struct func_info *temp = malloc(sizeof(struct func_info));

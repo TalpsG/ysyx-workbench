@@ -12,7 +12,6 @@ void init_etrace() {
 }
 void add_etrace(char *str) {
 	fprintf(f, "%s",str);
-	fflush(f);
 }
 void print_etrace() {
 }

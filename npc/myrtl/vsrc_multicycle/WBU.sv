@@ -60,7 +60,7 @@ module WBU (
   assign branch_flag = is_branch && exu_res[0];
   assign csr_write = is_mret ? 6'h0 : (is_ecall ? 6'h6 : (is_csr ? fake_csr_write : 6'h0));
   assign csr_wdata0 = fake_csr_wdata;
-  assign csr_wdata1 = is_ecall ? (outpc) : fake_csr_wdata;
+  assign csr_wdata1 = is_ecall ? (outpc + 4) : fake_csr_wdata;
   assign csr_wdata2 = is_ecall ? 32'h1 : fake_csr_wdata;
   assign csr_wdata3 = fake_csr_wdata;
   assign csr_wdata4 = fake_csr_wdata;

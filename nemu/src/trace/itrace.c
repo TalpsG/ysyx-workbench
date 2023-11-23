@@ -12,7 +12,6 @@ void init_itrace() {
 }
 void add_itrace(char *str) {
 	fprintf(f, "%s",str);
-	fflush(f);
 }
 void print_itrace() {
 }

@@ -19,7 +19,7 @@
 static uint32_t mcause=0;
 static uint32_t mtvec=0;
 static uint32_t mepc=0;
-static uint32_t mstatus=0x1800;
+static uint32_t mstatus=0;
 word_t csr_read(word_t index) {
 	switch (index)
 	{
@@ -57,7 +57,7 @@ word_t isa_raise_intr(word_t NO, vaddr_t epc) {
    * Then return the address of the interrupt/exception vector.
    */
   mcause = NO;
-  mepc =epc;
+  mepc = NO==1?epc+4:epc;
 #ifdef CONFIG_ETRACE
   char buf[100];
   sprintf(buf, "pc:%8x,mcause:%d,handler_addr:%8x\n",epc,mcause,mtvec);
@@ -68,11 +68,4 @@ word_t isa_raise_intr(word_t NO, vaddr_t epc) {
 
 word_t isa_query_intr() {
   return INTR_EMPTY;
-}
-
-void print_csr() {
-  printf("id:0 mstatus:%8x\n",mstatus);
-  printf("id:1 mepc   :%8x\n",mepc);
-  printf("id:2 mcause :%8x\n",mcause);
-  printf("id:3 mtvec  :%8x\n",mtvec);
 }

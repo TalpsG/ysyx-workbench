@@ -5,29 +5,6 @@
 #include <stdio.h>
 
 #if !defined(__ISA_NATIVE__) || defined(__NATIVE_USE_KLIB__)
-void customPrintPointer(void *ptr,char *buffer) {
-    unsigned int p = (unsigned int)ptr;
-    int index = 0;
-    buffer[index++] = '0';
-    buffer[index++] = 'x';
-    do {
-        int digit = p % 16;
-        buffer[index++] = (digit < 10) ? (digit + '0') : (digit - 10 + 'a');
-        p /= 16;
-    } while (p != 0);
-    buffer[index] = '\0';
-
-    // 反转字符串
-    int start = 2; // 从"0x"后开始反转
-    int end = index - 1;
-    while (start < end) {
-        char temp = buffer[start];
-        buffer[start] = buffer[end];
-        buffer[end] = temp;
-        start++;
-        end--;
-    }
-}
 void int2str(int i,char *p){                                              
     char temp[20];
     int isNeg = i<0;
@@ -48,6 +25,17 @@ void int2str(int i,char *p){
     while(pos>0){
         p[j++] = temp[--pos];
     }
+}
+void customPrintPointer(void* temp, char* buf) {
+    const char hexDigits[] = "0123456789ABCDEF";
+    unsigned long value = (unsigned long)temp;
+    int shift = sizeof(void*) * 2 - 4;
+    
+    for (int i = 0; i < sizeof(void*) * 2; i++) {
+        buf[i] = hexDigits[(value >> shift) & 0xF];
+        shift -= 4;
+    }
+    buf[sizeof(void*) * 2] = '\0';
 }
 void width_print(char *str,int width,int zero_fill) {
 	if (zero_fill) {
@@ -83,7 +71,7 @@ void width_print(char *str,int width,int zero_fill) {
 
 }
 int printf(const char *fmt, ...) {
-  va_list ap;
+va_list ap;
   va_start(ap, fmt);
   int num = 0;
   int fmt_p = 0;
@@ -218,43 +206,7 @@ int sprintf(char *out, const char *fmt, ...) {
 }
 
 int snprintf(char *out, size_t n, const char *fmt, ...) {
-    va_list ap;
-  va_start(ap,fmt);                                                                                                                                       
-  int num = 0;
-  int op = 0;
-  for(int i=0;i<=strlen(fmt)&& i <n;){
-      if(fmt[i]!='%') {
-        out[op] = fmt[i];
-        op++;
-        i++;
-        continue;
-      }
-      if(fmt[i+1] == 'd'){
-          int t = va_arg(ap, int);
-          char p[20];
-          int2str(t,p );
-          i += 2;
-          num ++;
-          int len = strlen(p);
-          for(int j = 0;j<len;j++){
-            out[op++]=p[j];
-          }
-          continue;
-      }
-      if(fmt[i+1] == 's'){
-          char *p = va_arg(ap,char *);
-          i += 2;
-          num ++;
-          int len = strlen(p);
-          for(int j=0;j<len;j++){
-            out[op++] = p[j];
-          }
-          continue;
-      }
-  }
-  va_end(ap);
-  return num;
-
+  panic("Not implemented");
 }
 
 int vsnprintf(char *out, size_t n, const char *fmt, va_list ap) {

@@ -13,7 +13,6 @@ void init_mtrace() {
 }
 void add_mtrace(char *str) {
 	fprintf(f, "%s",str);
-	fflush(f);
 }
 void print_mtrace() {
 }
