@@ -74,6 +74,9 @@ static void *program_break = &end;
 	if (_syscall_(SYS_brk, increment, 0, 0) == 0) {
 		void * old = program_break;	
 		program_break += increment;
+		char buf[20];
+		sprintf(buf,"sbrk:%d\n",increment);
+		_write(1, buf, strlen(buf));
 		return old;
 	}
   return (void *)-1;
