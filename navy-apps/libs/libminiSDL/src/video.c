@@ -12,9 +12,13 @@ void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst, SDL_
   if (srcrect == NULL) {
 	w = src->w;
 	h = src->h;
+	s_x = 0;
+	s_y = 0;
   } else {
 	w = srcrect->w;
 	h = srcrect->h;
+	s_x = srcrect->x;
+	s_y = srcrect->y;
   }
   if (dstrect == NULL) {
 	d_x = 0;d_y=0;
@@ -22,8 +26,6 @@ void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst, SDL_
 	d_x = dstrect->x;
 	d_y = dstrect->y;
   }
-  s_x = srcrect->x;
-  s_y = srcrect->y;
   if (dst->format->BitsPerPixel == 32) {
 	uint32_t *dst_pixels = dst->pixels;
 	uint32_t *src_pixels = src->pixels;
