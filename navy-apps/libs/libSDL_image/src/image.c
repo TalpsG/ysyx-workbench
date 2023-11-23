@@ -1,3 +1,5 @@
+#include <fcntl.h>
+#include <unistd.h>
 #define SDL_malloc  malloc
 #define SDL_free    free
 #define SDL_realloc realloc
@@ -12,6 +14,9 @@ SDL_Surface* IMG_Load_RW(SDL_RWops *src, int freesrc) {
 }
 
 SDL_Surface* IMG_Load(const char *filename) {
+	int fd = open(filename,0,0);
+	int filesize = lseek(fd, 0, SEEK_END);
+	printf("filesize:%d\n",filesize);
   return NULL;
 }
 
