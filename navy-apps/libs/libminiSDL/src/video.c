@@ -48,14 +48,13 @@ void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst, SDL_
 
 void SDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, uint32_t color) {
 	if (dstrect == NULL) {
-		printf("fill rect %d %d\n",dst->h,dst->w);
 		for (int i = 0; i < dst->h; i++) {
 			for (int j = 0; j < dst->w; j++) {
+				printf("%d %d\n",i,j);
 				dst->pixels[i*dst->w+j] = color;
 			}
 		}
 	} else {
-		printf("fill rect %d %d\n",dstrect->h,dstrect->w);
 		for (int i = 0; i < dstrect->h; i++) {
 			for (int j = 0; j < dstrect->w; j++) {
 				dst->pixels[(dstrect->y+i)*dst->w+dstrect->x+j] = color;
