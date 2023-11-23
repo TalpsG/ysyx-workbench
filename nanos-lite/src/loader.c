@@ -11,11 +11,8 @@
 size_t ramdisk_read(void *buf, size_t offset, size_t len);
 size_t ramdisk_write(const void *buf, size_t offset, size_t len);
 static uintptr_t loader(PCB *pcb, const char *filename) {
-	printf("loader\n");
 	Elf_Ehdr ehdr;
-	printf("add:%p\n",&ehdr);
   ramdisk_read(&ehdr, 0, sizeof(Elf_Ehdr));
-  printf("read\n");
   // check valid elf
   assert((*(uint32_t *)ehdr.e_ident == 0x464c457f));
 
@@ -26,7 +23,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
       ramdisk_read((void*)phdr[i].p_vaddr, phdr[i].p_offset, phdr[i].p_memsz);
       // set .bss with zeros
       memset((void*)(phdr[i].p_vaddr+phdr[i].p_filesz), 0, phdr[i].p_memsz - phdr[i].p_filesz);
-	  printf("%p\n",phdr[i].p_vaddr);
+	  printf("%p %p %p\n",phdr[i].p_vaddr,phdr[i].p_filesz,phdr[i].p_memsz);
     }
   }
   return ehdr.e_entry;
