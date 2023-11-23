@@ -18,7 +18,6 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
   fs_read(fd, &ehdr, sizeof(ehdr));
   fs_lseek(fd, ehdr.e_phoff, SEEK_SET);
   assert((*(uint32_t *)ehdr.e_ident == 0x464c457f));
-	printf("phoff:%p\n",ehdr.e_phoff);
   Elf_Phdr phdr[ehdr.e_phnum];
   fs_read(fd,phdr,sizeof(Elf_Phdr)*ehdr.e_phnum);
   for (int i = 0; i < ehdr.e_phnum; i++) {
@@ -27,7 +26,6 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
 		fs_read(fd,(void *)phdr[i].p_vaddr,phdr[i].p_filesz);
 		// set .bss with zeros
 		memset((void*)(phdr[i].p_vaddr+phdr[i].p_filesz), 0, phdr[i].p_memsz - phdr[i].p_filesz);
-		printf("%p %p %p\n",phdr[i].p_vaddr,phdr[i].p_filesz,phdr[i].p_memsz);
     }
   }
   return ehdr.e_entry;
