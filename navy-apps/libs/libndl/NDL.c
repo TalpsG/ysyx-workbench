@@ -85,6 +85,7 @@ int NDL_Init(uint32_t flags) {
     if (buf[i] == ' ' || buf[i] == '\n' || buf[i] == ':') {
 		continue;
 	}
+	printf("%s\n",buf+i);
 	if (strcmp(buf + i, "HEIGHT") == 0) {
 		printf("height : %s\n",buf+i);
 		i += strlen("HEIGHT");
