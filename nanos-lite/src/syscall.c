@@ -15,7 +15,7 @@ void do_syscall(Context *c) {
   a[2] = c->GPR3;
   a[3] = c->GPRx;
   switch (a[0]) {
-	case 0: {
+	case 4: {
 		c->GPRx = sys_exit(a[1]);
 		break;
 	}
