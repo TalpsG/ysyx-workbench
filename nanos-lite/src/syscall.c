@@ -17,6 +17,7 @@ int sys_exit(int code) {
 	return 0;
 }
 int sys_write(int fd, void *buf, size_t count) {
+	printf("fd:%d\n",fd);
 	assert(fd == 1|| fd == 2);
 	int i;
 	char *data = buf;
