@@ -72,6 +72,7 @@ int main(int argc, char *argv[], char *envp[]) {
   screen = SDL_SetVideoMode(0, 0, 32, SDL_HWSURFACE);
 	clear_display();
 	while(1);
+	SDL_UpdateRect(screen, 0, 0, 0, 0);
   //font = new BDF_Font(font_fname);
   //logo_sf = SDL_LoadBMP("/share/pictures/projectn.bmp");
   //assert(logo_sf);
