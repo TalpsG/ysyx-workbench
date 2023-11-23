@@ -16,22 +16,19 @@
 #include <isa.h>
 #include <stdio.h>
 #include "trace/etrace.h"
-static uint32_t mcause=0;
-static uint32_t mtvec=0;
-static uint32_t mepc=0;
-static uint32_t mstatus=0;
+extern CPU_state cpu;
 word_t csr_read(word_t index) {
 	switch (index)
 	{
         case 0:
 			//printf("read mstatus:%8x pc:%8x\n",mstatus,cpu.pc);
-			return mstatus;
+			return cpu.csr.mstatus;
         case 1:
-			return mepc;
+			return cpu.csr.mepc;
         case 2:
-			return mcause;
+			return cpu.csr.mcause;
         case 5:
-			return mtvec;
+			return cpu.csr.mtvec;
         default:
           return 0;
 	}
@@ -42,30 +39,42 @@ word_t csr_write(word_t index,word_t data) {
 	{
         case 0:
 			//printf("read mstatus:%8x data:%8x\n",mstatus,data);
-          mstatus = data;break;
+          cpu.csr.mstatus = data;break;
         case 1:
-          mepc= data;break;
+          cpu.csr.mepc= data;break;
         case 2:
-          mcause = data;break;
+          cpu.csr.mcause = data;break;
         case 5:
-          mtvec = data;break;
+          cpu.csr.mtvec = data;break;
 	}
 	return 0;
+}
+void MRET() {
+  cpu.csr.mstatus &= ~(1<<3); \
+  cpu.csr.mstatus |= ((cpu.csr.mstatus&(1<<7))>>4); \
+  cpu.csr.mstatus |= (1<<7); \
+  cpu.csr.mstatus &= ~((1<<11)+(1<<12)); \
 }
 word_t isa_raise_intr(word_t NO, vaddr_t epc) {
   /* TODO: Trigger an interrupt/exception with ``NO''.
    * Then return the address of the interrupt/exception vector.
    */
-  mcause = NO;
-  mepc = NO==1?epc+4:epc;
+  cpu.csr.mcause = NO;
+  cpu.csr.mepc = epc;
+  cpu.csr.mstatus &= ~(1<<7);
+  cpu.csr.mstatus |= ((cpu.csr.mstatus&(1<<3))<<4);
+  cpu.csr.mstatus &= ~(1<<3);
+  cpu.csr.mstatus |= ((1<<11)+(1<<12));
+  
 #ifdef CONFIG_ETRACE
   char buf[100];
   sprintf(buf, "pc:%8x,mcause:%d,handler_addr:%8x\n",epc,mcause,mtvec);
   add_etrace(buf);
 #endif
-  return mtvec;
+  return cpu.csr.mtvec;
 }
 
 word_t isa_query_intr() {
   return INTR_EMPTY;
 }
+

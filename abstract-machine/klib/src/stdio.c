@@ -26,6 +26,17 @@ void int2str(int i,char *p){
         p[j++] = temp[--pos];
     }
 }
+void customPrintPointer(void* temp, char* buf) {
+    const char hexDigits[] = "0123456789ABCDEF";
+    unsigned long value = (unsigned long)temp;
+    int shift = sizeof(void*) * 2 - 4;
+    
+    for (int i = 0; i < sizeof(void*) * 2; i++) {
+        buf[i] = hexDigits[(value >> shift) & 0xF];
+        shift -= 4;
+    }
+    buf[sizeof(void*) * 2] = '\0';
+}
 void width_print(char *str,int width,int zero_fill) {
 	if (zero_fill) {
 		int len = strlen(str);
@@ -60,7 +71,7 @@ void width_print(char *str,int width,int zero_fill) {
 
 }
 int printf(const char *fmt, ...) {
-  va_list ap;
+va_list ap;
   va_start(ap, fmt);
   int num = 0;
   int fmt_p = 0;
@@ -96,9 +107,9 @@ int printf(const char *fmt, ...) {
       } else if (c_next == 'p') {
 		num++;
 		fmt_p +=2;
-		int temp  = sizeof(void *);
-		char buf[10];
-		int2str(temp, buf);
+		void *temp =va_arg(ap,void *);
+		char buf[20];
+		customPrintPointer(temp, buf);
 		for (int i = 0; i < strlen(buf); i++) {
 			putch(buf[i]);
 		}

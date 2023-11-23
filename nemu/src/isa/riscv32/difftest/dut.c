@@ -33,12 +33,45 @@ bool isa_difftest_checkregs(CPU_state *ref_r, vaddr_t pc) {
     printf("nemu: 0x%10x\n",cpu.pc);
     return false;
   }
+  if(cpu.csr.mcause!=ref_r->csr.mcause){
+    printf("mcause is diff\n");
+    printf("ref : 0x%10x\n",ref_r->csr.mcause);
+    printf("nemu: 0x%10x\n",cpu.csr.mcause);
+    return false;
+  }
+  if(cpu.csr.mtvec!=ref_r->csr.mtvec){
+    printf("mtvec is diff\n");
+    printf("ref : 0x%10x\n",ref_r->csr.mtvec);
+    printf("nemu: 0x%10x\n",cpu.csr.mtvec);
+    return false;
+  }
+  if(cpu.csr.mstatus!=ref_r->csr.mstatus){
+    printf("mstatus is diff\n");
+    printf("ref : 0x%10x\n",ref_r->csr.mstatus);
+    printf("nemu: 0x%10x\n",cpu.csr.mstatus);
+    return false;
+  }
+  if(cpu.csr.mepc!=ref_r->csr.mepc){
+    printf("mepc is diff\n");
+    printf("ref : 0x%10x\n",ref_r->csr.mepc);
+    printf("nemu: 0x%10x\n",cpu.csr.mepc);
+    return false;
+  }
+  if(cpu.csr.mtvec!=ref_r->csr.mtvec){
+    printf("mtvec is diff\n");
+    printf("ref : 0x%10x\n",ref_r->csr.mtvec);
+    printf("nemu: 0x%10x\n",cpu.csr.mtvec);
+    return false;
+  }
   for(int i=0;i<32;i++){
     if(ref_r->gpr[i]!=cpu.gpr[i]) {
       printf("reg is diff\n");
       diff_reg_display(ref_r);
       return false;
     }
+  }
+  if (cpu.pc == 0x800191b8) {
+    printf("mstatus:%08x  expected:%8x",ref_r->csr.mstatus,cpu.csr.mstatus);
   }
   return true;
 }
