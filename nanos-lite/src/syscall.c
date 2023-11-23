@@ -59,9 +59,7 @@ int  sys_lseek(int fd, int offset, int whence) {
 	return ret;
 }
 int sys_gettimeofday(struct timeval *tv, struct timezone *tz) {
-	AM_TIMER_UPTIME_T p;
-	ioe_read(AM_TIMER_UPTIME,&p);
-	uint64_t time = p.us;
+	uint64_t time = io_read(AM_TIMER_UPTIME).us;
 	tv->tv_sec = time / 1000000;
 	tv->tv_sec = time % 1000000;
 #ifdef STRACE
