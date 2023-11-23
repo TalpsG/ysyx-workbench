@@ -1,11 +1,18 @@
 #include <common.h>
 #include "syscall.h"
+#define STRACE 1
 int sys_yield() {
   yield();
+#ifdef STRACE
+	printf("%s no param\n",__FUNCTION__);
+#endif
   return 0;
 }
 int sys_exit(int code) {
   halt(code);
+#ifdef STRACE
+	printf("%s param : %d\n",__FUNCTION__,code);
+#endif
 	return 0;
 }
 void do_syscall(Context *c) {
