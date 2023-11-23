@@ -26,7 +26,6 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
     }
   }
   return ehdr.e_entry;
-  return 0;
 }
 
 void naive_uload(PCB *pcb, const char *filename) {
