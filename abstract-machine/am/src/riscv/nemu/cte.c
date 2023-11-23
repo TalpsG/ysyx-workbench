@@ -38,7 +38,7 @@ Context* __am_irq_handle(Context *c) {
 		}
     
 
-      default: printf("mcause:%d\n",c->mcause);ev.event = EVENT_ERROR; break;
+      default: printf("a[7]:%d\n",c->GPR1);ev.event = EVENT_ERROR; break;
     }
 
     c = user_handler(ev, c);
