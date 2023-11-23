@@ -16,7 +16,10 @@ uint32_t NDL_GetTicks() {
 }
 
 int NDL_PollEvent(char *buf, int len) {
-  return 0;
+	if (read(evtdev, buf, len)) {
+		return 1;
+	}
+	return 0;
 }
 
 void NDL_OpenCanvas(int *w, int *h) {
@@ -60,6 +63,7 @@ int NDL_Init(uint32_t flags) {
   if (getenv("NWM_APP")) {
     evtdev = 3;
   }
+  evtdev = open("/dev/events",0,0);
   gettimeofday(&tv,NULL);
   boot_time = tv.tv_sec * 1000 + tv.tv_usec / 1000;
   return 0;

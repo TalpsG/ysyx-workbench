@@ -4,6 +4,7 @@
 typedef size_t (*ReadFn) (void *buf, size_t offset, size_t len);
 typedef size_t (*WriteFn) (const void *buf, size_t offset, size_t len);
 
+size_t events_read(void *buf, size_t offset, size_t len);
 size_t serial_write(const void *buf, size_t offset, size_t len);
 size_t ramdisk_read(void *buf, size_t offset, size_t len);
 size_t ramdisk_write(const void *buf, size_t offset, size_t len);
@@ -16,7 +17,7 @@ typedef struct {
   size_t open_offset;
 } Finfo;
 
-enum {FD_STDIN, FD_STDOUT, FD_STDERR, FD_FB};
+enum {FD_STDIN, FD_STDOUT, FD_STDERR, FD_FB,FD_EVENTS};
 
 size_t invalid_read(void *buf, size_t offset, size_t len) {
   panic("should not reach here");
@@ -33,6 +34,8 @@ static Finfo file_table[] __attribute__((used)) = {
   [FD_STDIN]  = {"stdin", 0, 0, invalid_read, invalid_write},
   [FD_STDOUT] = {"stdout", 0, 0, invalid_read, serial_write},
   [FD_STDERR] = {"stderr", 0, 0, invalid_read, serial_write},
+  [FD_FB] = {"/dev/fb", 0, 0, invalid_read, invalid_write},
+  [FD_EVENTS] = {"/dev/events", 0, 0, events_read, invalid_write},
 #include "files.h"
 };
 
@@ -56,7 +59,12 @@ size_t fs_read(int fd, void *buf, size_t len) {
 		return 0;
 	}
 	Finfo *p = &file_table[fd];
-	size_t real_len = (p->open_offset + len) > p->size ? (p->size - p->open_offset) : len;
+	size_t real_len;
+	if (p->read) {
+		real_len = p->read(buf,p->open_offset,len);
+		return real_len;
+	}
+	real_len = (p->open_offset + len) > p->size ? (p->size - p->open_offset) : len;
 	ramdisk_read(buf,p->disk_offset + p->open_offset , real_len);
 	p->open_offset += real_len;
 	return real_len;
