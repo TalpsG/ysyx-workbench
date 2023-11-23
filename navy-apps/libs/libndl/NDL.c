@@ -80,7 +80,7 @@ int NDL_Init(uint32_t flags) {
   char buf[65];
   read(fbctl, buf, 64);
   int len = strlen(buf);
-  printf("len:%d\n",len);
+  printf("len:%d buf:%s\n",len,buf);
   for (int i = 0; i < len; i++) {
     if (buf[i] == ' ' || buf[i] == '\n' || buf[i] == ':') {
 		continue;
