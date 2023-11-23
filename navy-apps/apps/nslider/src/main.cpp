@@ -54,7 +54,6 @@ int main() {
 
   render();
   while (1) {
-  printf("load over");
     //SDL_Event e;
     //SDL_WaitEvent(&e);
 
