@@ -1,12 +1,13 @@
 #include <common.h>
+void do_syscall(Context *c);
 int sys_yield() {
   yield();
   return 0;
 }
 static Context* do_event(Event e, Context* c) {
   switch (e.event) {
-	case 4: {
-		c->GPRx = sys_yield();
+	case EVENT_SYSCALL: {
+		do_syscall(c);
 		break;
 	}
     default: panic(" nanos Unhandled event ID = %d", e.event);
