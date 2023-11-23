@@ -143,39 +143,39 @@ static void display_menu(int n) {
   SDL_Rect rect = { .x = screen->w - logo_sf->w, .y = 0 };
   SDL_BlitSurface(logo_sf, NULL, screen, &rect);
   printf("Available applications:\n");
-  char buf[80];
-  int i;
-  for (i = 0; i <= n; i ++) {
-    auto *item = &items[page * 10 + i];
-    sprintf(buf, "  [%d] %s", i, item->name);
-    draw_text_row(buf, i);
-  }
+  //char buf[80];
+  //int i;
+  //for (i = 0; i <= n; i ++) {
+    //auto *item = &items[page * 10 + i];
+    //sprintf(buf, "  [%d] %s", i, item->name);
+    //draw_text_row(buf, i);
+  //}
 
-  i = 11;
+  //i = 11;
 
-  sprintf(buf, "  page = %2d, #total apps = %d", page, nitems);
-  draw_text_row(buf, i);
-  i ++;
+  //sprintf(buf, "  page = %2d, #total apps = %d", page, nitems);
+  //draw_text_row(buf, i);
+  //i ++;
 
-  sprintf(buf, "  help:");
-  draw_text_row(buf, i);
-  i ++;
+  //sprintf(buf, "  help:");
+  //draw_text_row(buf, i);
+  //i ++;
 
-  sprintf(buf, "  <-  Prev Page");
-  draw_text_row(buf, i);
-  i ++;
+  //sprintf(buf, "  <-  Prev Page");
+  //draw_text_row(buf, i);
+  //i ++;
 
-  sprintf(buf, "  ->  Next Page");
-  draw_text_row(buf, i);
-  i ++;
+  //sprintf(buf, "  ->  Next Page");
+  //draw_text_row(buf, i);
+  //i ++;
 
-  sprintf(buf, "  0-9 Choose");
-  draw_text_row(buf, i);
-  i ++;
+  //sprintf(buf, "  0-9 Choose");
+  //draw_text_row(buf, i);
+  //i ++;
 
-  SDL_UpdateRect(screen, 0, 0, 0, 0);
+  //SDL_UpdateRect(screen, 0, 0, 0, 0);
 
-  printf("========================================\n");
-  printf("Please Choose.\n");
+  //printf("========================================\n");
+  //printf("Please Choose.\n");
   fflush(stdout);
 }
