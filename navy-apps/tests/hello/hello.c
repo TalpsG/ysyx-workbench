@@ -2,7 +2,7 @@
 #include <stdio.h>
 
 int main() {
-  //write(1, "Hello World!\n", 13);
+  write(1, "Hello World!\n", 13);
       printf("Hello World from Navy-apps for the th time!\n" );
   //int i = 2;
   //volatile int j = 0;
