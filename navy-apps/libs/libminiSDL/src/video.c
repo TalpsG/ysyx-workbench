@@ -5,8 +5,32 @@
 #include <stdlib.h>
 
 void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst, SDL_Rect *dstrect) {
-  //assert(dst && src);
-  //assert(dst->format->BitsPerPixel == src->format->BitsPerPixel);
+  assert(dst && src);
+  assert(dst->format->BitsPerPixel == src->format->BitsPerPixel);
+    if (src->format->BitsPerPixel == 32){
+    uint32_t* src_pixels = (uint32_t*)src->pixels;
+    uint32_t* dst_pixels = (uint32_t*)dst->pixels;
+
+    int rect_w, rect_h, src_x, src_y, dst_x, dst_y;
+    if (srcrect){
+      rect_w = srcrect->w; rect_h = srcrect->h;
+      src_x = srcrect->x; src_y = srcrect->y; 
+    }else {
+      rect_w = src->w; rect_h = src->h;
+      src_x = 0; src_y = 0;
+    }
+    if (dstrect){
+      dst_x = dstrect->x, dst_y = dstrect->y;
+    }else {
+      dst_x = 0; dst_y = 0;
+    }
+    
+    for (int i = 0; i < rect_h; ++i){
+      for (int j = 0; j < rect_w; ++j){
+        dst_pixels[(dst_y + i) * dst->w + dst_x + j] = src_pixels[(src_y + i) * src->w + src_x + j];
+      }
+    }
+  }
   //int s_x,s_y,d_x,d_y,w,h;
 
   //if (srcrect == NULL) {
