@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
+#include <unistd.h>
 
 #define W 400
 #define H 300
@@ -27,7 +28,7 @@ void render() {
   char fname[256];
   sprintf(fname, path, cur);
   slide = SDL_LoadBMP(fname);
-  write(1,"s\n",2);
+  write(1,"s\n", 2);
   assert(slide);
   SDL_UpdateRect(slide, 0, 0, 0, 0);
 }
