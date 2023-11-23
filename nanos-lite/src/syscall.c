@@ -28,9 +28,9 @@ int sys_write(int fd, void *buf, size_t count) {
 	return i;
 }
 int sys_brk(intptr_t increment) {
-#ifdef STRACE
+//#ifdef STRACE
 	printf("%s param : %p return:%p\n",__FUNCTION__,increment);
-#endif
+//#endif
 	return 0;
 }
 void do_syscall(Context *c) {
