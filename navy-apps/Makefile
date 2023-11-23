@@ -184,4 +184,4 @@ $(RAMDISK): fsimg
 
 ramdisk: $(RAMDISK)
 
-.PHONY: fsimg ramdisk
+.PHONY: fsimg ramdisk echo

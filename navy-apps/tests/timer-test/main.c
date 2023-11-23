@@ -1,14 +1,14 @@
 #include <stdio.h>
-#include <sys/time.h>
+#include <NDL.h>
 int main() {
 	struct timeval t;
 	gettimeofday(&t, NULL);
-	uint64_t time = t.tv_usec;
+	uint32_t time = NDL_GetTicks();
+	int i= 1;
 	while (1) {
-		gettimeofday(&t, NULL);
-		if (t.tv_usec - time > 500000 ) {
-			printf("0.5sec\n")	;
-			time = t.tv_usec;
+		if (NDL_GetTicks() - time > 500) {
+			time = NDL_GetTicks();
+			printf("%d half\n",i++);
 		}
 	}
   return 0;
