@@ -10,6 +10,7 @@ Context* __am_irq_handle(Context *c) {
     switch (c->GPR1) {
 		case 0xffffffff: {
 			ev.event = EVENT_YIELD;
+			c->mepc += 4;
 			break;
 		}
 		case 1:
@@ -32,6 +33,7 @@ Context* __am_irq_handle(Context *c) {
 		case 18:
 		case 19:{
 			ev.event = EVENT_SYSCALL;
+			c->mepc += 4;
 			break;
 		}
     
