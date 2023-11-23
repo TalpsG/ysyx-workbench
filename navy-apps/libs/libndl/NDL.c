@@ -85,26 +85,22 @@ int NDL_Init(uint32_t flags) {
 		continue;
 	}
 	if (strncmp(buf + i, "HEIGHT",6) == 0) {
-		printf("height : %s\n",buf+i);
 		i += strlen("HEIGHT");
 		while (1) {
                   if (buf[i] == ' ' || buf[i] == ':')
                     i++;
                   else break;
 		}
-		printf("%s\n",buf+i);
 		sscanf(buf+i, "%d",&screen_h);
 		i++;
 	}
 	if (strncmp(buf + i, "WIDTH",5) == 0) {
-		printf("width : %s\n",buf+i);
 		i += strlen("WIDTH");
 		while (1) {
 			if(buf[i] == ' ' || buf[i] == ':') i++;
 			else break;
 		}
-		printf("%s\n",buf+i);
-		sscanf(buf+i, "%d",&screen_h);
+		sscanf(buf+i, "%d",&screen_w);
 	}
   }
   printf("screen w:%d h:%d\n",screen_w,screen_h);
