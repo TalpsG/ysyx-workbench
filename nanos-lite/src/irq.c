@@ -2,7 +2,7 @@
 
 static Context* do_event(Event e, Context* c) {
   switch (e.event) {
-    default: panic("Unhandled event ID = %d", e.event);
+    default: panic(" nanos Unhandled event ID = %d", e.event);
   }
 
   return c;
