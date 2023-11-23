@@ -25,6 +25,7 @@ void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
 			memcpy(pixels+i*w,s->pixels+(y+i)*s->w+x,sizeof(uint32_t)*w);
 		}
 		NDL_DrawRect(pixels,x,y,w,h);
+		free(pixels);
 		return;
 	}
 }
