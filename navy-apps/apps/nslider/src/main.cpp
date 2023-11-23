@@ -25,9 +25,7 @@ void render() {
   }
   char fname[256];
   sprintf(fname, path, cur);
-  printf("load bmp\n");
   slide = SDL_LoadBMP(fname);
-  printf("load over\n");
   assert(slide);
   SDL_UpdateRect(slide, 0, 0, 0, 0);
 }
@@ -49,11 +47,9 @@ void next(int rep) {
 int main() {
   SDL_Init(0);
   SDL_Surface *screen = SDL_SetVideoMode(W, H, 32, SDL_HWSURFACE);
-	printf("screen over\n");
   int rep = 0, g = 0;
 
   render();
-	printf("render over");
   while (1) {
     SDL_Event e;
     SDL_WaitEvent(&e);
