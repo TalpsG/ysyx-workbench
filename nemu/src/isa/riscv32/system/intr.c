@@ -52,13 +52,23 @@ word_t csr_write(word_t index,word_t data) {
 	}
 	return 0;
 }
+void MRET() {
+	mstatus &= ~(1<<3);
+	mstatus |= ((mstatus&(1<<7))>>4);
+	mstatus |=(1<<7);
+  mstatus &= ~((1<<11)+(1<<12));//将m模式对应的代码存入mpp
+}
 word_t isa_raise_intr(word_t NO, vaddr_t epc) {
   /* TODO: Trigger an interrupt/exception with ``NO''.
    * Then return the address of the interrupt/exception vector.
    */
   mcause = NO;
   mepc = epc;
-
+  mstatus &= ~(1<<7);// 清除mpie位
+  mstatus |= (mstatus&(1<<3)<<4); //mie位存入mpie位
+  mstatus &= ~(1<<3); //清除mpie
+  mstatus |= ((1<<11)+(1<<12));//将m模式对应的代码存入mpp
+  
 #ifdef CONFIG_ETRACE
   char buf[100];
   sprintf(buf, "pc:%8x,mcause:%d,handler_addr:%8x\n",epc,mcause,mtvec);
@@ -69,4 +79,5 @@ word_t isa_raise_intr(word_t NO, vaddr_t epc) {
 
 word_t isa_query_intr() {
   return INTR_EMPTY;
-} 
+}
+
