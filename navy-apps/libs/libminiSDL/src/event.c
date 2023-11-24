@@ -16,6 +16,7 @@ int SDL_PushEvent(SDL_Event *ev) {
 int SDL_PollEvent(SDL_Event *ev) {
 	char buf[50];
 	if (NDL_PollEvent(buf, 50)) {
+		if(ev == NULL) return 1;
 		int keycode,keydown;
 		sscanf(buf,"%d %d" ,&keydown,&keycode); 
 		ev->type = keydown?SDL_KEYDOWN:SDL_KEYUP;
@@ -29,6 +30,7 @@ int SDL_WaitEvent(SDL_Event *event) {
 	char buf[50];
 	while (1) {
 		if (NDL_PollEvent(buf, 50)) {
+			if(event == NULL) return 1;
 			int keycode,keydown;
 			sscanf(buf,"%d %d" ,&keydown,&keycode); 
 			event->type = keydown?SDL_KEYDOWN:SDL_KEYUP;
