@@ -2,7 +2,7 @@
 #include "syscall.h"
 #include <fs.h>
 #include <sys/time.h>
-//#define STRACE 1
+#define STRACE 1
 int sys_yield() {
   yield();
 #ifdef STRACE
