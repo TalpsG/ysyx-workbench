@@ -44,8 +44,8 @@ int SDL_WaitEvent(SDL_Event *event) {
 int SDL_PeepEvents(SDL_Event *ev, int numevents, int action, uint32_t mask) {
   return 0;
 }
-
+static uint8_t key_table[83]={0};
 uint8_t* SDL_GetKeyState(int *numkeys) {
-	printf("pagedown:%d\n",SDLK_PAGEDOWN);
-  return NULL;
+	*numkeys = 83;
+  return key_table;
 }
