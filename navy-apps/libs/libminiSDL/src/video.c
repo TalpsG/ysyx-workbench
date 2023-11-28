@@ -168,7 +168,6 @@ void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
 			return ;
 		}
 		uint32_t *pixels = malloc(sizeof(uint32_t)*w*h);
-		printf("x:%d,y:%d,w:%d,h:%d\n",x,y,w,h);
 		for (int i = 0; i < h; i++) {
 			for (int j = 0; j < w; j++) {
 				pixels[i*w+j] = s->format->palette->colors[s->pixels[ (y+i)*s->w+x+j]].val;
