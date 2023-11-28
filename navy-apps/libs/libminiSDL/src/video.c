@@ -170,7 +170,7 @@ void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
 		uint32_t *pixels = malloc(sizeof(uint32_t)*w*h);
 		for (int i = 0; i < h; i++) {
 			for (int j = 0; j < w; j++) {
-				pixels[i*w+j] = palette[s->pixels[i*w+j]].val;
+				pixels[i*w+j] = palette[s->pixels[i*w+j]].a<<24 | palette[s->pixels[i*w+j]].r<<16 | palette[s->pixels[i*w+j]].g<<8 |palette[s->pixels[i*w+j]].b ;
 			}
 		}
 		NDL_DrawRect(pixels,x,y,w,h);
