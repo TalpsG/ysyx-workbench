@@ -116,7 +116,7 @@ void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
 			printf("whole\n");
 			w = s->w;		
 			h = s->h;		
-			NDL_DrawRect(s->pixels,0,0,w,h);
+			NDL_DrawRect((uint32_t *)s->pixels,0,0,w,h);
 			return ;
 		}
 		printf("not whole\n");
