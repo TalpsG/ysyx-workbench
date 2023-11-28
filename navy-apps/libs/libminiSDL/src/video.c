@@ -94,17 +94,12 @@ void SDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, uint32_t color) {
 //}
 void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
 	if (s->format->BitsPerPixel == 32) {
-		printf("32");
 		if (x = 0 && y ==0 && w == 0 && h == 0) {
-			printf(" whole\n");
 			w = s->w;		
 			h = s->h;		
-			printf("x:%d,y:%d,w:%d,h:%d\n",x,y,w,h);
 			NDL_DrawRect(s->pixels,0,0,w,h);
 			return ;
 		}
-		printf("x:%d,y:%d,w:%d,h:%d\n",x,y,w,h);
-		printf(" not whole\n");
 		uint32_t *pixels = malloc(sizeof(uint32_t)*w*h);
 		uint32_t *s_pixels = s->pixels;
 		for (int i = 0; i < h; i++) {
@@ -114,17 +109,12 @@ void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
 		free(pixels);
 		return;
 	} else if(s->format->BitsPerPixel == 8){
-		printf("8 ");
 		if ( x == 0 && y == 0 && w == 0 && h == 0) {
-			printf("whole\n");
 			w = s->w;		
 			h = s->h;		
-			printf("x:%d,y:%d,w:%d,h:%d\n",x,y,w,h);
 			NDL_DrawRect((uint32_t *)s->pixels,0,0,w,h);
 			return ;
 		}
-		printf("x:%d,y:%d,w:%d,h:%d\n",x,y,w,h);
-		printf("not whole\n");
 		SDL_Color *palette = s->format->palette->colors;
 		uint32_t *pixels = malloc(sizeof(uint32_t)*w*h);
 		int n=0;
