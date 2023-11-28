@@ -102,14 +102,12 @@ void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst, SDL_
 void SDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, uint32_t color) {
 	uint32_t *pixels = (uint32_t *)dst->pixels;
 	if (dstrect == NULL) {
-		printf("fill x:0,y:0,w:%d,h:%d\n",dst->w,dst->h);
 		for (int i = 0; i < dst->h; i++) {
 			for (int j = 0; j < dst->w; j++) {
 				pixels[i*dst->w+j] = color;
 			}
 		}
 	} else {
-		printf("fill x:%d,y:%d,w:%d,h:%d\n",dstrect->x,dstrect->y,dstrect->w,dstrect->h);
 		for (int i = 0; i < dstrect->h; i++) {
 			for (int j = 0; j < dstrect->w; j++) {
 				pixels[(dstrect->y+i)*dst->w+dstrect->x+j] = color;
@@ -140,7 +138,6 @@ void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h)
       {
         // important: s->pixels is 8 bit!!! r g b a r g b a...
         //            also, NDL_DrawRect buf should be a r g b a r g b....
-        s->pixels[start_pos + offset];
         buf[i++] = s->pixels[start_pos + 4 * offset + 3] << 24 | s->pixels[start_pos + 4 * offset + 2] << 16 | s->pixels[start_pos + 4 * offset + 1] << 8 | s->pixels[start_pos + 4 * offset];
       }
       else if (s->format->BitsPerPixel == 8)
