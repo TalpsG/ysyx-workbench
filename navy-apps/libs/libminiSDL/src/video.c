@@ -110,16 +110,20 @@ void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
 		for (int i = 0; i < h; i++) {
 			memcpy(buf + i*w, s_pixels + start_pos+i*s->w, sizeof(uint32_t) * w);
 		}
+		NDL_DrawRect(buf,x,y,w,h);
+		free(buf);
+		return;
 	} else if(s->format->BitsPerPixel == 8){
 		for (int i = 0; i < h; i++) {
 			for (int j = 0; j < w; j++) {
 				buf[i*w +j]= s->format->palette->colors[s->pixels[start_pos + j + i*s->w]].val;
-				//buf[i*w+j] = rgba_color.a << 24 | rgba_color.r << 16 | rgba_color.g << 8 | rgba_color.b;
 			}
 		}
+		NDL_DrawRect(buf,x,y,w,h);
+		free(buf);
+		return;
 	}
-	NDL_DrawRect(buf,x,y,w,h);
-	free(buf);
+	
 }
 
 // APIs below are already implemented.
