@@ -155,7 +155,7 @@ void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
 	printf("update Rect  ");
 	if (s->format->BitsPerPixel == 32) {
 		if (x = 0 && y ==0 && w == 0 && h == 0) {
-			printf("x:%d,y:%d,w:%d,h:%d\n",0,0,s->w,s->h);
+			printf("whole x:%d,y:%d,w:%d,h:%d\n",0,0,s->w,s->h);
 			w = s->w;		
 			h = s->h;		
 			NDL_DrawRect(s->pixels,0,0,w,h);
