@@ -122,12 +122,11 @@ void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
 		printf("not whole\n");
 		SDL_Color *palette = s->format->palette->colors;
 		uint32_t *pixels = malloc(sizeof(uint32_t)*w*h);
+		int n=0;
 		for (int i = 0; i < h; i++) {
 			for (int j = 0; j < w; j++) {
-				//pixels[i*w+j] = palette[s->pixels[(y+i)*s->w+j+x]].val;
-				uint32_t offset = j + i * s->w;
-				SDL_Color rgba_color = s->format->palette->colors[s->pixels[x + y * s->w + offset]];
-				pixels[i++] = rgba_color.a << 24 | rgba_color.r << 16 | rgba_color.g << 8 | rgba_color.b;
+				pixels[i*w+j] = palette[s->pixels[(y+i)*s->w+j+x]].val;
+				printf("%d\n",n++);
 			}
 		}
 		NDL_DrawRect(pixels,x,y,w,h);
