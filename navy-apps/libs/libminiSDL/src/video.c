@@ -109,8 +109,8 @@ void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
 	} else if(s->format->BitsPerPixel == 8){
 		for (int i = 0; i < h; i++) {
 			for (int j = 0; j < w; j++) {
-				SDL_Color rgba_color = s->format->palette->colors[s->pixels[start_pos + j + i*s->w]];
-				buf[i*w+j] = rgba_color.a << 24 | rgba_color.r << 16 | rgba_color.g << 8 | rgba_color.b;
+				buf[i*w +j]= s->format->palette->colors[s->pixels[start_pos + j + i*s->w]].val;
+				//buf[i*w+j] = rgba_color.a << 24 | rgba_color.r << 16 | rgba_color.g << 8 | rgba_color.b;
 			}
 		}
 	}
