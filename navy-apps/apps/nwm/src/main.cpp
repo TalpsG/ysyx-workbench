@@ -6,7 +6,7 @@
 int main() {
   int w = 0, h = 0;
   NDL_Init(0);
-  NDL_OpenCanvas(&w, &h);
+  (&w, &h);
   WindowManager *wm = new WindowManager(w, h);
 
   uint32_t last = 0, now = 0;
