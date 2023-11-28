@@ -1,6 +1,7 @@
 #include <NDL.h>
 #include <sdl-video.h>
 #include <assert.h>
+#include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 
@@ -93,41 +94,22 @@ void SDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, uint32_t color) {
 	//free(buf);
 //}
 void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
-	if (s->format->BitsPerPixel == 32) {
-		if (x = 0 && y ==0 && w == 0 && h == 0) {
-			w = s->w;		
-			h = s->h;		
-			NDL_DrawRect(s->pixels,0,0,w,h);
-			return ;
-		}
-		uint32_t *pixels = malloc(sizeof(uint32_t)*w*h);
-		uint32_t *s_pixels = s->pixels;
-		for (int i = 0; i < h; i++) {
-			memcpy(pixels+i*w,s_pixels+(y+i)*s->w+x,sizeof(uint32_t)*w);
-		}
-		NDL_DrawRect(pixels,x,y,w,h);
-		free(pixels);
-		return;
-	} else if(s->format->BitsPerPixel == 8){
-		if ( x == 0 && y == 0 && w == 0 && h == 0) {
-			w = s->w;		
-			h = s->h;		
-			NDL_DrawRect((uint32_t *)s->pixels,0,0,w,h);
-			return ;
-		}
-		SDL_Color *palette = s->format->palette->colors;
-		uint32_t *pixels = malloc(sizeof(uint32_t)*w*h);
-		int n=0;
-		for (int i = 0; i < h; i++) {
-			for (int j = 0; j < w; j++) {
-				SDL_Color rgba_color = s->format->palette->colors[s->pixels[ ( y + i ) * s->w + j + x ]];
-				pixels[i*w+j] = rgba_color.a << 24 | rgba_color.r << 16 | rgba_color.g << 8 | rgba_color.b;
-			}
-		}
-		NDL_DrawRect(pixels,x,y,w,h);
-		free(pixels);
-
+	if (w == 0 && h == 0) {
+		w = s->w;
+		h = s->h;
 	}
+	uint32_t len = w*h;
+	uint32_t *buf = malloc(sizeof(uint32_t) * len);
+	uint32_t start_pos = x + y * s->w;
+	uint32_t *s_pixels = s->pixels;
+	if (s->format->BitsPerPixel == 32) {
+		for (int i = 0; i < h; i++) {
+			memcpy(buf + i*w, s_pixels + start_pos+i*s->w, sizeof(uint32_t) * w);
+		}
+	} else if(s->format->BitsPerPixel == 8){
+	}
+	NDL_DrawRect(buf,x,y,w,h);
+	free(buf);
 }
 
 // APIs below are already implemented.
