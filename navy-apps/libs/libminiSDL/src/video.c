@@ -81,17 +81,13 @@ void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst, SDL_
 	uint32_t *dst_pixels = dst->pixels;
 	uint32_t *src_pixels = src->pixels;
     for (int i = 0; i < h; i++) {
-      for (int j = 0; j < w; j++) {
-		dst_pixels[(d_y+i)*dst->w+d_x+j] = src_pixels[(s_y+i)*src->w+s_x+j];
-	  }
+		memcpy(dst_pixels+(d_y+i)*dst->w+d_x,src_pixels+(s_y+i)*src->w+s_x,w*sizeof(uint32_t));
 	}
   } else if (dst->format->BitsPerPixel == 8) {
 	uint8_t *dst_pixels = dst->pixels;
 	uint8_t *src_pixels = src->pixels;
     for (int i = 0; i < h; i++) {
-      for (int j = 0; j < w; j++) {
-		dst_pixels[(d_y+i)*dst->w+d_x+j] = src_pixels[(s_y+i)*src->w+s_x+j];
-	  }
+		memcpy(dst_pixels+(d_y+i)*dst->w+d_x,src_pixels+(s_y+i)*src->w+s_x,w*sizeof(uint8_t));
 	}
   }
 }
