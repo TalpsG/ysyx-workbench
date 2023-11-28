@@ -126,7 +126,6 @@ void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
 		for (int i = 0; i < h; i++) {
 			for (int j = 0; j < w; j++) {
 				pixels[i*w+j] = palette[s->pixels[(y+i)*s->w+j+x]].val;
-				printf("%d\n",n++);
 			}
 		}
 		NDL_DrawRect(pixels,x,y,w,h);
