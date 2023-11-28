@@ -85,8 +85,8 @@ void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
 		NDL_DrawRect(pixels,x,y,w,h);
 		free(pixels);
 		return;
-	} else {
-		if ( w == 0 && h == 0) {
+	} else if(s->format->BitsPerPixel == 8){
+		if ( x == 0 && y == 0 && w == 0 && h == 0) {
 			printf("x:%d,y:%d,w:%d,h:%d\n",0,0,s->w,s->h);
 			w = s->w;		
 			h = s->h;		
