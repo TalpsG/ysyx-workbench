@@ -97,6 +97,10 @@ void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
 	if (w == 0 && h == 0) {
 		w = s->w;
 		h = s->h;
+		if (s->format->BitsPerPixel == 32) {
+			NDL_DrawRect(s->pixels,0,0,w,h);
+			return;
+		} 
 	}
 	uint32_t len = w*h;
 	uint32_t *buf = malloc(sizeof(uint32_t) * len);
