@@ -15,13 +15,6 @@ int sys_yield() {
 #endif
   return 0;
 }
-int sys_exit(int code) {
-#ifdef STRACE
-	printf("%s param : %d\n",__FUNCTION__,code);
-#endif
-	naive_uload(NULL, "/bin/menu");
-	return 0;
-}
 int sys_write(int fd, void *buf, size_t count) {
 	int i = fs_write(fd, buf, count);
 #ifdef STRACE
@@ -77,6 +70,13 @@ int sys_execve(const char *fname, char *const argv[], char *const envp[]) {
 	printf("%s param : %p %p %p  \n",__FUNCTION__,fname,argv,envp);
 #endif
 	naive_uload(NULL,fname);
+	return 0;
+}
+int sys_exit(int code) {
+#ifdef STRACE
+	printf("%s param : %d\n",__FUNCTION__,code);
+#endif
+	sys_execve("/bin/menu",NULL,NULL);
 	return 0;
 }
 void do_syscall(Context *c) {
