@@ -7,7 +7,7 @@
 void naive_uload(PCB *pcb, const char *filename);
 
 
-#define STRACE 1
+//#define STRACE 1
 int sys_yield() {
   yield();
 #ifdef STRACE
