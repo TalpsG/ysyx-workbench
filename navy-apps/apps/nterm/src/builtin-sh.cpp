@@ -29,11 +29,13 @@ static void sh_handle_cmd(const char *cmd) {
 	}
 	if (strncmp(p, "execve", 6) == 0) {
 		p+=6;
+		while (*p == ' ') {
+			p++;
+		}
+		execve(p,NULL,NULL);
+	} else {
+		sh_printf("%s Not Found\n",cmd);
 	}
-	while (*p == ' ') {
-		p++;
-	}
-	execve(p,NULL,NULL);
 }
 
 void builtin_sh_run() {
