@@ -2,6 +2,11 @@
 #include "syscall.h"
 #include <fs.h>
 #include <sys/time.h>
+#include <proc.h>
+// extern function
+void naive_uload(PCB *pcb, const char *filename);
+
+
 //#define STRACE 1
 int sys_yield() {
   yield();
@@ -14,7 +19,7 @@ int sys_exit(int code) {
 #ifdef STRACE
 	printf("%s param : %d\n",__FUNCTION__,code);
 #endif
-  halt(code);
+	naive_uload(NULL, "/bin/menu");
 	return 0;
 }
 int sys_write(int fd, void *buf, size_t count) {
@@ -67,6 +72,13 @@ int sys_gettimeofday(struct timeval *tv, struct timezone *tz) {
 #endif
 	return 0;
 }
+int sys_execve(const char *fname, char *const argv[], char *const envp[]) {
+#ifdef STRACE
+	printf("%s param : %p %p %p  \n",__FUNCTION__,fname,argv,envp);
+#endif
+	naive_uload(NULL,fname);
+	return 0;
+}
 void do_syscall(Context *c) {
   uintptr_t a[4];
   a[0] = c->GPR1;
@@ -104,6 +116,10 @@ void do_syscall(Context *c) {
 	}
 	case 9: {
 		c->GPRx = sys_brk(a[1]);
+		break;
+	}
+	case 13: {
+		c->GPRx = sys_execve((void *)a[1],(void *)a[2],(void *)a[3]);
 		break;
 	}
 	case 19: {
