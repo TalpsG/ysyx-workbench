@@ -28,14 +28,19 @@ void int2str(int i,char *p){
 }
 void customPrintPointer(void* temp, char* buf) {
     const char hexDigits[] = "0123456789ABCDEF";
-    unsigned long value = (unsigned long)temp;
-    int shift = sizeof(void*) * 2 - 4;
-    
-    for (int i = 0; i < sizeof(void*) * 2; i++) {
-        buf[i] = hexDigits[(value >> shift) & 0xF];
+    uint32_t value = (uint32_t)temp;
+    int shift = 28;  // 32-bit pointer, so we start at the 28th nibble
+
+    buf[0] = '0';
+    buf[1] = 'x';
+
+    for (int i = 2; i < 10; i++) {
+        int nibble = (value >> shift) & 0xF;
+        buf[i] = hexDigits[nibble];
         shift -= 4;
     }
-    buf[sizeof(void*) * 2] = '\0';
+
+    buf[10] = '\0';
 }
 void width_print(char *str,int width,int zero_fill) {
 	if (zero_fill) {
