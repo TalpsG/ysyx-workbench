@@ -23,7 +23,10 @@ static void sh_prompt() {
 }
 
 static void sh_handle_cmd(const char *cmd) {
-	const char *p = cmd;
+	char buf[strlen(cmd)];
+	memcpy(buf,cmd,strlen(cmd));
+	buf[strlen(cmd)-1] = '\0';
+	const char *p = buf;
 	while (*p == ' ') {
 		p++;
 	}
@@ -32,7 +35,7 @@ static void sh_handle_cmd(const char *cmd) {
 		while (*p == ' ') {
 			p++;
 		}
-		execve(p,NULL,NULL);
+		execvp(p,NULL);
 	} else {
 		sh_printf("%s Not Found\n",cmd);
 	}
@@ -41,7 +44,7 @@ static void sh_handle_cmd(const char *cmd) {
 void builtin_sh_run() {
   sh_banner();
   sh_prompt();
-
+  setenv("PATH","/bin",0);
   while (1) {
     SDL_Event ev;
     if (SDL_PollEvent(&ev)) {

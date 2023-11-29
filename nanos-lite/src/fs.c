@@ -51,7 +51,6 @@ void init_fs() {
   file_table[FD_FB].size = 4*p.width*p.height;
 }
 int fs_open(const char *pathname, int flags, int mode) {
-	printf("pathname:%s\n",pathname);
 	static int num = sizeof(file_table) / sizeof(Finfo);
 	for (int i = 0; i < num; i++) {
 		if (strcmp(pathname, file_table[i].name) == 0) {

@@ -76,7 +76,7 @@ int sys_exit(int code) {
 #ifdef STRACE
 	printf("%s param : %d\n",__FUNCTION__,code);
 #endif
-	sys_execve("/bin/menu",NULL,NULL);
+	sys_execve("/bin/nterm",NULL,NULL);
 	return 0;
 }
 void do_syscall(Context *c) {
