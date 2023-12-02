@@ -20,14 +20,14 @@ extern CPU_state cpu;
 word_t csr_read(word_t index) {
 	switch (index)
 	{
-        case 0:
+        case 0x300:
 			//printf("read mstatus:%8x pc:%8x\n",mstatus,cpu.pc);
 			return cpu.csr.mstatus;
-        case 1:
+        case 0x341:
 			return cpu.csr.mepc;
-        case 2:
+        case 0x342:
 			return cpu.csr.mcause;
-        case 5:
+        case 0x305:
 			return cpu.csr.mtvec;
         default:
           return 0;
@@ -37,14 +37,14 @@ word_t csr_read(word_t index) {
 word_t csr_write(word_t index,word_t data) {
 	switch (index)
 	{
-        case 0:
+        case 0x300:
 			//printf("read mstatus:%8x data:%8x\n",mstatus,data);
           cpu.csr.mstatus = data;break;
-        case 1:
+        case 0x341:
           cpu.csr.mepc= data;break;
-        case 2:
+        case 0x342:
           cpu.csr.mcause = data;break;
-        case 5:
+        case 0x305:
           cpu.csr.mtvec = data;break;
 	}
 	return 0;

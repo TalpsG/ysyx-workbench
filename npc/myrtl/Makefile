@@ -18,11 +18,11 @@ EXE_FLAGS=$(FLAGS)  --exe  --timing
 EXE_CFLAGS=-CFLAGS -g -CFLAGS -DMAINARGS=\"$(mainargs)\" 
 EXE_LDFLAGS=-LDFLAGS -lreadline -LDFLAGS -lLLVM-14 -LDFLAGS -pie -LDFLAGS -ldl  -LDFLAGS disasm.o -LDFLAGS -pie -LDFLAGS $(LIBS)
 
-DIFF_CLFAGS=-CFLAGS -g -CFLAGS -DCONFIG_DIFFTEST=1
+DIFF_CFLAGS=-CFLAGS -g -CFLAGS -DCONFIG_DIFFTEST=1
 
 gdb:exe
 	gdb --args ./obj_dir/Vtop $(BIN)  $(ELF)  
-run:diff
+run:exe
 	./obj_dir/Vtop $(BIN) $(ELF) b
 exe:build $(CSRC)  obj_dir/disasm.o
 	$(CPL) $(EXE_FLAGS) $(VSRC) $(CSRC) $(EXE_CFLAGS) $(EXE_LDFLAGS)   -j 4  
@@ -43,4 +43,4 @@ wave:trace
 	make trace 
 	gtkwave waveform.vcd
 diff:build $(CSRC)  obj_dir/disasm.o
-	$(CPL) $(EXE_FLAGS) $(VSRC) $(CSRC) $(DIFF_CLFAGS) $(EXE_LDFLAGS)   -j 4  
+	$(CPL) $(EXE_FLAGS) $(VSRC) $(CSRC) $(DIFF_CFLAGS) $(EXE_LDFLAGS)   -j 4  

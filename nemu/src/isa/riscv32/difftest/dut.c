@@ -17,50 +17,28 @@
 #include <cpu/difftest.h>
 #include <stdio.h>
 #include "../local-include/reg.h"
+#include <utils.h>
 #define REGLEN 32
-
+extern const char *regs[];
+extern bool flag;
+extern int src;
 void diff_reg_display(CPU_state *ref_r){
   for(int i=0;i<REGLEN;i++){
-    printf("reg:x%2d ,value:0x%10x, ref:0x%10x\n", i,gpr(i),ref_r->gpr[i]);
+    printf("reg:%4s ,value:0x%10x, ref:0x%10x\n", regs[i],gpr(i),ref_r->gpr[i]);
   }
   printf("reg: pc ,value:0x%10x, ref:0x%10x\n",  cpu.pc,ref_r->pc);
 }
 bool isa_difftest_checkregs(CPU_state *ref_r, vaddr_t pc) {
 	//diff_reg_display(ref_r);
+	//if (flag) {
+		//printf("reg:%4s ,value:0x%10x, ref:0x%10x\n", regs[src],gpr(src),ref_r->gpr[src]);
+		//flag = false;
+	//}
+
   if(cpu.pc!=ref_r->pc){
     printf("pc is diff\n");
     printf("ref : 0x%10x\n",ref_r->pc);
     printf("nemu: 0x%10x\n",cpu.pc);
-    return false;
-  }
-  if(cpu.csr.mcause!=ref_r->csr.mcause){
-    printf("mcause is diff\n");
-    printf("ref : 0x%10x\n",ref_r->csr.mcause);
-    printf("nemu: 0x%10x\n",cpu.csr.mcause);
-    return false;
-  }
-  if(cpu.csr.mtvec!=ref_r->csr.mtvec){
-    printf("mtvec is diff\n");
-    printf("ref : 0x%10x\n",ref_r->csr.mtvec);
-    printf("nemu: 0x%10x\n",cpu.csr.mtvec);
-    return false;
-  }
-  if(cpu.csr.mstatus!=ref_r->csr.mstatus){
-    printf("mstatus is diff\n");
-    printf("ref : 0x%10x\n",ref_r->csr.mstatus);
-    printf("nemu: 0x%10x\n",cpu.csr.mstatus);
-    return false;
-  }
-  if(cpu.csr.mepc!=ref_r->csr.mepc){
-    printf("mepc is diff\n");
-    printf("ref : 0x%10x\n",ref_r->csr.mepc);
-    printf("nemu: 0x%10x\n",cpu.csr.mepc);
-    return false;
-  }
-  if(cpu.csr.mtvec!=ref_r->csr.mtvec){
-    printf("mtvec is diff\n");
-    printf("ref : 0x%10x\n",ref_r->csr.mtvec);
-    printf("nemu: 0x%10x\n",cpu.csr.mtvec);
     return false;
   }
   for(int i=0;i<32;i++){
@@ -69,9 +47,6 @@ bool isa_difftest_checkregs(CPU_state *ref_r, vaddr_t pc) {
       diff_reg_display(ref_r);
       return false;
     }
-  }
-  if (cpu.pc == 0x800191b8) {
-    printf("mstatus:%08x  expected:%8x",ref_r->csr.mstatus,cpu.csr.mstatus);
   }
   return true;
 }

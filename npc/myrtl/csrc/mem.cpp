@@ -2,6 +2,7 @@
 #include <cstdint>
 #include <cstdio>
 #include <cstring>
+#include <ctime>
 #include <sys/mman.h>
 #include "utils.h"
 #include "macro.h"
@@ -28,14 +29,17 @@ extern "C" void npc_mem_read(uint32_t raddr, uint32_t*rdata) {
 	//printf("pc:%8x ,read 0\n",top.outpc);
     //return;
   //}
-  if(raddr == SERIAL_PORT) return;
-  static time_t t = 0;
+  static uint64_t t = 0;
   if (raddr == RTC_ADDR || raddr == RTC_ADDR+4) {
+	struct timespec now;
+	clock_gettime(CLOCK_MONOTONIC_COARSE, &now);
+	t = now.tv_sec * 1000000 + now.tv_nsec / 1000;
 	if (raddr == RTC_ADDR) {
-		t = clock();
 		*rdata = (uint32_t)t;
+		printf("low : %u\n",*rdata);
 	} else {
-		*rdata = t>>32;
+		*rdata = (uint32_t)(t>>32);
+		printf("high : %u\n",*rdata);
 	}
 	return ;
   }

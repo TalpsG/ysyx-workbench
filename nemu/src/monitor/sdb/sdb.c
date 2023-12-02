@@ -375,7 +375,6 @@ void sdb_mainloop()
     cmd_c(NULL);
     return;
   }
-
   for (char *str; (str = rl_gets()) != NULL;)
   {
     char *str_end = str + strlen(str);
@@ -384,9 +383,9 @@ void sdb_mainloop()
     char *cmd = strtok(str, " ");
     if (cmd == NULL)
     {
+
       continue;
     }
-
     /* treat the remaining string as the arguments,
      * which may need further parsing
      */

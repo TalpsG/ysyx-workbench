@@ -79,7 +79,7 @@ void width_print(char *str,int width,int zero_fill) {
 int printf(const char *fmt, ...) {
 va_list ap;
   va_start(ap, fmt);
-  int num = 0;
+  int num = strlen(fmt);
   int fmt_p = 0;
   int zero_fill = 0,width = -1;
 
@@ -90,9 +90,10 @@ va_list ap;
       putch(c);
 	  fmt_p++;
     } else {
+		num --;
 		char c_next = fmt[fmt_p+1];
       if (c_next == 'd') {
-		num++;
+		num--;
         char buf[15];
         int i = va_arg(ap, int);
 		int2str(i, buf);
@@ -101,17 +102,19 @@ va_list ap;
 			putch(buf[buf_p]);
 			buf_p++;
 		}
+		num += buf_p;
 		fmt_p += 2;
       } else if(c_next=='s') {
-        num++;
+		num -- ;
         char *str = va_arg(ap, char *);
         int len = strlen(str);
         for (int i = 0; i < len; i++) {
           putch(str[i]);
 		}
+		num += len;
 		fmt_p+=2;
       } else if (c_next == 'p') {
-		num++;
+		num --;
 		fmt_p +=2;
 		void *temp =va_arg(ap,void *);
 		char buf[20];
@@ -119,44 +122,51 @@ va_list ap;
 		for (int i = 0; i < strlen(buf); i++) {
 			putch(buf[i]);
 		}
-
+		num += strlen(buf);
 	}else if (c_next == 'c') {
-		num++;
+		num --;
 		fmt_p += 2;
 		unsigned char t = va_arg(ap, int);
 		putch(t);
+		num ++;
 	  }else if (c_next >= '0' && c_next <= '9') {
-		num++;
-
+		num --;
         if (c_next == '0') {
           zero_fill = 1;
           width = fmt[fmt_p+2]-'0';
           if (fmt[fmt_p + 3] == 's') {
+			num --;
 			char *p = va_arg(ap, char *);
 			width_print(p, width, zero_fill);
           } else if (fmt[fmt_p + 3] == 'd') {
+			num --;
             char buf[width];
             int temp = va_arg(ap, int);
             int2str(temp, buf);
 			width_print(buf, width, zero_fill);
 		  }
+		  num += width;
 		  fmt_p += 4;
         } else {
           width = c_next-'0';
           if (fmt[fmt_p + 2] == 's') {
+			num --;
 			char *p = va_arg(ap, char *);
 			width_print(p, width, zero_fill);
           } else if (fmt[fmt_p + 2] == 'd') {
+			num --;
             char buf[width];
             int temp = va_arg(ap, int);
             int2str(temp, buf);
 			width_print(buf, width, zero_fill);
 		  }
+		  num += width;
 		  fmt_p += 3;
 		}
-	  }
+	  } 
 	}
   }
+
 	return num;
 }
 
@@ -174,7 +184,7 @@ int sprintf(char *out, const char *fmt, ...) {
   */
   va_list ap;
   va_start(ap,fmt);                                                                                                                                       
-  int num = 0;
+  int num = strlen(fmt);
   int op = 0;
   for(int i=0;i<=strlen(fmt);){
       if(fmt[i]!='%') {
@@ -183,26 +193,27 @@ int sprintf(char *out, const char *fmt, ...) {
         i++;
         continue;
       }
+	  num--;
       if(fmt[i+1] == 'd'){
           int t = va_arg(ap, int);
           char p[20];
           int2str(t,p );
           i += 2;
-          num ++;
           int len = strlen(p);
           for(int j = 0;j<len;j++){
             out[op++]=p[j];
           }
+		  num = num + len-1;
           continue;
       }
       if(fmt[i+1] == 's'){
           char *p = va_arg(ap,char *);
           i += 2;
-          num ++;
           int len = strlen(p);
           for(int j=0;j<len;j++){
             out[op++] = p[j];
           }
+		  num = num +len-1;
           continue;
       }
   }
