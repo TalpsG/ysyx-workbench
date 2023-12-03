@@ -24,9 +24,13 @@
 #define Mw vaddr_write
 
 enum {
-  TYPE_I, TYPE_U, TYPE_S,
+  TYPE_I,
+  TYPE_U,
+  TYPE_S,
   TYPE_N, // none
   TYPE_J,
+  TYPE_B,
+  TYPE_R,
 };
 
 #define src1R() do { *src1 = R(rs1); } while (0)
@@ -63,10 +67,30 @@ static void decode_operand(Decode *s, int *rd, word_t *src1, word_t *src2, word_
   int rs2 = BITS(i, 24, 20);
   *rd     = BITS(i, 11, 7);
   switch (type) {
-    case TYPE_I: src1R();          immI(); break;
-    case TYPE_U:                   immU(); break;
-    case TYPE_S: src1R(); src2R(); immS(); break;
-    case TYPE_J:                   immJ(); break;
+  case TYPE_I:
+    src1R();
+    immI();
+    break;
+  case TYPE_U:
+    immU();
+    break;
+  case TYPE_S:
+    src1R();
+    src2R();
+    immS();
+    break;
+  case TYPE_J:
+    immJ();
+    break;
+  case TYPE_B:
+    immB();
+    src1R();
+    src2R();
+    break;
+  case TYPE_R:
+    src1R();
+    src2R();
+    break;
   }
 }
 
@@ -125,8 +149,6 @@ static int decode_exec(Decode *s) {
   INSTPAT("?????? ?????? ????? 110 ????? 0010011",ori,I,R(rd)=src1|imm);
   INSTPAT("?????? ?????? ????? 010 ????? 0010011",slti,I,int32_t temp1 = src1,temp2 = imm;R(rd)=(temp1<temp2)?1:0);
   INSTPAT("000000 000000 00000 000 00000 1110011",ecall,I,uint32_t dnpc = isa_raise_intr(11,cpu.pc);/*printf("dnpc:%8x\n",dnpc);Mw(R(0),4,1);*/s->dnpc = dnpc);
-  INSTPAT("?????? ?????? ????? 010 ????? 1110011",csrrs,I,int index = (imm)&0xf,temp = csr_read(index);csr_write(index,src1|temp);R(rd)=temp);
-  INSTPAT("?????? ?????? ????? 001 ????? 1110011",csrrw,I,int index = (imm)&0xf,temp = csr_read(index);csr_write(index,src1);R(rd)=temp);
   /*
   I
   */ 
