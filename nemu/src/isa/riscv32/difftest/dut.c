@@ -17,8 +17,15 @@
 #include <cpu/difftest.h>
 #include "../local-include/reg.h"
 
+#define NR_REGS sizeof(cpu.gpr)/sizeof(cpu.gpr[0])
+extern const char *regs[];
 bool isa_difftest_checkregs(CPU_state *ref_r, vaddr_t pc) {
-  return false;
+	bool is_same = difftest_check_reg("pc", cpu.pc, ref_r->pc, cpu.pc);
+  for(int i = 0; i < NR_REGS; i++){
+    is_same = difftest_check_reg(regs[i] , cpu.pc, ref_r->gpr[i], cpu.gpr[i]); 
+    if(!is_same) return false;
+  }
+  return is_same;
 }
 
 void isa_difftest_attach() {

@@ -1,0 +1,6 @@
+#ifndef B3EC7BCC_811A_4B62_AC37_D28F6A29AD9F
+#define B3EC7BCC_811A_4B62_AC37_D28F6A29AD9F
+
+void init_itrace();
+void add_itrace(char *str) ;
+#endif /* B3EC7BCC_811A_4B62_AC37_D28F6A29AD9F */

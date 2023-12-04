@@ -61,11 +61,12 @@ enum {
   } while (0)
 
 
-static void decode_operand(Decode *s, int *rd, word_t *src1, word_t *src2, word_t *imm, int type) {
+static void decode_operand(Decode *s, int *rd, word_t *src1, word_t *src2, word_t *imm,word_t *shamt, int type) {
   uint32_t i = s->isa.inst.val;
   int rs1 = BITS(i, 19, 15);
   int rs2 = BITS(i, 24, 20);
   *rd     = BITS(i, 11, 7);
+  *shamt  = BITS(i,24,20);
   switch (type) {
   case TYPE_I:
     src1R();
@@ -96,12 +97,12 @@ static void decode_operand(Decode *s, int *rd, word_t *src1, word_t *src2, word_
 
 static int decode_exec(Decode *s) {
   int rd = 0;
-  word_t src1 = 0, src2 = 0, imm = 0;
+  word_t src1 = 0, src2 = 0, imm = 0,shamt = 0;
   s->dnpc = s->snpc;
 
 #define INSTPAT_INST(s) ((s)->isa.inst.val)
 #define INSTPAT_MATCH(s, name, type, ... /* execute body */ ) { \
-  decode_operand(s, &rd, &src1, &src2, &imm, concat(TYPE_, type)); \
+  decode_operand(s, &rd, &src1, &src2, &imm,&shamt, concat(TYPE_, type)); \
   __VA_ARGS__ ; \
 }
 
@@ -112,13 +113,11 @@ static int decode_exec(Decode *s) {
 
   INSTPAT("0000000 00001 00000 000 00000 11100 11", ebreak , N, NEMUTRAP(s->pc, R(10))); // R(10) is $a0
 
-
   //talps write
-  //type U
-  INSTPAT("????? ????? ????? ????? ????? 0110111",lui,U,R(rd) = imm);
-
-  // type J
-  INSTPAT("????? ????? ????? ????? ????? 1101111",jal,J,R(rd) = s->snpc;s->dnpc += imm);
+   /*
+  U
+  */
+  //load upper imm
   INSTPAT("???????? ???????? ???? ????? 0110111",lui,U,R(rd)=imm);
   /*
   U
@@ -148,7 +147,6 @@ static int decode_exec(Decode *s) {
   INSTPAT("?????? ?????? ????? 000 ????? 0000011", lb, I,R(rd) =  SEXT(Mr(src1 + imm, 1),8));
   INSTPAT("?????? ?????? ????? 110 ????? 0010011",ori,I,R(rd)=src1|imm);
   INSTPAT("?????? ?????? ????? 010 ????? 0010011",slti,I,int32_t temp1 = src1,temp2 = imm;R(rd)=(temp1<temp2)?1:0);
-  INSTPAT("000000 000000 00000 000 00000 1110011",ecall,I,uint32_t dnpc = isa_raise_intr(11,cpu.pc);/*printf("dnpc:%8x\n",dnpc);Mw(R(0),4,1);*/s->dnpc = dnpc);
   /*
   I
   */ 
@@ -221,10 +219,15 @@ static int decode_exec(Decode *s) {
   R
   */
 
-  INSTPAT("??????? ????? ????? ??? ????? ????? ??", inv    , N, INV(s->pc));
+
+  
+
+
+
+  INSTPAT("??????? ????? ????? ??? ????? ????? ??", inv, N, INV(s->pc)); //检测到这条宏nemu就变成abort了，所以他应该放在最后
   INSTPAT_END();
 
-  R(0) = 0; // reset $zero to 0
+    R(0) = 0; // reset $zero to 0
 
   return 0;
 }

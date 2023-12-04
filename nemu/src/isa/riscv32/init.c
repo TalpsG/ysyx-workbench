@@ -15,7 +15,8 @@
 
 #include <isa.h>
 #include <memory/paddr.h>
-
+#include <trace/mtrace.h>
+#include <trace/itrace.h>
 // this is not consistent with uint8_t
 // but it is ok since we do not access the array directly
 static const uint32_t img [] = {
@@ -45,7 +46,14 @@ void init_isa() {
 
   */ 
 
+
   /* Initialize this virtual computer system. */
   //初始化寄存器
   restart();
+#ifdef CONFIG_MTRACE
+	init_mtrace();
+#endif
+#ifdef CONFIG_ITRACE
+	init_itrace();
+#endif
 }
