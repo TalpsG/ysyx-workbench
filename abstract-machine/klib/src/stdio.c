@@ -13,7 +13,11 @@ int printf(const char *fmt, ...) {
     while (*fmt) {
         if (*fmt == '%') {
             fmt++;
-            if (*fmt == 's') {
+            if (*fmt == 'c') {
+				char t = va_arg(args,int);
+				putch(t);
+				written++;
+			}else  if (*fmt == 's') {
                 const char *s = va_arg(args, const char *);
                 while (*s) {
                     putch(*s);

@@ -204,6 +204,9 @@ config MTRACE
   bool "mem trace"
   default n
 
+config DTRACE
+  bool "device trace"
+  default n
 endmenu
 
 if MODE_SYSTEM
