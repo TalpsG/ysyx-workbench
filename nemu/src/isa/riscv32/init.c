@@ -35,6 +35,7 @@ static void restart() {
 
   /* The zero register is always 0. */
   cpu.gpr[0] = 0;
+  cpu.csr.mstatus.val= 0x1800;
 }
 
 void init_isa() {
@@ -59,5 +60,8 @@ void init_isa() {
 #endif
 #ifdef CONFIG_DTRACE
 	init_dtrace();
+#endif
+#ifdef CONFIG_ETRACE
+	init_etrace();
 #endif
 }

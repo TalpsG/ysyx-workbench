@@ -55,4 +55,8 @@ word_t isa_query_intr();
 bool isa_difftest_checkregs(CPU_state *ref_r, vaddr_t pc);
 void isa_difftest_attach();
 
+
+void MRET(void );
+word_t csr_read(word_t index) ;
+word_t csr_write(word_t index,word_t data) ;
 #endif

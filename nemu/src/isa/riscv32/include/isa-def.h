@@ -17,10 +17,27 @@
 #define __ISA_RISCV_H__
 
 #include <common.h>
-
+typedef union {
+    struct {
+        uint32_t UIE: 1, SIE: 1, WPRI_0: 1, MIE: 1;
+        uint32_t UPIE: 1, SPIE: 1, WPRI: 1, MPIE: 1;
+        uint32_t SPP: 1, WPRI_1_2: 2, MPP: 2, FS: 2;
+        uint32_t XS: 2, MPRV: 1, SUM: 1, MXR: 1;
+        uint32_t TVM: 1, TW: 1, TSR: 1, WPRI_3_10: 8, SD: 1;
+    } bit;
+    word_t val;
+} MSTATUS;
+typedef struct {
+	word_t mepc;
+	word_t mtvec;
+	word_t mcause;
+	MSTATUS mstatus;
+} CSR;
 typedef struct {
   word_t gpr[MUXDEF(CONFIG_RVE, 16, 32)];
   vaddr_t pc;
+	CSR csr;
+	word_t priv;
 } MUXDEF(CONFIG_RV64, riscv64_CPU_state, riscv32_CPU_state);
 
 // decode

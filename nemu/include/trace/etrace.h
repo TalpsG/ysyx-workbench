@@ -1,0 +1,6 @@
+#ifndef CD6CD6E3_CE42_4D55_A04A_92F50FD72BF0
+#define CD6CD6E3_CE42_4D55_A04A_92F50FD72BF0
+
+void init_etrace();
+void add_etrace(char *str) ;
+#endif /* CD6CD6E3_CE42_4D55_A04A_92F50FD72BF0 */

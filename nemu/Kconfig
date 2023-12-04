@@ -209,6 +209,11 @@ config DTRACE
   default n
 endmenu
 
+config ETRACE
+  bool "device trace"
+  default n
+endmenu
+
 if MODE_SYSTEM
 source "src/memory/Kconfig"
 source "src/device/Kconfig"

@@ -12,12 +12,13 @@
 *
 * See the Mulan PSL v2 for more details.
 ***************************************************************************************/
-
+#include <isa.h>
 #include <device/map.h>
 #include <memory/paddr.h>
+#include "trace/dtrace.h"
 
 #define NR_MAP 16
-
+extern CPU_state cpu;
 static IOMap maps[NR_MAP] = {};
 static int nr_map = 0;
 
@@ -56,14 +57,21 @@ void add_mmio_map(const char *name, paddr_t addr, void *space, uint32_t len, io_
 /* bus interface */
 word_t mmio_read(paddr_t addr, int len) {
 	IOMap *p  = fetch_mmio_map(addr);
+  word_t res =  map_read(addr, len, p);
 #ifdef CONFIG_DTRACE
+  char buf[100];
+	sprintf(buf,"pc:%8x device:%10s read  ----> addr:%8x ,len:%2d data:%8x\n",cpu.pc,p->name ,addr,len,res);
+  add_dtrace(buf);
 #endif 
-  return map_read(addr, len, p);
+	return res;
 }
 
 void mmio_write(paddr_t addr, int len, word_t data) {
 	IOMap *p = fetch_mmio_map(addr);
 #ifdef CONFIG_DTRACE
+  char buf[100];
+	sprintf(buf,"pc:%8x device:%10s read  ----> addr:%8x ,len:%2d data:%8x\n",cpu.pc,p->name ,addr,len,data);
+  add_dtrace(buf);
 #endif 
   map_write(addr, len, data, p);
 }
