@@ -81,8 +81,10 @@ static void exec_once(Decode *s, vaddr_t pc)
   void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
   disassemble(p, s->logbuf + sizeof(s->logbuf) - p,
               MUXDEF(CONFIG_ISA_x86, s->snpc, s->pc), (uint8_t *)&s->isa.inst.val, ilen);
+#ifdef CONFIG_ITRACE
 	add_itrace(s->logbuf);
 	add_itrace("\n");
+#endif
 #else
   p[0] = '\0'; // the upstream llvm does not support loongarch32r
 
@@ -96,6 +98,16 @@ static void execute(uint64_t n)
   for (; n > 0; n--)
   {
     exec_once(&s, cpu.pc);
+	char state[200];
+	char buf[10];
+	sprintf(state,"%8x",cpu.pc);
+	// 实现record
+	for (int i = 0; i < 32; i++) {
+		sprintf(buf," %x",cpu.gpr[i]);
+		strcat(state,buf);
+	}
+	// 实现record
+
     g_nr_guest_inst++;
     trace_and_difftest(&s, cpu.pc);
     if (nemu_state.state != NEMU_RUNNING)

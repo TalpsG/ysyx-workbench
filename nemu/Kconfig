@@ -207,11 +207,15 @@ config MTRACE
 config DTRACE
   bool "device trace"
   default n
-endmenu
 
 config ETRACE
-  bool "device trace"
+  bool "interrupt trace"
   default n
+
+config RECORD
+  bool "record states for npc"
+  default n
+
 endmenu
 
 if MODE_SYSTEM

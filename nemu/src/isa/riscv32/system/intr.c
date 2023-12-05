@@ -62,6 +62,7 @@ word_t isa_raise_intr(word_t NO, vaddr_t epc) {
 }
 void MRET() {
 	cpu.csr.mstatus.bit.MIE = cpu.csr.mstatus.bit.MPIE;
+	cpu.csr.mstatus.bit.MPIE = 1;
 }
 word_t isa_query_intr() {
   return INTR_EMPTY;

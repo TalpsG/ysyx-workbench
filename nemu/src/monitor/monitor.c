@@ -45,13 +45,32 @@ static char *log_file = NULL;
 static char *diff_so_file = NULL;
 static char *img_file = NULL;
 static int difftest_port = 1234;
+#include <stdio.h>
+#ifdef CONFIG_RECORD
+#include <trace/record.h>
+ char* getFileNameFromPath(char* path) {
+    char* p = path;
+    char* fileName = path;
+    while (*p != '\0') {
+        if (*p == '/' ) {
+            fileName = p + 1;
+        }
+        p++;
+    }
+    return fileName;
+}
+#endif
+
 
 static long load_img() {
   if (img_file == NULL) {
     Log("No image is given. Use the default build-in image.");
     return 4096; // built-in image size
   }
-
+#ifdef CONFIG_RECORD
+  char *filename = getFileNameFromPath(img_file);
+  init_record(filename);
+#endif
   FILE *fp = fopen(img_file, "rb");
   Assert(fp, "Can not open '%s'", img_file);
 
