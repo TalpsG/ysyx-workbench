@@ -55,7 +55,7 @@ word_t isa_raise_intr(word_t NO, vaddr_t epc) {
    cpu.csr.mstatus.bit.MIE = 0;
 #ifdef CONFIG_ETRACE
   char buf[100];
-  sprintf(buf, "interrupt pc:%8x,mcause:%d,handler_addr:%8x\n",epc,mcause,mtvec);
+  sprintf(buf, "interrupt pc:%8x,mcause:%d,handler_addr:%8x\n",cpu.csr.mepc,cpu.csr.mcause,cpu.csr.mtvec);
   add_etrace(buf);
 #endif
   return cpu.csr.mtvec;

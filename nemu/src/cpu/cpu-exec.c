@@ -98,15 +98,38 @@ static void execute(uint64_t n)
   for (; n > 0; n--)
   {
     exec_once(&s, cpu.pc);
-	char state[200];
-	char buf[10];
+#ifdef CONFIG_RECORD
+#include <trace/record.h>
+	char state[1000];
+	char buf[30];
 	sprintf(state,"%8x",cpu.pc);
 	// 实现record
 	for (int i = 0; i < 32; i++) {
 		sprintf(buf," %x",cpu.gpr[i]);
 		strcat(state,buf);
 	}
+/*
+	0  mstatus
+	1  mepc
+	2  mcause
+	5  mtvec
+*/
+	sprintf(buf," %x",cpu.csr.mstatus.val);
+	strcat(state,buf);
+	sprintf(buf," %x",cpu.csr.mepc);
+	strcat(state,buf);
+	sprintf(buf," %x",cpu.csr.mcause);
+	strcat(state,buf);
+	sprintf(buf," %x",0);
+	strcat(state,buf);
+	sprintf(buf," %x",0);
+	strcat(state,buf);
+	sprintf(buf," %x",cpu.csr.mtvec);
+	strcat(state,buf);
+	strcat(state,"\n");
+	add_record(state);
 	// 实现record
+#endif
 
     g_nr_guest_inst++;
     trace_and_difftest(&s, cpu.pc);
