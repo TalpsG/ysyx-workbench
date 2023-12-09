@@ -19,3 +19,11 @@ image: $(IMAGE).elf
 	@$(OBJDUMP) -d $(IMAGE).elf > $(IMAGE).txt
 	@echo + OBJCOPY "->" $(IMAGE_REL).bin
 	@$(OBJCOPY) -S --set-section-flags .bss=alloc,contents -O binary $(IMAGE).elf $(IMAGE).bin
+
+run: $(IMAGE).bin $(IMAGE).elf
+	make -C $(NPC_HOME)/myrtl run BIN=$(abspath $(IMAGE).bin) ELF=$(abspath $(IMAGE).elf) 
+
+gdb: $(IMAGE).bin $(IMAGE).elf
+	echo $(IMAGE)
+	make -C $(NPC_HOME)/myrtl gdb BIN=$(abspath $(IMAGE).bin) ELF=$(abspath $(IMAGE).elf)
+

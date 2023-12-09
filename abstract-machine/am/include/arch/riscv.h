@@ -2,8 +2,14 @@
 #define ARCH_H__
 
 struct Context {
+#ifdef __riscv_e
+	uintptr_t gpr[16],
+#else 
+ uintptr_t gpr[32], 
+#endif
+
   // TODO: fix the order of these members to match trap.S
-  uintptr_t gpr[32], mcause, mstatus,mepc;
+ mcause, mstatus,mepc;
   void *pdir;
 };
 

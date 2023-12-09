@@ -97,15 +97,14 @@ static void execute(uint64_t n)
   Decode s;
   for (; n > 0; n--)
   {
-    exec_once(&s, cpu.pc);
 #ifdef CONFIG_RECORD
 #include <trace/record.h>
 	char state[1000];
 	char buf[30];
-	sprintf(state,"%8x",cpu.pc);
+	sprintf(state,"%x ",cpu.pc);
 	// 实现record
 	for (int i = 0; i < 32; i++) {
-		sprintf(buf," %x",cpu.gpr[i]);
+		sprintf(buf,"%x ",cpu.gpr[i]);
 		strcat(state,buf);
 	}
 /*
@@ -114,22 +113,24 @@ static void execute(uint64_t n)
 	2  mcause
 	5  mtvec
 */
-	sprintf(buf," %x",cpu.csr.mstatus.val);
+	sprintf(buf,"%x ",cpu.csr.mstatus.val);
 	strcat(state,buf);
-	sprintf(buf," %x",cpu.csr.mepc);
+	sprintf(buf,"%x ",cpu.csr.mepc);
 	strcat(state,buf);
-	sprintf(buf," %x",cpu.csr.mcause);
+	sprintf(buf,"%x ",cpu.csr.mcause);
 	strcat(state,buf);
-	sprintf(buf," %x",0);
+	sprintf(buf,"%x ",0);
 	strcat(state,buf);
-	sprintf(buf," %x",0);
+	sprintf(buf,"%x ",0);
 	strcat(state,buf);
-	sprintf(buf," %x",cpu.csr.mtvec);
+	sprintf(buf,"%x ",cpu.csr.mtvec);
 	strcat(state,buf);
 	strcat(state,"\n");
 	add_record(state);
 	// 实现record
 #endif
+    exec_once(&s, cpu.pc);
+
 
     g_nr_guest_inst++;
     trace_and_difftest(&s, cpu.pc);

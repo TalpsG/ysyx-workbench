@@ -1,6 +1,6 @@
 #include <am.h>
 #include <klib-macros.h>
-
+#include <riscv/npc/npc.h>
 extern char _heap_start;
 int main(const char *args);
 
@@ -15,9 +15,11 @@ Area heap = RANGE(&_heap_start, PMEM_END);
 static const char mainargs[] = MAINARGS;
 
 void putch(char ch) {
+	outb(SERIAL_PORT, ch);
 }
 
 void halt(int code) {
+	asm volatile("mv a0, %0; ebreak" : :"r"(code));
   while (1);
 }
 
