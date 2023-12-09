@@ -46,4 +46,4 @@ diff:build $(CSRC)  obj_dir/disasm.o
 	$(CPL) $(EXE_FLAGS) $(VSRC) $(CSRC) $(DIFF_CFLAGS) $(EXE_LDFLAGS)   -j 4  
 
 test:diff
-	./obj_dir/Vtop $(BIN) $(ELF) b
+	./obj_dir/Vtop $(BIN) $(ELF) 
